@@ -889,7 +889,7 @@ export class SwapForm extends Component {
 
                         {/*Vasil, please check conditions*/}
                         {
-                            !this.state.isUsedMultiplier  &&
+                            this.state.selectAccount && !this.state.isUsedMultiplier  &&
 
                             <div className="w-full">
                                 <div className="w-full mb-[53px]">
