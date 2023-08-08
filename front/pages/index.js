@@ -6,7 +6,7 @@ export default class Index extends Component{
     render() {
         return (
             <Fragment>
-                <SwapReward/>
+                <SwapReward _active={false}/>
             </Fragment>
         )
 

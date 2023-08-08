@@ -6,11 +6,9 @@ import {SwapReward} from "@/components/SwapReward";
 
 export default function Index() {
 
-    const [active, setActive] = useState(true);
-
     return (
         <Fragment>
-            <SwapReward active={active} setActive={setActive}/>
+            <SwapReward _active = {true}/>
         </Fragment>
     )
 
