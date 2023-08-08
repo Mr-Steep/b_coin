@@ -1,0 +1,20 @@
+node_modules
+.env
+.ssh
+.idea
+coverage
+coverage.json
+typechain
+typechain-types
+
+# Hardhat files
+cache
+artifacts
+
+# front files
+front/.next
+front/node_modules
+
+
+# Project exclude paths
+/front/dist/
