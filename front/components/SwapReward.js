@@ -21,11 +21,12 @@ import {ConnectWallet} from "./ConnectWallet";
 import styles from '../styles/custom-styles.module.css';
 
 const NAME_COOKIE = 'is_close'
-export function SwapReward({active, setActive}) {
+export function SwapReward({_active}) {
 
 
     const [modalVisible, setModalVisible] = useState(false);
     const [selectAccount, setSelectAccount] = useState(null);
+    const [active, setActive] = useState(_active);
     const [step, setStep] = useState(0);
     const [getBalance, setBalance] = useState(0);
     const [getMultiplier, setMultiplier] = useState(0);
@@ -33,8 +34,10 @@ export function SwapReward({active, setActive}) {
     const [getTransactionComplete, setTransactionComplete] = useState(0)
     const [getIsUserUseMultiplayer, setIsUserUseMultiplayer] = useState(0)
     const [getGlobalMultiplayer, setGlobalMultiplayer] = useState(0);
+    const [getConfirmationComplete, setConfirmationComplete] = useState(false);
 
 
+    const FIRSTLY_CONNECTION = 'firstly_connection'
 
     const setNewStep = (newStep) => setStep(newStep);
 
@@ -54,6 +57,12 @@ export function SwapReward({active, setActive}) {
             document.body.style.overflow = 'hidden';
         }
 
+    }
+
+    const disconnect = async () => {
+        localStorage.removeItem(FIRSTLY_CONNECTION)
+        setSelectAccount(null)
+        location.reload()
     }
 
     useEffect(() => {
@@ -127,8 +136,11 @@ export function SwapReward({active, setActive}) {
 
                             /> :
                             selectAccount &&
-                            <div className={`${styles['border-gradient']} absolute sx:right-4 lg:right-[100px] top-[26px] right-[200px] text-textColor font-medium rounded-md sx:max-w-[157px] max-w-[200px] h-[50px] w-full p-[1px]`}>
-                                <Link className={'flex items-center justify-between gap-[12.5px] bg-primaryBgColor text-textColor font-medium rounded-md sx:max-w-[157px] max-w-[200px] max-h-[50px] w-full md:px-5 px-4 py-3'}
+                            <div
+                                onClick={disconnect}
+                                className={`${styles['border-gradient']} absolute sx:right-4 lg:right-[100px] top-[26px] right-[200px] text-textColor font-medium rounded-md sx:max-w-[157px] max-w-[200px] h-[50px] w-full p-[1px] transform-gpu transition-transform duration-200 ease-in-out hover:scale-95 focus:scale-95 active:scale-95`}>
+
+                                <Link className={'flex items-center justify-between gap-[12.5px] bg-primaryBgColor text-textColor font-medium rounded-md sx:max-w-[157px] max-w-[200px] max-h-[50px] w-full md:px-5 px-4 py-3 '}
                                       href={''}><span>{selectAccount?.slice(0, 6) + '...' + selectAccount?.slice(-6)}</span>
                                     <Image src={logout} className="sx:hidden" alt={logout}/>
                                 </Link>
@@ -190,11 +202,10 @@ export function SwapReward({active, setActive}) {
                                 </Link>
 
 
-                                {!!getCurrentAddress && getBalance > 0 &&
+                                {/*{!!getCurrentAddress && getBalance > 0 &&*/}
 
                                 <Link
-                                    onClick={ !getIsUserUseMultiplayer && getMultiplier > 0 ? () => handleSetActive(!active) : false}
-                                    href=""
+                                    href={active?'/':'/reward'}
                                     className="group mx-auto flex gap-[13px] bg-primaryBgColor items-center justify-between rounded-md min-w-[293px] max-h-[60px] w-full px-[17px] py-[17px] ">
                                     <span className="text-textColor text-lg">
                                         {
@@ -211,7 +222,7 @@ export function SwapReward({active, setActive}) {
                                 </Link>
 
 
-                                }
+                                 {/*}*/}
 
                             </div>
                         </div>
@@ -229,6 +240,7 @@ export function SwapReward({active, setActive}) {
                             setTransactionComplete={setTransactionComplete}
                             setIsUserUseMultiplayer={setIsUserUseMultiplayer}
                             setGlobalMultiplayer={setGlobalMultiplayer}
+                            setSelectAccount={setSelectAccount}
                         />
 
                     </div>
@@ -242,15 +254,24 @@ export function SwapReward({active, setActive}) {
 
 
                 {!!getTransactionComplete &&
-                <ThankYou
-                    getMultiplier={getMultiplier}
-                    handleSetActive={handleSetActive}
+                    <Confirmation
+                    setConfirmationComplete={setConfirmationComplete}
                     setTransactionComplete={setTransactionComplete}
-                    getIsUserUseMultiplayer={getIsUserUseMultiplayer}
-                    getGlobalMultiplayer={getGlobalMultiplayer}
-                />
+                    />
+
                 }
-                {/*<Confirmation/>*/}
+                {
+                    getConfirmationComplete &&
+                    <ThankYou
+                        getMultiplier={getMultiplier}
+                        handleSetActive={handleSetActive}
+                        setTransactionComplete={setTransactionComplete}
+                        getIsUserUseMultiplayer={getIsUserUseMultiplayer}
+                        getGlobalMultiplayer={getGlobalMultiplayer}
+                    />
+
+                }
+
 
             </div>
 

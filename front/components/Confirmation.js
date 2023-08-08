@@ -5,7 +5,12 @@ import arrowLight from "../assets/images/arrow-light.svg";
 import Link from "next/link";
 
 
-export function Confirmation() {
+export function Confirmation({setConfirmationComplete, setTransactionComplete}) {
+
+    const confirm =  () => {
+        setConfirmationComplete(true)
+        setTransactionComplete(false)
+    }
 
     return (
         <Modal>
@@ -30,7 +35,7 @@ export function Confirmation() {
                     </div>
 
                     <Link href=""
-                          // onClick={handleClick}
+                          onClick={confirm}
                           className="group mx-auto flex gap-[13px] bg-primaryBgColor items-center justify-between rounded-md md:min-w-[293px] max-h-[60px] w-full px-[17px] py-[17px]">
                         <span className="text-textColor text-lg">
                             Confirm
