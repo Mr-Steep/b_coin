@@ -655,10 +655,6 @@ export class SwapForm extends Component {
 
         return (
             <>
-                {/*_________remove_________*/}
-
-                {/*_________remove_________*/}
-
 
                 <div
                     className={"bg-textColor flex-col justify-between relative md:top-0 top-[-280px] " +
@@ -669,9 +665,6 @@ export class SwapForm extends Component {
 
                     }
                 >
-
-                    {/*steps*/}
-                    <Step step={step} setNewStep={setNewStep} closeModal={closeModal}/>
 
                     <div
                         className="bg-primaryBgColor flex justify-between items-end w-full sm:rounded-t-[10px] pt-5 mb-[27px] sm:px-4 px-7 sx:mx-auto sx:max-w-[343px]">

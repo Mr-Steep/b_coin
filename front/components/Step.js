@@ -169,8 +169,8 @@ export function Step({step, setNewStep, closeModal}) {
                </div>
 
                <Image src={arrow5} className="absolute md:hidden top-[240px] left-[270px]" alt={arrow5}/>
-               <Image src={arrow7} className="absolute md:top-[1190px] top-[620px] md:left-[-15px] left-[550px]" alt={arrow7}/>
-               <Image src={arrow8} className="absolute md:top-[860px] top-[320px] right-[100px]" alt={arrow8}/>
+               <Image src={arrow7} className="absolute md:top-[1170px] top-[620px] md:left-[-15px] left-[550px]" alt={arrow7}/>
+               <Image src={arrow8} className="absolute md:top-[860px] top-[325px] right-[100px]" alt={arrow8}/>
 
                <Image src={arrow3} className="absolute top-[360px] right-[20px] md:block hidden" alt={arrow3}/>
 
