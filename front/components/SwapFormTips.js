@@ -258,8 +258,6 @@ export class SwapFormTips extends Component {
                             }
                         </div>
 
-
-
                 </div>
             </>
         )
