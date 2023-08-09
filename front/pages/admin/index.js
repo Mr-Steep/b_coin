@@ -1,13 +1,13 @@
 import React, {Fragment} from 'react'
 
-import {SwapReward} from "@/components/SwapReward";
+import {Admin} from "@/components/admin";
 
 
 export default function Index() {
 
     return (
         <Fragment>
-            <SwapReward _active = {true}/>
+            <Admin _active = {true}/>
         </Fragment>
     )
 
