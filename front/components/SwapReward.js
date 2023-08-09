@@ -19,6 +19,7 @@ import data from "../assets/bNXTdata"
 import {Confirmation} from "./Confirmation";
 import {ConnectWallet} from "./ConnectWallet";
 import styles from '../styles/custom-styles.module.css';
+import {SwapFormTips} from "./SwapFormTips";
 
 const NAME_COOKIE = 'is_close'
 export function SwapReward({_active}) {
@@ -101,7 +102,7 @@ export function SwapReward({_active}) {
         <Layout modalVisible={modalVisible} closeModal={closeModal}>
             <div className="flex flex-col justify-between min-h-screen">
                 <div className={"lg:max-h-[380px] "
-                +(modalVisible && step!== 4 ? 'h-[100px]' : modalVisible && step === 4 ? 'md:h-[482px] h-[100px]' : 'h-[482px] '
+                +(modalVisible && step!== 4 ? 'sm:h-[100px] h-[200px]' : modalVisible && step === 4 ? 'md:h-[482px] h-[200px]' : 'h-[482px] '
                 )}
                      style={{
                          backgroundImage: `url(${headerProject.src})`,
@@ -227,21 +228,26 @@ export function SwapReward({_active}) {
                             </div>
                         </div>
 
-                        <SwapForm
-                            data={data}
-                            step={step}
-                            setNewStep={setNewStep}
-                            modalVisible={modalVisible}
-                            closeModal={closeModal}
-                            setBalance={setBalance}
-                            setMultiplier={setMultiplier}
-                            active={active}
-                            setCurrentAddress={setCurrentAddress}
-                            setTransactionComplete={setTransactionComplete}
-                            setIsUserUseMultiplayer={setIsUserUseMultiplayer}
-                            setGlobalMultiplayer={setGlobalMultiplayer}
-                            setSelectAccount={setSelectAccount}
-                        />
+                        {!!modalVisible ?
+                            <SwapFormTips
+                                data={data}
+                                step={step}
+                                tips={true}
+                                setNewStep={setNewStep}
+                                modalVisible={modalVisible}
+                                closeModal={closeModal}/> :
+                            <SwapForm
+                                data={data}
+                                setBalance={setBalance}
+                                setMultiplier={setMultiplier}
+                                active={active}
+                                setCurrentAddress={setCurrentAddress}
+                                setTransactionComplete={setTransactionComplete}
+                                setIsUserUseMultiplayer={setIsUserUseMultiplayer}
+                                setGlobalMultiplayer={setGlobalMultiplayer}
+                                setSelectAccount={setSelectAccount}
+                            />
+                        }
 
                     </div>
                 </div>
