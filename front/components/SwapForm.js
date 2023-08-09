@@ -832,7 +832,7 @@ export class SwapForm extends Component {
                                         <>
                                             { this.state.totalTokens}
                                             {
-                                                this.state.totalTokens <= 1000
+                                                this.state.totalTokens < 1000
                                                     ?
                                                     <>
                                                      <span
