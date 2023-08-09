@@ -163,7 +163,6 @@ export class SwapForm extends Component {
             const overrides = {
                 value: this.state.priceInWei.toString()
             };
-            console.log(amountToken, overrides)
 
             const tx = await this._tokenShop.buyTokens(amountToken, overrides)
             this.setState({
@@ -757,35 +756,35 @@ export class SwapForm extends Component {
                                        						 </span>
 
                                                         </div>
-                                                            <p>${this.state.value}</p>
+                                                        <p>${this.state.value}</p>
+                                                        <div
+                                                            className="bg-textColor relative flex justify-between items-center w-full rounded-md mb-5 mt-[26px]"
+                                                        >
                                                             <div
-                                                                className="bg-textColor relative flex justify-between items-center w-full rounded-md mb-5 mt-[26px]"
-                                                            >
-                                                                <div
-                                                                    className="flex justify-between items-center border-b-[1px] border-[#F2F2F2] pb-5">
-                                                                    <Image src={swapArrowWhite} alt={swapArrowWhite}
-                                                                           className="w-[30px] h-[30px] mr-[6px]"/>
-                                                                    <span
-                                                                        className="bg-textColor text-primaryBgColor sm:text-sm text-lg font-medium leading-5 mr-2"
-                                                                    >{this.state.countTokensCurrent * 1} BNXT (${this.state.countTokensCurrent * 1}) = </span>
-                                                                    <Image src={bnbLogo}
-                                                                           className="w-[30px] h-[30px] mr-[6px]"
-                                                                           alt={bnbLogo}/>
-                                                                    <span
-                                                                        className="bg-textColor text-primaryBgColor sm:text-sm text-lg font-medium leading-5">
+                                                                className="flex justify-between items-center border-b-[1px] border-[#F2F2F2] pb-5">
+                                                                <Image src={swapArrowWhite} alt={swapArrowWhite}
+                                                                       className="w-[30px] h-[30px] mr-[6px]"/>
+                                                                <span
+                                                                    className="bg-textColor text-primaryBgColor sm:text-sm text-lg font-medium leading-5 mr-2"
+                                                                >{this.state.countTokensCurrent * 1} BNXT (${this.state.countTokensCurrent * 1}) = </span>
+                                                                <Image src={bnbLogo}
+                                                                       className="w-[30px] h-[30px] mr-[6px]"
+                                                                       alt={bnbLogo}/>
+                                                                <span
+                                                                    className="bg-textColor text-primaryBgColor sm:text-sm text-lg font-medium leading-5">
                                                             {(this.state.priceInBnb / 10).toFixed(FIXED_VALUE)} BNB
                                                 					</span>
-                                                                </div>
                                                             </div>
+                                                        </div>
 
                                                         <div className="w-full">
                                                             <div className="w-full mb-[53px]">
-                                                                    <div
-                                                                        className="flex justify-between items-center text-[#EB5757] mb-[10px]">
-                                                                        <p className="sm:text-sm text-base font-normal leading-[17.41px]">Discount</p>
-                                                                        <span
-                                                                            className="sm:text-sm text-base font-normal leading-[17.41px]">90% ( - ${this.state.countTokensCurrent * this.state.multiplier - this.state.countTokensCurrent * this.state.multiplier / 10})</span>
-                                                                    </div>
+                                                                <div
+                                                                    className="flex justify-between items-center text-[#EB5757] mb-[10px]">
+                                                                    <p className="sm:text-sm text-base font-normal leading-[17.41px]">Discount</p>
+                                                                    <span
+                                                                        className="sm:text-sm text-base font-normal leading-[17.41px]">90% ( - ${this.state.countTokensCurrent * this.state.multiplier - this.state.countTokensCurrent * this.state.multiplier / 10})</span>
+                                                                </div>
 
                                                                 <div
                                                                     className="flex justify-between items-center text-primaryBgColor mb-[10px]">
@@ -936,16 +935,16 @@ export class SwapForm extends Component {
 
                                                     :
                                                     <>
-                                                                <div className="flex flex-col justify-content items-center gap-4 px-[88px] mt-[125px] mb-[118px]">
-                                                                    <p className="text-3xl font-medium leading-[32.64px]">Please note!</p>
-                                                                    <p className="text-base font-normal leading-[26px] text-center max-w-[320px] w-full">Your current balance is 1000 BNXT.
-                                                                        You can no longer buy currency.
-                                                                        Please get your reward!</p>
-                                                                </div>
+                                                        <div className="flex flex-col justify-content items-center gap-4 px-[88px] mt-[125px] mb-[118px]">
+                                                            <p className="text-3xl font-medium leading-[32.64px]">Please note!</p>
+                                                            <p className="text-base font-normal leading-[26px] text-center max-w-[320px] w-full">Your current balance is 1000 BNXT.
+                                                                You can no longer buy currency.
+                                                                Please get your reward!</p>
+                                                        </div>
 
                                                     </>
 
-                                           		 }
+                                            }
                                         </>
                                 }
 
