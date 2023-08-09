@@ -118,9 +118,9 @@ export function SwapReward({_active}) {
                         <Image src={arrowBack} className="inline-block" alt={arrowBack}/>
                         <span className="text-sm font-medium text-textColor ml-2">Back to Home page</span>
                     </Link>
-                    <p className={"sx:text-[40px] text-textColor sx:leading-[43.52px] lg:leading-[60.93px] leading-[104.45px] font-bold w-full md:mb-4 sx:ml-[15px] md:ml-[100px] lg:ml-[120px] ml-[200px] mb-[38px] "
-                    + (active && !getIsUserUseMultiplayer ? 'lg:text-[40px] text-[60px] lg:leading-[43.52px] lg:max-w-[430px] max-w-[697px]' :
-                        'lg:text-[56px] text-[96px] lg:max-w-[380px] max-w-[697px]')}>
+                    <p className={"sx:text-[40px] text-textColor sx:leading-[43.52px] leading-[104.45px] font-bold w-full sx:ml-[15px] md:ml-[100px] lg:ml-[120px] ml-[200px] mb-[38px] "
+                    + (active && !getIsUserUseMultiplayer ? 'lg:text-[40px] text-[60px] lg:leading-[43.52px] lg:max-w-[350px] max-w-[697px]' :
+                        'lg:text-[56px] text-[96px] lg:leading-[60.93px] lg:max-w-[380px] max-w-[697px]')}>
                         {active && !getIsUserUseMultiplayer?
                             'Get your 90% discount with x' + getMultiplier + ' multiplier'
                             : 'Join the bNXT Network'}

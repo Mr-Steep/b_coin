@@ -249,7 +249,7 @@ export class SwapFormTips extends Component {
                                     />
                                     :
                                     <SwapFormButton
-                                        step={step}
+                                        step={step === 2}
                                         _class={"rounded-md w-full h-[60px] py-[17px] font-medium sm:text-sm text-lg text-textColor transform-gpu transition-transform duration-200 ease-in-out hover:scale-95 focus:scale-95 active:scale-95 relative "
                                         + (step === 2 ? "bg-errorColor text-textColor z-10" : "bg-gradient-to-r from-[#29C8A9] via-[#208ED0] to-[#703AAD] text-primaryBgColor"
                                         )
