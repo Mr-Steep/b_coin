@@ -39,7 +39,7 @@ interface iERC20 {
 
     function setUnlockTime(uint timestamp) external;
 
-    function unlockBonuses(address _address) external;
+    function unlockBonuses() external;
 
     event Transfer(address indexed from, address indexed to, uint amount);
 
