@@ -688,7 +688,7 @@ export class SwapForm extends Component {
 
                         <Image src={walletPic} className="sm:hidden relative"
                                alt={walletPic}/>
-                        <Image src={walletPicMob} className="w-[101px] h-[185px] sm:block hidden relative left-3"
+                        <Image src={walletPicMob} className="w-[115px] h-[185px] sm:block hidden relative left-3"
                                alt={walletPicMob}/>
 
                     </div>

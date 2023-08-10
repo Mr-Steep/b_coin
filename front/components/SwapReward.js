@@ -55,7 +55,7 @@ export function SwapReward({_active}) {
            behavior: 'smooth',
 });
         const screenWidth = window.innerWidth;
-        if(screenWidth >= 768) {
+        if(screenWidth >= 1268) {
             document.body.style.overflow = 'hidden';
         }
 
@@ -148,31 +148,27 @@ export function SwapReward({_active}) {
                                 <Image src={arrowBack} className="inline-block" alt={arrowBack}/>
                                 <span className="text-sm font-medium text-textColor ml-2">Back to Home page</span>
                             </Link>
-                            {active && !getIsUserUseMultiplayer?
-                                'Get your 90% discount with x' + getMultiplier + ' multiplier'
-                                : 'Join the bNXT Network'}
+                            {!modalVisible &&
+                            <>
+                                {active && !getIsUserUseMultiplayer ?
+                                    'Get your 90% discount with x' + getMultiplier + ' multiplier'
+                                    : 'Join the bNXT Network'}
+                            </>
+                            }
                         </p>
                     </div>
 
 
                 </div>
-                <div className="w-full grow bg-textColor sm:px-4  smn:px-[50px] mdm:px-[102px] lgm:px-[111px]   px-[16px] pb-[48px] smn:pb-[150px] lgm:pb-[178px]"
+                <div className="w-full grow bg-textColor sm:px-4 smn:px-[50px] mdm:px-[102px] lgm:px-[111px] px-[16px] pb-[48px] smn:pb-[150px] lgm:pb-[178px]"
                 >
 
-
-                    <div className={"flex justify-between tablet:flex-col  tablet:items-center items-start mx-auto w-full max-w-[1526px] tablet:mb-0 md:mb-[166px] relative "
-                    +(modalVisible ? 'md:flex-col-reverse md:pt-0 md:mt-0 md:pb-0' : 'smd:flex-col'
+                    <div className={"flex justify-between tablet:flex-col tablet:items-center items-center mx-auto w-full max-w-[1526px] md:mb-0 relative "
+                    +(modalVisible ? 'mdd:flex-col-reverse md:pt-0 md:mt-0 md:pb-0' : 'smd:flex-col'
                     )}>
-                        <div className={"flex flex-col justify-between tablet:items-center items-start   sm:mx-auto sm:max-w-[90%] lg:max-w-[520px]  md:min-w-[375px] max-w-[616px] sx:w-full md:w-[45%] mr-4 sx:pt-[24px] mdd:pt-[52px] lg:pt-[63px] pt-[97px] sx:min-w-[auto]  "
+                        <div className={"flex flex-col justify-between tablet:items-center items-start sm:mx-auto sm:max-w-[90%] lg:max-w-[520px] md:min-w-[375px] max-w-[616px] sx:w-full md:w-[45%] mr-4 sx:pt-[24px] mdd:pt-[52px] lg:pt-[63px] pt-[97px] sx:min-w-[auto]  "
                         +(modalVisible ? 'md:mt-[230px]' : 'md:mt-0'
                         )}>
-                            {/*<p className={"md:text-[50px] text-[86px] text-primaryBgColor md:leading-[54.4px] leading-[93.57px] font-bold md:mb-4 mb-[38px] "*/}
-                            {/*+ (active && !getIsUserUseMultiplayer ? 'max-w-[588px]' :*/}
-                            {/*    'max-w-[570px]')}>*/}
-                            {/*    {active && !getIsUserUseMultiplayer?*/}
-                            {/*        'Get your 90% discount right now with x' + getMultiplier + ' multiplier'*/}
-                            {/*        : 'Join the bNXT Network'}*/}
-                            {/*</p>*/}
                             <div className={"md:mb-[33px] text-primaryBgColor text-lg sm:leading-[26px] "
                             + (active ? 'mb-[33px]' :
                                 'lg:mb-[37px] mb-[65px]')}
@@ -199,9 +195,9 @@ export function SwapReward({_active}) {
                                 </ul>
                             </div>
 
-                            <div className="flex md:flex-col justify-between items-center md:mb-[52px] tablet:w-full">
+                            <div className="flex tablet:flex-col justify-between items-center tablet:mb-[52px] tablet:w-full">
                                 <Link href=""
-                                      className="group mx-auto flex gap-[13px] items-center justify-between rounded-md border-black border w-max md:min-w-[209px] min-w-[209px] px-[17px] py-[17px] md:mr-0 mr-[10px] md:mb-[10px] tablet:w-full"
+                                      className="group mx-auto flex gap-[13px] items-center justify-between rounded-md border-black border w-max md:min-w-[209px] min-w-[209px] px-[17px] py-[17px] tablet:mr-0 mr-[10px] tablet:mb-[10px] tablet:w-full"
                                       onClick={openModal}>
                                     <span className="text-primaryBgColor text-lg font-medium">Learn more</span>
                                     <Image src={arrowDark}
@@ -214,7 +210,7 @@ export function SwapReward({_active}) {
 
                                 <Link
                                     href={active?'/':'/reward'}
-                                    className="group mx-auto flex gap-[13px] bg-primaryBgColor items-center justify-between rounded-md min-w-[209px]  w-max px-[17px] py-[17px] tablet:w-full">
+                                    className="group mx-auto flex gap-[13px] bg-primaryBgColor items-center border justify-between rounded-md min-w-[209px]  w-max px-[17px] py-[17px] tablet:w-full">
                                     <span className="text-textColor text-lg font-medium">
                                         {
                                             !getIsUserUseMultiplayer && active && getMultiplier > 0 ? 'Back to Swap page' : 'Buy'

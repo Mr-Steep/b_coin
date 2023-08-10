@@ -67,7 +67,7 @@ export class SwapFormTips extends Component {
             <>
 
                 <div
-                    className={"flex flex-col justify-between bg-textColor relative md:top-0 top-[-281px] " +
+                    className={"flex flex-col justify-between bg-textColor relative md:top-0 top-[-228px] " +
                     "max-w-[497px] " +
                     "min-h-[670px] sx:h-[auto] shadow-[19px_23px_87px_0_#6CB8EF33] " +
                     "md:rounded-tl-2xl md:rounded-tr-2xl md:rounded-bl-none md:rounded-br-none rounded-md sx:rounded-tr-none sx:rounded-tl-none w-full md:mt-0 mt-[22px] sx:px-4 pb-[27px] sx:pb-[40px] md:mb-[-118px] "
@@ -108,7 +108,7 @@ export class SwapFormTips extends Component {
                         </div>
 
                         <Image src={walletPic} className="w-[211px] h-[175px] sm:hidden relative left-3" alt={walletPic}/>
-                        <Image src={walletPicMob} className="w-[101px] h-[185px] sm:block hidden relative left-3" alt={walletPicMob}/>
+                        <Image src={walletPicMob} className="w-[115px] h-[185px] sm:block hidden relative left-3" alt={walletPicMob}/>
 
                     </div>
 
@@ -249,7 +249,7 @@ export class SwapFormTips extends Component {
                                     />
                                     :
                                     <SwapFormButton
-                                        step={step}
+                                        step={step === 2}
                                         _class={"rounded-md w-full h-[60px] py-[17px] font-medium sm:text-sm text-lg text-textColor transform-gpu transition-transform duration-200 ease-in-out hover:scale-95 focus:scale-95 active:scale-95 relative "
                                         + (step === 2 ? "bg-errorColor text-textColor z-10" : "bg-gradient-to-r from-[#29C8A9] via-[#208ED0] to-[#703AAD] text-primaryBgColor"
                                         )
