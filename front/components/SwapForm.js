@@ -861,9 +861,9 @@ export class SwapForm extends Component {
                                                         </div>
 
                                                         <>
-                                                            <p className="pt-[19px] w-full text-start">{this.state.value}</p>
+                                                            <p className="pt-[19px] w-full text-start">{this.state.value && `${this.state.value}$`}</p>
                                                             <div
-                                                                className="bg-textColor relative flex justify-center items-center w-full rounded-md mb-5 mt-[26px] border-b-[1px] border-[#F2F2F2] pb-[16px]"
+                                                                className="bg-textColor relative flex justify-center items-center w-full rounded-md mb-5 mt-[26px] border-b-[1px] border-[#F2F2F2] pb-[20px]"
                                                             >
                                                                 <div
                                                                     className="flex justify-between   items-center ">
@@ -921,11 +921,12 @@ export class SwapForm extends Component {
                                                             </div>
                                                         </div>
                                                         <SwapFormButton
+                                                            disabledBtn = {!this.state.value}
                                                             buy={this.buy}
                                                             currentError={this.state.currentError}
                                                             _changeAddNetwork={this.changeAddNetwork}
                                                             _class={"text-textColor rounded-md w-full h-[60px] py-[17px] font-medium sm:text-[18px] shadow-[0px_12px_18px_0_#40A6DF] text-lg transform-gpu transition-transform duration-200 ease-in-out hover:scale-95 focus:scale-95 active:scale-95 relative "
-                                                                + (this.state.currentError && this.state.currentError === 'Please connect to another Network' ? "bg-errorColor  z-10" : "bg-gradient-to-r from-[#29C8A9] via-[#208ED0] to-[#703AAD]")
+                                                                + (this.state.currentError && this.state.currentError === 'Please connect to another Network' ? "bg-errorColor  z-10" : "bg-gradient-to-r from-[#29C8A9] via-[#208ED0] to-[#703AAD]" )
                                                             }
                                                         />
 
@@ -977,8 +978,8 @@ export class SwapForm extends Component {
                                 <div
                                     className="flex flex-col justify-between items-center gap-4 max-w-[320px] mdd:mt-[27px] mt-[83px] mdd:mb-[36px] mb-[89px]">
                                     <Image src={metamask} className=" lg:w-[88px]  lg:h-[88px]" alt={metamask}/>
-                                    <p className="text-3xl font-medium leading-[32.64px] mdd:mt-[30px] mt-10">Connect your wallet</p>
-                                    <p className="text-base font-normal leading-[26px] text-center">Amet minim mollit
+                                    <p className="text-3xl text-primaryBgColor font-medium leading-[32.64px] mdd:mt-[30px] mt-10">Connect your wallet</p>
+                                    <p className="text-base text-primaryBgColor font-normal leading-[26px] text-center">Amet minim mollit
                                         non
                                         deserunt ullamco est sit aliqua dolor do amet sint.</p>
                                 </div>
@@ -998,8 +999,8 @@ export class SwapForm extends Component {
                                 <div
                                     className="flex flex-col justify-between items-center gap-4 max-w-[320px] mt-[70px] mb-[72px]">
                                     <Image src={bnbLogo} className="w-[88px] h-[88px]" alt={bnbLogo}/>
-                                    <p className="text-3xl font-medium leading-[32.64px]">Switch network</p>
-                                    <p className="text-base font-normal leading-[26px]">Amet minim mollit non deserunt
+                                    <p className="text-3xl text-primaryBgColor font-medium leading-[32.64px]">Switch network</p>
+                                    <p className="text-base text-primaryBgColor font-normal leading-[26px]">Amet minim mollit non deserunt
                                         ullamco est sit aliqua dolor do amet sint.</p>
                                 </div>
                                 <SwapFormButton

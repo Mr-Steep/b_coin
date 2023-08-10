@@ -155,7 +155,7 @@ export function SwapReward({_active}) {
 
 
                 </div>
-                <div className="w-full grow bg-textColor sm:px-4  smn:px-[50px] mdm:px-[102px] lgm:px-[111px]   px-[16px] pb-[48px] smn:pb-[150px] lgm:pb-[178px]"
+                <div className="w-full grow bg-textColor sm:px-4  smn:px-[50px] mdm:px-[102px] lgm:px-[111px]   px-[16px] pb-[48px] smn:pb-[150px] lgm:pb-[200px]"
                 >
 
 
