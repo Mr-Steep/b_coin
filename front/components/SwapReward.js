@@ -101,7 +101,7 @@ export function SwapReward({_active}) {
     return (
         <Layout modalVisible={modalVisible} closeModal={closeModal}>
             <div className="flex flex-col justify-between min-h-screen">
-                <div className={"lg:max-h-[380px] sm:px-4  smn:px-[50px] mdm:px-[102px] lgm:px-[111px]   px-[16px] "
+                <div className={"lg:max-h-[380px] sm:px-4  smn:px-[50px] mdm:px-[102px] lgm:px-[111px] px-[16px] "
                 +(modalVisible && step!== 4 ? 'sm:h-[100px] h-[200px] ' : modalVisible && step === 4 ? 'md:h-[482px] h-[200px]' : 'h-[482px] '
                 )}
                      style={{

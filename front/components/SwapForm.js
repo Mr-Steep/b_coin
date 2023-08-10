@@ -88,6 +88,7 @@ export class SwapForm extends Component {
         this.state = this.initialState
     }
 
+
     componentDidMount = async (props) => {
         if (window?.ethereum?.isConnected()) {
             if (localStorage.getItem(FIRSTLY_CONNECTION)) {
@@ -650,15 +651,14 @@ export class SwapForm extends Component {
                     className={"flex-col justify-between tablet:top-0 top-[-211px] md:relative absolute right-0 " +
                         "max-w-[497px] " +
                         "mdd:min-h-[650px] min-h-[670px] sx:h-[auto] shadow-[19px_23px_87px_0_#6CB8EF33] " +
-                        "md:rounded-tl-2xl md:rounded-tr-2xl md:rounded-bl-none md:rounded-br-none rounded-md sx:rounded-tr-none sx:rounded-tl-none w-full  sx:px-0 pb-[44px] "
+                        "md:rounded-tl-2xl md:rounded-tr-2xl md:rounded-bl-none md:rounded-br-none rounded-md sx:rounded-tr-none sx:rounded-tl-none w-full sx:px-0 pb-[44px] "
                         + (active ? "sx:h-[655px]" : "sx:h-[543px]")
-
                     }
                 >
 
 
                     <div
-                        className="bg-primaryBgColor flex justify-between w-full rounded-t-[10px]  rounded-b-0 rounded-l-0 pt-[23px] sm:px-4 px-7 sx:mx-auto ">
+                        className="bg-primaryBgColor flex justify-between w-full rounded-t-[10px] rounded-b-0 rounded-l-0 pt-[23px] sm:px-4 px-7 sx:mx-auto ">
                         <div className="flex flex-col justify-between pt-[10px] pb-5">
                             <div className="flex flex-col">
                                 <p className="text-buttonBgColor text-sm leading-4 mb-2">Your BNXT balance</p>
@@ -920,6 +920,7 @@ export class SwapForm extends Component {
                                                                 </div>
                                                             </div>
                                                         </div>
+
                                                         <SwapFormButton
                                                             buy={this.buy}
                                                             currentError={this.state.currentError}
