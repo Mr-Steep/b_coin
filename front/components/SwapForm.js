@@ -1008,7 +1008,7 @@ export class SwapForm extends Component {
                                     buy={this.buy}
                                     currentError={this.state.currentError}
                                     _changeAddNetwork={this.changeAddNetwork}
-                                    _class={"text-textColor rounded-md w-full h-[60px] py-[17px] bg-red-600 font-medium shadow-[0px_12px_18px_0_#EB5757] sm:text-[18px] text-lg transform-gpu transition-transform duration-200 ease-in-out hover:scale-95 focus:scale-95 active:scale-95 relative "
+                                    _class={"text-textColor rounded-md w-full h-[60px] py-[17px] bg-[#EB5757] font-medium shadow-[0px_12px_18px_0_#E0CACA] sm:text-[18px] text-lg transform-gpu transition-transform duration-200 ease-in-out hover:scale-95 focus:scale-95 active:scale-95 relative "
                                         + (this.state.currentError && this.state.currentError === 'Please connect to another Network' || step === 2 ? "bg-errorColor text-textColor z-10" : "bg-gradient-to-r from-[#29C8A9] via-[#208ED0] to-[#703AAD] text-primaryBgColor text-textColor"
                                         )
                                     }
@@ -1016,8 +1016,6 @@ export class SwapForm extends Component {
                             </>
 
                         }
-
-
                     </div>
                 </div>
             </>
