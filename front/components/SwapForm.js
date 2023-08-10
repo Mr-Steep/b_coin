@@ -633,7 +633,7 @@ export class SwapForm extends Component {
 
     handleAmount = (selectedAmount) => {
         const {data} = this.props
-        this.setState({value: `$ ${selectedAmount}`})
+        this.setState({value: ` ${selectedAmount}`})
         const {amount} = data.filter(el => el.amount === selectedAmount)[0]
         this.setState({activeAmount: amount})
         this.setState({inputValue: amount});
@@ -647,10 +647,10 @@ export class SwapForm extends Component {
         return (
             <>
                 <div
-                    className={"bg-textColor flex-col justify-between relative md:top-0 top-[-283px] " +
+                    className={"flex-col justify-between tablet:top-0 top-[-211px] md:relative absolute right-0 " +
                         "max-w-[497px] " +
-                        "min-h-[670px] sx:h-[auto] shadow-[19px_23px_87px_0_#6CB8EF33] " +
-                        "md:rounded-tl-2xl md:rounded-tr-2xl md:rounded-bl-none md:rounded-br-none rounded-md sx:rounded-tr-none sx:rounded-tl-none w-full md:mt-0 mt-[22px] sx:px-4 pb-[27px] sx:pb-[40px] md:mb-[-118px] "
+                        "mdd:min-h-[650px] min-h-[670px] sx:h-[auto] shadow-[19px_23px_87px_0_#6CB8EF33] " +
+                        "md:rounded-tl-2xl md:rounded-tr-2xl md:rounded-bl-none md:rounded-br-none rounded-md sx:rounded-tr-none sx:rounded-tl-none w-full  sx:px-0 pb-[44px] "
                         + (active ? "sx:h-[655px]" : "sx:h-[543px]")
 
                     }
@@ -658,13 +658,13 @@ export class SwapForm extends Component {
 
 
                     <div
-                        className="bg-primaryBgColor flex justify-between items-end w-full sm:rounded-t-[10px] pt-5 mb-[27px] sm:px-4 px-7 sx:mx-auto sx:max-w-[343px]">
-                        <div className="flex flex-col gap-10 pb-5">
+                        className="bg-primaryBgColor flex justify-between w-full rounded-t-[10px]  rounded-b-0 rounded-l-0 pt-[23px] sm:px-4 px-7 sx:mx-auto ">
+                        <div className="flex flex-col justify-between pt-[10px] pb-5">
                             <div className="flex flex-col">
                                 <p className="text-buttonBgColor text-sm leading-4 mb-2">Your BNXT balance</p>
-                                <div className="flex">
+                                <div className="flex items-center">
                                     <Image src={swapArrowBlack} alt={swapArrowBlack}
-                                           className="w-[34px] h-[34px] mr-3"/>
+                                           className="mr-3"/>
                                     <span
                                         className="text-textColor sm:text-[32px] text-4xl font-semibold sm:leading-[34.82px] leading-10">
 										{this.state.countTokensCurrent ? ethers.utils.formatUnits(this.state.countTokensCurrent, 0) : 0}
@@ -679,7 +679,7 @@ export class SwapForm extends Component {
                             </div>
                             <div className="flex flex-col">
                                 <p className="text-buttonBgColor text-sm leading-4 mb-2">Your BNB balance</p>
-                                <div className="flex">
+                                <div className="flex items-center">
                                     <Image src={bnbLogo} className="w-[34px] h-[34px] mr-3" alt={bnbLogo}/>
                                     <span
                                         className="text-textColor sm:text-[32px] text-4xl font-semibold sm:leading-[34.82px] leading-10">
@@ -691,7 +691,7 @@ export class SwapForm extends Component {
                             </div>
                         </div>
 
-                        <Image src={walletPic} className="w-[211px] h-[185px] sm:hidden relative left-3"
+                        <Image src={walletPic} className="sm:hidden relative"
                                alt={walletPic}/>
                         <Image src={walletPicMob} className="w-[101px] h-[185px] sm:block hidden relative left-3"
                                alt={walletPicMob}/>
@@ -699,7 +699,7 @@ export class SwapForm extends Component {
                     </div>
 
                     <div
-                        className={"flex flex-col items-center relative bg-textBgColor w-full max-w-[497px] sx:px-0 px-7 pt-[26px] rounded-md h-full sx:mx-auto "}>
+                        className={"flex flex-col items-center relative bg-textBgColor w-full max-w-[497px] sx:px-[21px] px-7 pt-[26px] rounded-md h-full sx:mx-auto "}>
 
                         {
                             this.state.selectAccount &&
@@ -736,17 +736,17 @@ export class SwapForm extends Component {
 
                                                     </> :
                                                     <>
-                        		      					<span className={"sm:text-sm text-base font-semibold leading-[17.41px] sx:mr-[70px] sm:mr-[120px] mr-[140px] "}>
+                        		      					<span className={"sm:text-sm text-base font-semibold pb-[20px] leading-[17.41px] sx:mr-[0] w-full"}>
                            			   						 Buy BNXT with multiplier x{this.state.multiplier}
                            			 					</span>
 
                                                         <div
-                                                            className="flex justify-between items-center bg-[#F2F2F2] max-w-[440px] w-full rounded-[6px] pr-6 pl-4 py-[10px]">
+                                                            className="flex justify-between items-center bg-[#F2F2F2] w-full rounded-[6px] pr-6 pl-4 py-[10px]">
                                                             <input
                                                                 readOnly={active || modalVisible}
-                                                                value={this.state.countTokensCurrent * 10}
+                                                                value={this.state.countTokensCurrent * this.state.multiplier}
                                                                 name="number"
-                                                                className="appearance-none bg-[#F2F2F2] text-primaryBgColor md:text-3xl text-[34px] sx:text-[24px] leading-[37] outline-0 w-full h-[44px]"
+                                                                className="appearance-none bg-[#F2F2F2] text-primaryBgColor md:text-3xl text-[30px] sx:text-[24px]  outline-0 w-full h-[33px]"
                                                             />
 
                                                             <span className="text-primaryBgColor">$
@@ -756,7 +756,6 @@ export class SwapForm extends Component {
                                        						 </span>
 
                                                         </div>
-                                                        <p>${this.state.value}</p>
                                                         <div
                                                             className="bg-textColor relative flex justify-between items-center w-full rounded-md mb-5 mt-[26px]"
                                                         >
@@ -765,8 +764,9 @@ export class SwapForm extends Component {
                                                                 <Image src={swapArrowWhite} alt={swapArrowWhite}
                                                                        className="w-[30px] h-[30px] mr-[6px]"/>
                                                                 <span
-                                                                    className="bg-textColor text-primaryBgColor sm:text-sm text-lg font-medium leading-5 mr-2"
-                                                                >{this.state.countTokensCurrent * 1} BNXT (${this.state.countTokensCurrent * 1}) = </span>
+                                                                    className="bg-textColor text-primaryBgColor sm:text-sm text-lg font-medium leading-5 "
+                                                                >{this.state.countTokensCurrent * 1} BNXT (${this.state.countTokensCurrent * 1}) </span>
+                                                                <span  className="mr-2 ml-2 sm:mr-1 sm:ml-1"> = </span>
                                                                 <Image src={bnbLogo}
                                                                        className="w-[30px] h-[30px] mr-[6px]"
                                                                        alt={bnbLogo}/>
@@ -778,7 +778,7 @@ export class SwapForm extends Component {
                                                         </div>
 
                                                         <div className="w-full">
-                                                            <div className="w-full mb-[53px]">
+                                                            <div className="w-full mb-[23px]">
                                                                 <div
                                                                     className="flex justify-between items-center text-[#EB5757] mb-[10px]">
                                                                     <p className="sm:text-sm text-base font-normal leading-[17.41px]">Discount</p>
@@ -820,7 +820,7 @@ export class SwapForm extends Component {
                                                             buy={this.buy}
                                                             currentError={this.state.currentError}
                                                             _changeAddNetwork={this.changeAddNetwork}
-                                                            _class={"rounded-md w-full h-[60px] py-[17px] font-medium sm:text-sm text-lg transform-gpu transition-transform duration-200 ease-in-out hover:scale-95 focus:scale-95 active:scale-95 relative "
+                                                            _class={"text-textColor rounded-md w-full h-[60px] py-[17px] shadow-[0px_12px_18px_0_#40A6DF] font-medium sm:text-[18px] text-lg transform-gpu transition-transform duration-200 ease-in-out hover:scale-95 focus:scale-95 active:scale-95 relative "
                                                                 + (this.state.currentError && this.state.currentError === 'Please connect to another Network' ? "bg-errorColor text-textColor z-10" : "bg-gradient-to-r from-[#29C8A9] via-[#208ED0] to-[#703AAD] text-primaryBgColor")
                                                             }
                                                         />
@@ -830,19 +830,18 @@ export class SwapForm extends Component {
 
                                         :
                                         <>
-                                            { this.state.totalTokens}
                                             {
                                                 this.state.totalTokens < 1000
                                                     ?
                                                     <>
                                                      <span
-                                                         className={"sm:text-sm text-base font-semibold leading-[17.41px] sx:mr-[70px] sm:mr-[120px] mr-[140px] "}>
+                                                         className={"sm:text-sm text-base font-semibold pb-[20px] leading-[17.41px] sx:mr-[0] sm:mr-[120px] mr-[140px] sx:w-full"}>
                             	   						 	Set up how many BNXT you want to buy
                                            				 </span>
                                                         <div
-                                                            className="flex flex-col justify-between items-center max-w-[440px] gap-[10px] text-center mx-auto">
+                                                            className="flex flex-col justify-between items-center sx:w-full gap-[10px] text-center mx-auto">
                                                             <div
-                                                                className={"flex justify-between items-center w-full gap-[9px] "}>
+                                                                className={"flex justify-between items-center sx:w-full gap-[9px] "}>
                                                                 {data.slice(0, 5).map(el => (
                                                                     <CoinsAmount key={el.amount} amount={el.amount}
                                                                                  step={false}
@@ -851,7 +850,7 @@ export class SwapForm extends Component {
                                                                 ))}
                                                             </div>
                                                             <div
-                                                                className="flex justify-between items-center gap-[9px]">
+                                                                className="flex justify-between items-center sx:w-full gap-[9px]">
                                                                 {data.slice(-5).map(el => (
                                                                     <CoinsAmount key={el.amount} amount={el.amount}
                                                                                  step={false}
@@ -862,17 +861,17 @@ export class SwapForm extends Component {
                                                         </div>
 
                                                         <>
-                                                            <p>{this.state.value}</p>
+                                                            <p className="pt-[19px] w-full text-start">{this.state.value}</p>
                                                             <div
-                                                                className="bg-textColor relative flex justify-between items-center w-full rounded-md mb-5 mt-[26px]"
+                                                                className="bg-textColor relative flex justify-center items-center w-full rounded-md mb-5 mt-[26px] border-b-[1px] border-[#F2F2F2] pb-[16px]"
                                                             >
                                                                 <div
-                                                                    className="flex justify-between items-center border-b-[1px] border-[#F2F2F2] pb-5">
+                                                                    className="flex justify-between   items-center ">
                                                                     <Image src={swapArrowWhite} alt={swapArrowWhite}
                                                                            className="w-[30px] h-[30px] mr-[6px]"/>
                                                                     <span
                                                                         className="bg-textColor text-primaryBgColor sm:text-sm text-lg font-medium leading-5 mr-2"
-                                                                    >{this.state.countTokensCurrent * 10} BNXT (${this.state.countTokensCurrent * 1}) = </span>
+                                                                    >{this.state.inputValue} BNXT (${this.state.inputValue}) = </span>
                                                                     <Image src={bnbLogo} className="w-[30px] h-[30px] mr-[6px]"
                                                                            alt={bnbLogo}/>
                                                                     <span
@@ -890,7 +889,7 @@ export class SwapForm extends Component {
 
 
                                                         <div className="w-full">
-                                                            <div className="w-full mb-[53px]">
+                                                            <div className="w-full mb-[23px]">
                                                                 <div
                                                                     className="flex justify-between items-center text-primaryBgColor mb-[10px]">
                                                                     <p className="sm:text-sm text-base font-normal leading-[17.41px]">Network
@@ -925,8 +924,8 @@ export class SwapForm extends Component {
                                                             buy={this.buy}
                                                             currentError={this.state.currentError}
                                                             _changeAddNetwork={this.changeAddNetwork}
-                                                            _class={"rounded-md w-full h-[60px] py-[17px] font-medium sm:text-sm text-lg transform-gpu transition-transform duration-200 ease-in-out hover:scale-95 focus:scale-95 active:scale-95 relative "
-                                                                + (this.state.currentError && this.state.currentError === 'Please connect to another Network' ? "bg-errorColor text-textColor z-10" : "bg-gradient-to-r from-[#29C8A9] via-[#208ED0] to-[#703AAD] text-primaryBgColor")
+                                                            _class={"text-textColor rounded-md w-full h-[60px] py-[17px] font-medium sm:text-[18px] shadow-[0px_12px_18px_0_#40A6DF] text-lg transform-gpu transition-transform duration-200 ease-in-out hover:scale-95 focus:scale-95 active:scale-95 relative "
+                                                                + (this.state.currentError && this.state.currentError === 'Please connect to another Network' ? "bg-errorColor  z-10" : "bg-gradient-to-r from-[#29C8A9] via-[#208ED0] to-[#703AAD]")
                                                             }
                                                         />
 
@@ -976,9 +975,9 @@ export class SwapForm extends Component {
                             <>
 
                                 <div
-                                    className="flex flex-col justify-between items-center gap-4 max-w-[320px] mt-[83px] mb-[89px]">
-                                    <Image src={metamask} className="w-[88px] h-[88px]" alt={metamask}/>
-                                    <p className="text-3xl font-medium leading-[32.64px] mt-10">Connect your wallet</p>
+                                    className="flex flex-col justify-between items-center gap-4 max-w-[320px] mdd:mt-[27px] mt-[83px] mdd:mb-[36px] mb-[89px]">
+                                    <Image src={metamask} className=" lg:w-[88px]  lg:h-[88px]" alt={metamask}/>
+                                    <p className="text-3xl font-medium leading-[32.64px] mdd:mt-[30px] mt-10">Connect your wallet</p>
                                     <p className="text-base font-normal leading-[26px] text-center">Amet minim mollit
                                         non
                                         deserunt ullamco est sit aliqua dolor do amet sint.</p>
@@ -1008,8 +1007,8 @@ export class SwapForm extends Component {
                                     buy={this.buy}
                                     currentError={this.state.currentError}
                                     _changeAddNetwork={this.changeAddNetwork}
-                                    _class={"rounded-md w-full h-[60px] py-[17px] bg-red-600 font-medium sm:text-sm text-lg transform-gpu transition-transform duration-200 ease-in-out hover:scale-95 focus:scale-95 active:scale-95 relative "
-                                        + (this.state.currentError && this.state.currentError === 'Please connect to another Network' || step === 2 ? "bg-errorColor text-textColor z-10" : "bg-gradient-to-r from-[#29C8A9] via-[#208ED0] to-[#703AAD] text-primaryBgColor"
+                                    _class={"text-textColor rounded-md w-full h-[60px] py-[17px] bg-red-600 font-medium shadow-[0px_12px_18px_0_#EB5757] sm:text-[18px] text-lg transform-gpu transition-transform duration-200 ease-in-out hover:scale-95 focus:scale-95 active:scale-95 relative "
+                                        + (this.state.currentError && this.state.currentError === 'Please connect to another Network' || step === 2 ? "bg-errorColor text-textColor z-10" : "bg-gradient-to-r from-[#29C8A9] via-[#208ED0] to-[#703AAD] text-primaryBgColor text-textColor"
                                         )
                                     }
                                 />

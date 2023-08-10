@@ -101,8 +101,8 @@ export function SwapReward({_active}) {
     return (
         <Layout modalVisible={modalVisible} closeModal={closeModal}>
             <div className="flex flex-col justify-between min-h-screen">
-                <div className={"lg:max-h-[380px] "
-                +(modalVisible && step!== 4 ? 'sm:h-[100px] h-[200px]' : modalVisible && step === 4 ? 'md:h-[482px] h-[200px]' : 'h-[482px] '
+                <div className={"lg:max-h-[380px] sm:px-4  smn:px-[50px] mdm:px-[102px] lgm:px-[111px]   px-[16px] "
+                +(modalVisible && step!== 4 ? 'sm:h-[100px] h-[200px] ' : modalVisible && step === 4 ? 'md:h-[482px] h-[200px]' : 'h-[482px] '
                 )}
                      style={{
                          backgroundImage: `url(${headerProject.src})`,
@@ -110,53 +110,59 @@ export function SwapReward({_active}) {
                          backgroundSize: 'cover'
                      }}
                 >
-                    <Link href="https://dev.bnxt.network/home/">
-                        <Image className="md: pt-[23px] md:ml-4 ml-[119px] md:w-[138px] w-[188px] md:mb-[132px] mb-[172px]" src={logo} alt={logo}
-                               height="32px"/>
-                    </Link>
-                    <Link href="/" className="flex items-center justify-between min-w-[148px] sm:block hidden ml-5 mb-[9px]">
-                        <Image src={arrowBack} className="inline-block" alt={arrowBack}/>
-                        <span className="text-sm font-medium text-textColor ml-2">Back to Home page</span>
-                    </Link>
-                    <p className={"sx:text-[40px] text-textColor sx:leading-[43.52px] leading-[104.45px] font-bold w-full sx:ml-[15px] md:ml-[100px] lg:ml-[120px] ml-[200px] mb-[38px] "
-                    + (active && !getIsUserUseMultiplayer ? 'lg:text-[40px] text-[60px] lg:leading-[43.52px] lg:max-w-[350px] max-w-[697px]' :
-                        'lg:text-[56px] text-[96px] lg:leading-[60.93px] lg:max-w-[380px] max-w-[697px]')}>
-                        {active && !getIsUserUseMultiplayer?
-                            'Get your 90% discount with x' + getMultiplier + ' multiplier'
-                            : 'Join the bNXT Network'}
-                    </p>
-                    {
-                        !selectAccount ?
-                            <ConnectWallet
-                                // active={this.state.selectAccount}
-                                // connectWallet={this._connectWallet}
-                                // networkError={this.state.networkError}
-                                // dismiss={this._dismissNetworkError}
-                                // _setNetworkError={this._setNetworkError}
-                                _class="absolute sx:right-4 lg:right-[100px] top-[26px] right-[200px] bg-gradient-to-r from-[#29C8A9] to-[#703AAD] text-textColor font-medium rounded-md sx:max-w-[157px] max-h-[50px] w-[200px] md:px-5 px-4 py-3 text-[18px] sx:py-[12px] sx:px-[16px] transform-gpu transition-transform duration-200 ease-in-out hover:scale-95 focus:scale-95 active:scale-95 "
+                    <div className="flex flex-col h-full justify-between max-w-[1526px] mx-auto md:pt-[25px] pt-[25px] lg:pb-[52px] pb-[35px] ">
+                        <div className="flex justify-between items-center">
+                            <Link  className="flex " href="https://dev.bnxt.network/home/">
+                                <Image className="sm:w-[126px] w-[188px]" src={logo} alt={logo}
+                                       height="32px"/>
+                            </Link>
+                            {
+                                !selectAccount ?
+                                    <ConnectWallet
+                                        // active={this.state.selectAccount}
+                                        // connectWallet={this._connectWallet}
+                                        // networkError={this.state.networkError}
+                                        // dismiss={this._dismissNetworkError}
+                                        // _setNetworkError={this._setNetworkError}
+                                        _class="bg-gradient-to-r from-[#29C8A9] to-[#703AAD] text-textColor font-medium rounded-md sx:max-w-[157px] max-h-[50px] w-[200px] md:px-5 px-4 py-3 sm:text-[16px] text-[18px] sx:py-[12px] sx:px-[16px] transform-gpu transition-transform duration-200 ease-in-out hover:scale-95 focus:scale-95 active:scale-95 "
 
-                            /> :
-                            selectAccount &&
-                            <div
-                                onClick={disconnect}
-                                className={`${styles['border-gradient']} absolute sx:right-4 lg:right-[100px] top-[26px] right-[200px] text-textColor font-medium rounded-md sx:max-w-[157px] max-w-[200px] h-[50px] w-full p-[1px] transform-gpu transition-transform duration-200 ease-in-out hover:scale-95 focus:scale-95 active:scale-95`}>
+                                    /> :
+                                    selectAccount &&
+                                    <div
+                                        onClick={disconnect}
+                                        className={`${styles['border-gradient']}   text-textColor font-medium rounded-md sx:max-w-[157px] max-w-[200px] h-[50px] w-full p-[1px] transform-gpu transition-transform duration-200 ease-in-out hover:scale-95 focus:scale-95 active:scale-95`}>
 
-                                <Link className={'flex items-center justify-between gap-[12.5px] bg-primaryBgColor text-textColor font-medium rounded-md sx:max-w-[157px] max-w-[200px] max-h-[50px] w-full md:px-5 px-4 py-3 '}
-                                      href={''}><span>{selectAccount?.slice(0, 6) + '...' + selectAccount?.slice(-6)}</span>
-                                    <Image src={logout} className="sx:hidden" alt={logout}/>
-                                </Link>
-                            </div>
+                                        <Link className={'flex items-center justify-between gap-[12.5px] bg-primaryBgColor text-textColor font-medium rounded-md sx:max-w-[157px] max-w-[200px] max-h-[50px] w-full md:px-5 px-4 py-3 '}
+                                              href={''}><span>{selectAccount?.slice(0, 6) + '...' + selectAccount?.slice(-6)}</span>
+                                            <Image src={logout} className="sx:hidden" alt={logout}/>
+                                        </Link>
+                                    </div>
 
-                    }
+                            }
+                        </div>
+                        <p className={"sx:text-[40px] text-textColor sx:leading-[43.52px] lg:leading-[60.93px] leading-[104.45px] font-bold w-full md:mb-4 "
+                        + (active && !getIsUserUseMultiplayer ? 'lg:text-[40px] text-[60px] lg:leading-[43.52px] lg:max-w-[430px] max-w-[697px]' :
+                            'lg:text-[56px] text-[96px] lg:max-w-[380px] max-w-[697px]')}>
+                            <Link href="/" className=" items-center justify-start min-w-[148px] sm:flex hidden mb-[9px]">
+                                <Image src={arrowBack} className="inline-block" alt={arrowBack}/>
+                                <span className="text-sm font-medium text-textColor ml-2">Back to Home page</span>
+                            </Link>
+                            {active && !getIsUserUseMultiplayer?
+                                'Get your 90% discount with x' + getMultiplier + ' multiplier'
+                                : 'Join the bNXT Network'}
+                        </p>
+                    </div>
+
+
                 </div>
-                <div className="w-full grow bg-textColor sm:px-4 px-[111px]"
+                <div className="w-full grow bg-textColor sm:px-4  smn:px-[50px] mdm:px-[102px] lgm:px-[111px]   px-[16px] pb-[48px] smn:pb-[150px] lgm:pb-[178px]"
                 >
 
 
-                    <div className={"flex justify-between md:items-center items-start mx-auto w-full max-w-[1440px] pt-[53px] md:mb-[166px] mb-[-166px] "
-                    +(modalVisible ? 'md:flex-col-reverse md:pt-0 md:mt-0 md:pb-0' : 'md:flex-col'
+                    <div className={"flex justify-between tablet:flex-col  tablet:items-center items-start mx-auto w-full max-w-[1526px] tablet:mb-0 md:mb-[166px] relative "
+                    +(modalVisible ? 'md:flex-col-reverse md:pt-0 md:mt-0 md:pb-0' : 'smd:flex-col'
                     )}>
-                        <div className={"flex flex-col justify-between items-center sm:mx-auto sm:max-w-[90%] lg:max-w-[492px] max-w-[616px] mr-4 "
+                        <div className={"flex flex-col justify-between tablet:items-center items-start   sm:mx-auto sm:max-w-[90%] lg:max-w-[520px]  md:min-w-[375px] max-w-[616px] sx:w-full md:w-[45%] mr-4 sx:pt-[24px] mdd:pt-[52px] lg:pt-[63px] pt-[97px] sx:min-w-[auto]  "
                         +(modalVisible ? 'md:mt-[230px]' : 'md:mt-0'
                         )}>
                             {/*<p className={"md:text-[50px] text-[86px] text-primaryBgColor md:leading-[54.4px] leading-[93.57px] font-bold md:mb-4 mb-[38px] "*/}
@@ -168,21 +174,21 @@ export function SwapReward({_active}) {
                             {/*</p>*/}
                             <div className={"md:mb-[33px] text-primaryBgColor text-lg sm:leading-[26px] "
                             + (active ? 'mb-[33px]' :
-                                'mb-[53px]')}
+                                'lg:mb-[37px] mb-[65px]')}
                                  >
-                                <p className="sm:mb-[1.45rem] mb-4">Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet
+                                <p className="sm:mb-[1.45rem] mb-4 sx:text-[16px] lg:text-[18px] text-[22px] lg:mb-[22px] mb-[32px]">Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet
                                     sint. Velit officia consequat duis enim velit mollit. Exercitation veniam consequat sunt
                                     nostrud amet.</p>
 
-                                <ul className="">
+                                <ul className="sx:text-[16px] lg:text-[18px] text-[22px] list-disc pl-4">
 
-                                    <li className="mb-4 ml-5"
+                                    <li className="mdd:mb-[8px] mb-4 ml-5"
                                     >Amet minim mollit non deserunt ullamco est sit aliqua dolor do
                                         amet sint. Velit officia consequat duis enim velit mollit.
                                     </li>
                                     <li className={"ml-5 "
-                                    + (active ? 'mb-0' :
-                                        'mb-4')}>
+                                    + (active ? 'mdd:mb-[8px] mb-0' :
+                                        'mdd:mb-[8px] mb-4')}>
                                         Amet minim mollit non deserunt ullamco est sit aliqua.
                                     </li>
                                     {!active &&
@@ -192,11 +198,11 @@ export function SwapReward({_active}) {
                                 </ul>
                             </div>
 
-                            <div className="flex md:flex-col justify-between items-center md:mb-[52px]">
+                            <div className="flex md:flex-col justify-between items-center md:mb-[52px] tablet:w-full">
                                 <Link href=""
-                                      className="group mx-auto flex gap-[13px] items-center justify-between rounded-md border-black border md:min-w-[293px] min-w-[284px] max-h-[60px] w-full px-[17px] py-[17px] md:mr-0 mr-[10px] md:mb-[10px]"
+                                      className="group mx-auto flex gap-[13px] items-center justify-between rounded-md border-black border w-max md:min-w-[209px] min-w-[209px] px-[17px] py-[17px] md:mr-0 mr-[10px] md:mb-[10px] tablet:w-full"
                                       onClick={openModal}>
-                                    <span className="text-primaryBgColor text-lg">Learn more</span>
+                                    <span className="text-primaryBgColor text-lg font-medium">Learn more</span>
                                     <Image src={arrowDark}
                                            className="w-[23px] h-[23px] group-hover:rotate-45 transition duration-300 ease-in"
                                            alt={""}/>
@@ -207,8 +213,8 @@ export function SwapReward({_active}) {
 
                                 <Link
                                     href={active?'/':'/reward'}
-                                    className="group mx-auto flex gap-[13px] bg-primaryBgColor items-center justify-between rounded-md min-w-[293px] max-h-[60px] w-full px-[17px] py-[17px] ">
-                                    <span className="text-textColor text-lg">
+                                    className="group mx-auto flex gap-[13px] bg-primaryBgColor items-center justify-between rounded-md min-w-[209px]  w-max px-[17px] py-[17px] tablet:w-full">
+                                    <span className="text-textColor text-lg font-medium">
                                         {
                                             !getIsUserUseMultiplayer && active && getMultiplier > 0 ? 'Back to Swap page' : 'Buy'
                                         }

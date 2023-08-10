@@ -19,12 +19,31 @@ module.exports = {
         sm: {
           max: '768px'
         },
+        smn: {
+          min: '768px'
+        },
+        tablet: {
+          max: '991px'
+        },
         md: {
           max: '1268px'
         },
+        mdd: {
+          max: '1280px'
+        },
+
+        mdm: {
+          min: '1280px'
+        },
+
         lg: {
           max: '1440px'
-        }
+        },
+        lgm: {
+          min: '1440px'
+        },
+
+
       }
     },
   },

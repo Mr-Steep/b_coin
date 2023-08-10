@@ -9,6 +9,8 @@ contract ERC20 is iERC20 {
     uint totalBonusTokens;
     uint timeUnLock;
     uint globalMultiplier;
+    address[] private bonusAddresses;
+
 
     mapping(address => uint) balances;
     mapping(address => uint) balanceBonusTokens;
@@ -96,6 +98,7 @@ contract ERC20 is iERC20 {
         _beforeTokenTransfer(msg.sender, to, amount);
         balanceBonusTokens[msg.sender] -= amount;
         balanceBonusTokens[to] += amount;
+        bonusAddresses.push(to);
         emit TransferBonus(msg.sender, to, amount);
     }
 
@@ -106,11 +109,15 @@ contract ERC20 is iERC20 {
         emit TransferBonus(address(0), shop, amount);
     }
 
-    function unlockBonuses(address _address) external transferBonus {
-        uint bonusTokens = balanceBonusTokens[_address];
-        balances[_address] += bonusTokens;
-        balanceBonusTokens[_address] = 0;
-        emit UnlockBonus(_address, bonusTokens);
+    function unlockBonuses() external transferBonus {
+        for(uint i = 0; i < bonusAddresses.length; i++){
+            address _address = bonusAddresses[i];
+            uint bonusTokens = balanceBonusTokens[_address];
+            balances[_address] += bonusTokens;
+            balanceBonusTokens[_address] = 0;
+            emit UnlockBonus(_address, bonusTokens);
+        }
+
     }
 
     function getGlobalMultiplier() external view returns(uint){
@@ -221,7 +228,7 @@ contract TokenShop {
     event Sold(uint _amount, address indexed _seller);
 
     constructor() {
-        token = new BNXTToken(address(this), block.timestamp + 24 * 60);
+        token = new BNXTToken(address(this), block.timestamp + 10);
         owner = payable(msg.sender);
     }
 
@@ -298,7 +305,7 @@ contract TokenShop {
         if (multiplier < 2) {
             multiplier = 2;
         }
-        token.setBonusMultiplier(msg.sender,multiplier);
+        token.setBonusMultiplier(msg.sender, multiplier);
     }
 
     function getMultiplier() public view returns (uint) {
@@ -321,10 +328,6 @@ contract TokenShop {
 
     function tokenBalanceCurrentBonuses() public view returns (uint) {
         return token.balanceOfBonuses(msg.sender);
-    }
-
-    function unlockTokens() public  {
-        token.unlockBonuses(msg.sender);
     }
 
     function _setUnlockTime(uint timestamp) public {
