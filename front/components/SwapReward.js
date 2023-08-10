@@ -36,6 +36,7 @@ export function SwapReward({_active}) {
     const [getIsUserUseMultiplayer, setIsUserUseMultiplayer] = useState(0)
     const [getGlobalMultiplayer, setGlobalMultiplayer] = useState(0);
     const [getConfirmationComplete, setConfirmationComplete] = useState(false);
+    const [getHash, setHash] = useState(null);
 
 
     const FIRSTLY_CONNECTION = 'firstly_connection'
@@ -159,7 +160,7 @@ export function SwapReward({_active}) {
 
 
                 </div>
-                <div className="w-full grow bg-textColor sm:px-4 smn:px-[50px] mdm:px-[102px] lgm:px-[111px] px-[16px] pb-[48px] smn:pb-[150px] lgm:pb-[178px]"
+                <div className="w-full grow bg-textColor sm:px-4  smn:px-[50px] mdm:px-[102px] lgm:px-[111px]   px-[16px] pb-[48px] smn:pb-[150px] lgm:pb-[200px]"
                 >
 
                     <div className={"flex justify-between tablet:flex-col tablet:items-center items-center mx-auto w-full max-w-[1526px] md:mb-0 relative "
@@ -248,6 +249,7 @@ export function SwapReward({_active}) {
                                 setIsUserUseMultiplayer={setIsUserUseMultiplayer}
                                 setGlobalMultiplayer={setGlobalMultiplayer}
                                 setSelectAccount={setSelectAccount}
+                                setHash={setHash}
                             />
                         }
 
@@ -265,8 +267,8 @@ export function SwapReward({_active}) {
                     <Confirmation
                     setConfirmationComplete={setConfirmationComplete}
                     setTransactionComplete={setTransactionComplete}
+                    hash={getHash}
                     />
-
                 }
                 {
                     getConfirmationComplete &&
@@ -277,54 +279,8 @@ export function SwapReward({_active}) {
                         getIsUserUseMultiplayer={getIsUserUseMultiplayer}
                         getGlobalMultiplayer={getGlobalMultiplayer}
                     />
-
                 }
-
-
             </div>
-
-
         </Layout>
     )
 }
-
-
-// const scrollRef = useRef(null);
-//
-// const [middleOfPageY, setMiddleOfPageY] = useState(0);
-
-// useEffect(() => {
-//     const middleOfPage = Math.floor(window.innerHeight / 2);
-//     console.log(middleOfPage)
-//
-//     window.scrollTo({
-//         top: middleOfPage,
-//         behavior: 'smooth',
-//     });
-//
-// }, [step]);
-
-// useEffect(() => {
-
-//     const middleY = Math.floor(window.innerHeight / 2);
-//     setMiddleOfPageY(middleY);
-//
-
-//     localStorage.setItem('middleOfPageY', middleY.toString());
-// }, [step]);
-//
-// useEffect(() => {
-
-//     const savedMiddleOfPageY = localStorage.getItem('middleOfPageY');
-//
-
-//     if (savedMiddleOfPageY) {
-//         window.scrollTo(0, parseInt(savedMiddleOfPageY));
-//     }
-// }, [step]);
-
-// document.body.style.overflow = 'hidden';
-// console.log(scrollRef.current)
-// if(scrollRef.current) {
-//     scrollRef.current.scrollIntoView();
-// }

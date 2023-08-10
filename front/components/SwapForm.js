@@ -55,6 +55,7 @@ export class SwapForm extends Component {
         this.fsetIsUserUseMultiplayer = props.setIsUserUseMultiplayer
         this.fsetGlobalMultiplayer = props.setGlobalMultiplayer
         this.fsetSelectAccount = props.setSelectAccount
+        this.fsetHash = props.setHash
 
         this.initialState =
             {
@@ -145,6 +146,7 @@ export class SwapForm extends Component {
             })
             await tx.wait()
             this.fsetTransactionComplete(true)
+            this.fsetHash(tx.hash)
         } catch (e) {
             console.error(e);
             this.checkError(e.message)
@@ -171,6 +173,7 @@ export class SwapForm extends Component {
             })
             await tx.wait()
             this.fsetTransactionComplete(true)
+            this.fsetHash(tx.hash)
         } catch (e) {
             console.error(e);
             if (e.code === ERROR_CODE_TX_REJECTED_BY_USER) {
@@ -333,21 +336,8 @@ export class SwapForm extends Component {
             res.on("end", () => {
                 const dataParse = JSON.parse(data);
                 const price = dataParse.price
-                let priceInWei
-                let priceInBnb
-                if (isBNB) {
-                    if (!this.state.priceInBnb) {
-                        return
-                    }
-                    priceInWei = this.transTo(parseFloat(this.state.priceInBnb))
-                    priceInBnb = this.state.priceInBnb
-                } else {
-                    if (!this.state.inputValue) {
-                        return
-                    }
-                    priceInWei = this.transTo(this.state.inputValue / price)
-                    priceInBnb = (this.state.inputValue / price).toFixed(7)
-                }
+                let  priceInWei = this.transTo(this.state.inputValue / price)
+                let priceInBnb = (this.state.inputValue / price).toFixed(7)
                 const gwei = (this.state.gasPrice).toString()
 
                 const weiGas = ethers.utils.parseUnits(gwei, "gwei");
@@ -624,14 +614,6 @@ export class SwapForm extends Component {
         console.log('networkError', this.state.networkError)
     }
 
-    changeInputs = () => {
-        if (this.state.inputs) {
-            this.setState({inputs: false})
-        } else {
-            this.setState({inputs: true})
-        }
-    }
-
     handleAmount = (selectedAmount) => {
         const {data} = this.props
         this.setState({value: ` ${selectedAmount}`})
@@ -861,9 +843,9 @@ export class SwapForm extends Component {
                                                         </div>
 
                                                         <>
-                                                            <p className="pt-[19px] w-full text-start">{this.state.value}</p>
+                                                            <p className="pt-[19px] w-full text-start">{this.state.value && `${this.state.value}$`}</p>
                                                             <div
-                                                                className="bg-textColor relative flex justify-center items-center w-full rounded-md mb-5 mt-[26px] border-b-[1px] border-[#F2F2F2] pb-[16px]"
+                                                                className="bg-textColor relative flex justify-center items-center w-full rounded-md mb-5 mt-[26px] border-b-[1px] border-[#F2F2F2] pb-[20px]"
                                                             >
                                                                 <div
                                                                     className="flex justify-between   items-center ">
@@ -922,11 +904,12 @@ export class SwapForm extends Component {
                                                         </div>
 
                                                         <SwapFormButton
+                                                            disabledBtn = {!this.state.value}
                                                             buy={this.buy}
                                                             currentError={this.state.currentError}
                                                             _changeAddNetwork={this.changeAddNetwork}
                                                             _class={"text-textColor rounded-md w-full h-[60px] py-[17px] font-medium sm:text-[18px] shadow-[0px_12px_18px_0_#40A6DF] text-lg transform-gpu transition-transform duration-200 ease-in-out hover:scale-95 focus:scale-95 active:scale-95 relative "
-                                                                + (this.state.currentError && this.state.currentError === 'Please connect to another Network' ? "bg-errorColor  z-10" : "bg-gradient-to-r from-[#29C8A9] via-[#208ED0] to-[#703AAD]")
+                                                                + (this.state.currentError && this.state.currentError === 'Please connect to another Network' ? "bg-errorColor  z-10" : "bg-gradient-to-r from-[#29C8A9] via-[#208ED0] to-[#703AAD]" )
                                                             }
                                                         />
 
@@ -948,23 +931,6 @@ export class SwapForm extends Component {
                                         </>
                                 }
 
-
-
-
-                                {/*<div className="px-7">*/}
-                                {/*    {*/}
-                                {/*        !this.state.selectAccount && !this.state.currentError*/}
-                                {/*            ?*/}
-                                {/*            <ConnectWallet*/}
-                                {/*                connectWallet={this._connectWallet}*/}
-                                {/*                setNetworkError={this._setNetworkError}*/}
-                                {/*                _class={"bg-gradient-to-r from-[#29C8A9] via-[#208ED0] to-[#703AAD] text-textColor rounded-md w-full h-[60px] py-[17px] font-medium text-[18px] transform-gpu transition-transform duration-200 ease-in-out hover:scale-95 focus:scale-95 active:scale-95 shadow-[0_12px_18px_0_#40A6DF5C] relative "}*/}
-                                {/*            />*/}
-                                {/*            :*/}
-
-                                {/*    }*/}
-                                {/*</div>*/}
-
                             </>
                         }
 
@@ -978,8 +944,8 @@ export class SwapForm extends Component {
                                 <div
                                     className="flex flex-col justify-between items-center gap-4 max-w-[320px] mdd:mt-[27px] mt-[83px] mdd:mb-[36px] mb-[89px]">
                                     <Image src={metamask} className=" lg:w-[88px]  lg:h-[88px]" alt={metamask}/>
-                                    <p className="text-3xl font-medium leading-[32.64px] mdd:mt-[30px] mt-10">Connect your wallet</p>
-                                    <p className="text-base font-normal leading-[26px] text-center">Amet minim mollit
+                                    <p className="text-3xl text-primaryBgColor font-medium leading-[32.64px] mdd:mt-[30px] mt-10">Connect your wallet</p>
+                                    <p className="text-base text-primaryBgColor font-normal leading-[26px] text-center">Amet minim mollit
                                         non
                                         deserunt ullamco est sit aliqua dolor do amet sint.</p>
                                 </div>
@@ -999,8 +965,8 @@ export class SwapForm extends Component {
                                 <div
                                     className="flex flex-col justify-between items-center gap-4 max-w-[320px] mt-[70px] mb-[72px]">
                                     <Image src={bnbLogo} className="w-[88px] h-[88px]" alt={bnbLogo}/>
-                                    <p className="text-3xl font-medium leading-[32.64px]">Switch network</p>
-                                    <p className="text-base font-normal leading-[26px]">Amet minim mollit non deserunt
+                                    <p className="text-3xl text-primaryBgColor font-medium leading-[32.64px]">Switch network</p>
+                                    <p className="text-base text-primaryBgColor font-normal leading-[26px]">Amet minim mollit non deserunt
                                         ullamco est sit aliqua dolor do amet sint.</p>
                                 </div>
                                 <SwapFormButton
@@ -1008,7 +974,7 @@ export class SwapForm extends Component {
                                     buy={this.buy}
                                     currentError={this.state.currentError}
                                     _changeAddNetwork={this.changeAddNetwork}
-                                    _class={"text-textColor rounded-md w-full h-[60px] py-[17px] bg-red-600 font-medium shadow-[0px_12px_18px_0_#EB5757] sm:text-[18px] text-lg transform-gpu transition-transform duration-200 ease-in-out hover:scale-95 focus:scale-95 active:scale-95 relative "
+                                    _class={"text-textColor rounded-md w-full h-[60px] py-[17px] bg-[#EB5757] font-medium shadow-[0px_12px_18px_0_#E0CACA] sm:text-[18px] text-lg transform-gpu transition-transform duration-200 ease-in-out hover:scale-95 focus:scale-95 active:scale-95 relative "
                                         + (this.state.currentError && this.state.currentError === 'Please connect to another Network' || step === 2 ? "bg-errorColor text-textColor z-10" : "bg-gradient-to-r from-[#29C8A9] via-[#208ED0] to-[#703AAD] text-primaryBgColor text-textColor"
                                         )
                                     }
@@ -1016,8 +982,6 @@ export class SwapForm extends Component {
                             </>
 
                         }
-
-
                     </div>
                 </div>
             </>
