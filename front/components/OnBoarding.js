@@ -49,13 +49,13 @@ export function OnBoarding() {
                         <div className="flex flex-col w-full relative z-10">
 
 
-                            <p className="content-start text-lg max-w-[608px] md:mb-[55px] mt-[50px] mb-[92px]">Worem ipsum dolor sit amet, consectetur
+                            <p className="content-start text-lg text-primaryBgColor max-w-[608px] md:mb-[55px] mt-[50px] mb-[92px]">Worem ipsum dolor sit amet, consectetur
                                 adipiscing elit. Etiam eu turpis molestie, dictum est a, mattis tellus. Sed dignissim, metus nec
                                 fringilla. </p>
 
-                            <div className="flex flex-col text-primaryBgColor md:mb-0 mb-[94px]">
+                            <div className="flex flex-col text-primaryBgColor md:mb-0 mb-[114px]">
 
-                                <div className="flex md:flex-col justify-between items-center mb-[60px]">
+                                <div className="flex md:flex-col justify-between items-center mb-[90px]">
                                     <div className="max-w-[480px] md:mr-0 mr-[150px] md:mb-10">
                                         <div className="flex">
                                             <div className="bg-primaryBgColor w-[50px] h-[31px] mr-[26px]"></div>
@@ -79,7 +79,7 @@ export function OnBoarding() {
                                     <Image src={mockVideo} className="md:w-[343px] w-[594px] md:h-[134px] h-[230px]" alt="mock-video"/>
                                 </div>
 
-                                <div className="flex md:flex-col-reverse justify-between items-center mb-[60px]">
+                                <div className="flex md:flex-col-reverse justify-between items-center mb-[90px]">
                                     <Image src={mockVideo} className="md:w-[343px] w-[594px] md:h-[134px] h-[230px]" alt="mock-video"/>
                                     <div className="max-w-[480px] md:ml-0 ml-[104px] md:mb-10">
                                         <div className="flex">
@@ -100,7 +100,7 @@ export function OnBoarding() {
                                     </div>
                                 </div>
 
-                                <div className="flex md:flex-col justify-between items-center mb-[60px]">
+                                <div className="flex md:flex-col justify-between items-center mb-[90px]">
                                     <div className="max-w-[480px] md:mr-0 mr-[104px] md:mb-10">
                                         <div className="flex">
                                             <div className="bg-primaryBgColor w-[70px] h-[31px] mr-[26px]"></div>
@@ -118,7 +118,7 @@ export function OnBoarding() {
                                     <Image src={mockVideo} className="md:w-[343px] w-[594px] md:h-[134px] h-[230px]" alt="mock-video"/>
                                 </div>
 
-                                <div className="flex md:flex-col-reverse justify-between items-center mb-[60px] md:pl-[35px]">
+                                <div className="flex md:flex-col-reverse justify-between items-center md:pl-[35px]">
                                     <Image src={mockVideo} className="md:w-[343px] w-[594px] md:h-[134px] h-[230px]" alt="mock-video"/>
                                     <div className="max-w-[480px] md:ml-0 ml-[104px] md:mb-10">
                                         <p className="md:text-2xl text-3xl font-bold mb-[14px]">Get Reward!</p>
@@ -136,7 +136,7 @@ export function OnBoarding() {
                             </div>
 
 
-                            <button className="group mx-auto grid grid-cols-2 gap-[13px] bg-primaryBgColor items-center justify-between rounded-md max-w-[282px] max-h-[60px] w-full px-[17px] pt-[17px] pb-[20px] md:mb-[70px] mb-[110px]"
+                            <button className="group mx-auto grid grid-cols-2 gap-[13px] bg-primaryBgColor items-center justify-between rounded-md max-w-[282px] max-h-[60px] w-full px-[17px] pt-[17px] pb-[20px] md:mb-[70px] mb-[135px]"
                                     onClick={() => router.push('/')}>
                                 <span className="text-textColor text-lg">Let’s Start!</span>
                                 <Image src={arrowLight} className="w-[23px] h-[23px] ml-[90px] group-hover:rotate-45 transition duration-300 ease-in" alt={''}/>

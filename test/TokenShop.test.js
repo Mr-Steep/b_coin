@@ -1,6 +1,6 @@
 const { expect } = require ("chai");
 const { ethers } = require ("hardhat");
-const tokenJSON  = require ("../artifacts/contracts/Erc.sol/MyToken.json");
+const tokenJSON  = require ("../artifacts/contracts/Erc.sol/TokenShop.json");
 
 describe("TokenShop", function () {
 

@@ -55,6 +55,7 @@ export class SwapForm extends Component {
         this.fsetIsUserUseMultiplayer = props.setIsUserUseMultiplayer
         this.fsetGlobalMultiplayer = props.setGlobalMultiplayer
         this.fsetSelectAccount = props.setSelectAccount
+        this.fsetHash = props.setHash
 
         this.initialState =
             {
@@ -144,6 +145,7 @@ export class SwapForm extends Component {
             })
             await tx.wait()
             this.fsetTransactionComplete(true)
+            this.fsetHash(tx.hash)
         } catch (e) {
             console.error(e);
             this.checkError(e.message)
@@ -170,6 +172,7 @@ export class SwapForm extends Component {
             })
             await tx.wait()
             this.fsetTransactionComplete(true)
+            this.fsetHash(tx.hash)
         } catch (e) {
             console.error(e);
             if (e.code === ERROR_CODE_TX_REJECTED_BY_USER) {
@@ -332,21 +335,8 @@ export class SwapForm extends Component {
             res.on("end", () => {
                 const dataParse = JSON.parse(data);
                 const price = dataParse.price
-                let priceInWei
-                let priceInBnb
-                if (isBNB) {
-                    if (!this.state.priceInBnb) {
-                        return
-                    }
-                    priceInWei = this.transTo(parseFloat(this.state.priceInBnb))
-                    priceInBnb = this.state.priceInBnb
-                } else {
-                    if (!this.state.inputValue) {
-                        return
-                    }
-                    priceInWei = this.transTo(this.state.inputValue / price)
-                    priceInBnb = (this.state.inputValue / price).toFixed(7)
-                }
+                let  priceInWei = this.transTo(this.state.inputValue / price)
+                let priceInBnb = (this.state.inputValue / price).toFixed(7)
                 const gwei = (this.state.gasPrice).toString()
 
                 const weiGas = ethers.utils.parseUnits(gwei, "gwei");
@@ -623,14 +613,6 @@ export class SwapForm extends Component {
         console.log('networkError', this.state.networkError)
     }
 
-    changeInputs = () => {
-        if (this.state.inputs) {
-            this.setState({inputs: false})
-        } else {
-            this.setState({inputs: true})
-        }
-    }
-
     handleAmount = (selectedAmount) => {
         const {data} = this.props
         this.setState({value: ` ${selectedAmount}`})
@@ -693,7 +675,7 @@ export class SwapForm extends Component {
 
                         <Image src={walletPic} className="sm:hidden relative"
                                alt={walletPic}/>
-                        <Image src={walletPicMob} className="w-[101px] h-[185px] sm:block hidden relative left-3"
+                        <Image src={walletPicMob} className="w-[115px] h-[185px] sm:block hidden relative left-3"
                                alt={walletPicMob}/>
 
                     </div>
@@ -947,23 +929,6 @@ export class SwapForm extends Component {
                                             }
                                         </>
                                 }
-
-
-
-
-                                {/*<div className="px-7">*/}
-                                {/*    {*/}
-                                {/*        !this.state.selectAccount && !this.state.currentError*/}
-                                {/*            ?*/}
-                                {/*            <ConnectWallet*/}
-                                {/*                connectWallet={this._connectWallet}*/}
-                                {/*                setNetworkError={this._setNetworkError}*/}
-                                {/*                _class={"bg-gradient-to-r from-[#29C8A9] via-[#208ED0] to-[#703AAD] text-textColor rounded-md w-full h-[60px] py-[17px] font-medium text-[18px] transform-gpu transition-transform duration-200 ease-in-out hover:scale-95 focus:scale-95 active:scale-95 shadow-[0_12px_18px_0_#40A6DF5C] relative "}*/}
-                                {/*            />*/}
-                                {/*            :*/}
-
-                                {/*    }*/}
-                                {/*</div>*/}
 
                             </>
                         }
