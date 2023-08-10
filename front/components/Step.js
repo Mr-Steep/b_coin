@@ -150,9 +150,9 @@ export function Step({step, setNewStep, closeModal}) {
                <Image src={cross} className="absolute z-10 top-[150px] md:right-[25px] right-[-50px] cursor-pointer" onClick={closeModal} alt={cross} />
                <div
                    className="flex flex-col justify-between items-start max-w-[238px] mt-[140px] mr-[69px] relative">
-                   <p className="text-2xl font-bold mb-10">Step#4</p>
+                   <p className="text-2xl font-bold mb-8">Step#4</p>
 
-                   <p className="text-lg mb-10">Connect your MetaMask wallet and trade some of your BNB for
+                   <p className="text-lg mb-8">Connect your MetaMask wallet and trade some of your BNB for
                        bNXT.
                        <Link href="" className="text-lg font-semibold hover:underline"> Check out our
                            comprehensive guide on how to change currencies </Link>
@@ -169,8 +169,8 @@ export function Step({step, setNewStep, closeModal}) {
                </div>
 
                <Image src={arrow5} className="absolute md:hidden top-[240px] left-[270px]" alt={arrow5}/>
-               <Image src={arrow7} className="absolute md:top-[1170px] top-[620px] md:left-[-15px] left-[550px]" alt={arrow7}/>
-               <Image src={arrow8} className="absolute md:top-[860px] top-[325px] right-[100px]" alt={arrow8}/>
+               <Image src={arrow7} className="absolute md:top-[1135px] top-[580px] md:left-[-15px] left-[550px]" alt={arrow7}/>
+               <Image src={arrow8} className="absolute md:top-[830px] top-[290px] right-[100px]" alt={arrow8}/>
 
                <Image src={arrow3} className="absolute top-[360px] right-[20px] md:block hidden" alt={arrow3}/>
 
