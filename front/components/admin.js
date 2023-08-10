@@ -360,7 +360,7 @@ export class Admin extends Component {
         if (!this._checkNetwork()) {
             return
         }
-        console.log('selectedAddress ', selectedAddress)
+
         await this._initialize(selectedAddress)
 
         window.ethereum.on('accountsChanged', async ([newAddress]) => {
