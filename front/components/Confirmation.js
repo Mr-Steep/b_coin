@@ -32,13 +32,17 @@ export function Confirmation({setConfirmationComplete, setTransactionComplete, h
             });
 
 
-            setConfirmationComplete(true);
-            setTransactionComplete(false);
+            close()
         } catch (error) {
             console.error(error);
             alert(error)
         }
     };
+
+    close = () => {
+        setConfirmationComplete(true);
+        setTransactionComplete(false)
+    }
 
     function isValidEmail(email) {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -49,8 +53,10 @@ export function Confirmation({setConfirmationComplete, setTransactionComplete, h
 
     return (
         <Modal>
-            <div className="fixed top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] flex flex-col justify-between items-center bg-textColor sm:max-w-[350px] max-w-[485px] px-[45px] py-[50px] z-10">
-                <Image src={cross} className="absolute z-10 top-[22px] sx:right-[30px] right-[22px] cursor-pointer" alt={cross} />
+            <div className="fixed top-[50%] left-[50%] rounded-md translate-x-[-50%] translate-y-[-50%] flex flex-col justify-between items-center bg-textColor sm:max-w-[350px] max-w-[485px] px-[45px] py-[50px] z-10">
+                <Image src={cross} className="absolute z-10 top-[22px] sx:right-[30px] right-[22px] cursor-pointer"
+                       onClick={()=>close()}
+                       alt={cross} />
                 <div className="flex flex-col justify-between items-center gap-[30px]">
                     <p className="text-3xl font-medium text-center">Confirm your email</p>
                     <p className="text-base font-normal text-center max-w-[320px]">Enter your email below to receive all details about this transaction.</p>
