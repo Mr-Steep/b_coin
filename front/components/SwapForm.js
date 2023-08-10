@@ -629,10 +629,10 @@ export class SwapForm extends Component {
         return (
             <>
                 <div
-                    className={"flex-col justify-between tablet:top-0 top-[-211px] md:relative absolute right-0 " +
+                    className={"flex flex-col  tablet:top-0 top-[-211px] relative  right-0 " +
                         "max-w-[497px] " +
                         "mdd:min-h-[650px] min-h-[670px] sx:h-[auto] shadow-[19px_23px_87px_0_#6CB8EF33] " +
-                        "md:rounded-tl-2xl md:rounded-tr-2xl md:rounded-bl-none md:rounded-br-none rounded-md sx:rounded-tr-none sx:rounded-tl-none w-full  sx:px-0 pb-[44px] "
+                        "md:rounded-tl-2xl md:rounded-tr-2xl md:rounded-bl-none md:rounded-br-none rounded-md sx:rounded-tr-none sx:rounded-tl-none w-full "
                         + (active ? "sx:h-[655px]" : "sx:h-[543px]")
 
                     }
@@ -681,7 +681,7 @@ export class SwapForm extends Component {
                     </div>
 
                     <div
-                        className={"flex flex-col items-center relative bg-textBgColor w-full max-w-[497px] sx:px-[21px] px-7 pt-[26px] rounded-md h-full sx:mx-auto "}>
+                        className={"flex flex-col items-center relative bg-textBgColor w-full max-w-[497px] sx:px-[21px] px-7 pt-[26px] pb-[26px] rounded-md h-full sx:mx-auto grow "}>
 
                         {
                             this.state.selectAccount &&
@@ -802,7 +802,7 @@ export class SwapForm extends Component {
                                                             buy={this.buy}
                                                             currentError={this.state.currentError}
                                                             _changeAddNetwork={this.changeAddNetwork}
-                                                            _class={"text-textColor rounded-md w-full h-[60px] py-[17px] shadow-[0px_12px_18px_0_#40A6DF] font-medium sm:text-[18px] text-lg transform-gpu transition-transform duration-200 ease-in-out hover:scale-95 focus:scale-95 active:scale-95 relative "
+                                                            _class={"text-textColor rounded-md w-full h-[60px] py-[17px] shadow-[0px_12px_18px_0_#A5CADE] font-medium sm:text-[18px] text-lg transform-gpu transition-transform duration-200 ease-in-out hover:scale-95 focus:scale-95 active:scale-95 relative "
                                                                 + (this.state.currentError && this.state.currentError === 'Please connect to another Network' ? "bg-errorColor text-textColor z-10" : "bg-gradient-to-r from-[#29C8A9] via-[#208ED0] to-[#703AAD] text-primaryBgColor")
                                                             }
                                                         />
@@ -841,9 +841,10 @@ export class SwapForm extends Component {
                                                                 ))}
                                                             </div>
                                                         </div>
-
+                                                        {this.state.value &&
                                                         <>
-                                                            <p className="pt-[19px] w-full text-start">{this.state.value && `${this.state.value}$`}</p>
+
+                                                            <p className="pt-[19px] w-full text-start">{this.state.value}$</p>
                                                             <div
                                                                 className="bg-textColor relative flex justify-center items-center w-full rounded-md mb-5 mt-[26px] border-b-[1px] border-[#F2F2F2] pb-[20px]"
                                                             >
@@ -854,7 +855,8 @@ export class SwapForm extends Component {
                                                                     <span
                                                                         className="bg-textColor text-primaryBgColor sm:text-sm text-lg font-medium leading-5 mr-2"
                                                                     >{this.state.inputValue} BNXT (${this.state.inputValue}) = </span>
-                                                                    <Image src={bnbLogo} className="w-[30px] h-[30px] mr-[6px]"
+                                                                    <Image src={bnbLogo}
+                                                                           className="w-[30px] h-[30px] mr-[6px]"
                                                                            alt={bnbLogo}/>
                                                                     <span
                                                                         className="bg-textColor text-primaryBgColor sm:text-sm text-lg font-medium leading-5">
@@ -867,7 +869,6 @@ export class SwapForm extends Component {
                                                                 </div>
 
                                                             </div>
-                                                        </>
 
 
                                                         <div className="w-full">
@@ -902,12 +903,14 @@ export class SwapForm extends Component {
                                                                 </div>
                                                             </div>
                                                         </div>
+                                                        </>
+                                                        }
                                                         <SwapFormButton
                                                             disabledBtn = {!this.state.value}
                                                             buy={this.buy}
                                                             currentError={this.state.currentError}
                                                             _changeAddNetwork={this.changeAddNetwork}
-                                                            _class={"text-textColor rounded-md w-full h-[60px] py-[17px] font-medium sm:text-[18px] shadow-[0px_12px_18px_0_#40A6DF] text-lg transform-gpu transition-transform duration-200 ease-in-out hover:scale-95 focus:scale-95 active:scale-95 relative "
+                                                            _class={"text-textColor rounded-md w-full h-[60px] py-[17px] font-medium sm:text-[18px] shadow-[0px_12px_18px_0_#A5CADE] text-lg transform-gpu transition-transform duration-200 ease-in-out hover:scale-95 focus:scale-95 active:scale-95 relative mt-auto "
                                                                 + (this.state.currentError && this.state.currentError === 'Please connect to another Network' ? "bg-errorColor  z-10" : "bg-gradient-to-r from-[#29C8A9] via-[#208ED0] to-[#703AAD]" )
                                                             }
                                                         />
@@ -951,7 +954,7 @@ export class SwapForm extends Component {
                                 <ConnectWallet
                                     connectWallet={this._connectWallet}
                                     setNetworkError={this._setNetworkError}
-                                    _class={"bg-gradient-to-r from-[#29C8A9] via-[#208ED0] to-[#703AAD] text-textColor rounded-md w-full h-[60px] py-[17px] font-medium text-[18px] transform-gpu transition-transform duration-200 ease-in-out hover:scale-95 focus:scale-95 active:scale-95 shadow-[0_12px_18px_0_#40A6DF5C] relative "}
+                                    _class={"bg-gradient-to-r from-[#29C8A9] via-[#208ED0] to-[#703AAD] text-textColor rounded-md w-full h-[60px] py-[17px] font-medium text-[18px] transform-gpu transition-transform duration-200 ease-in-out hover:scale-95 focus:scale-95 active:scale-95 shadow-[0_12px_18px_0_#A5CADE] relative "}
                                 />
                             </>
 
