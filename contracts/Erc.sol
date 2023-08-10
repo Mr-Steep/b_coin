@@ -333,4 +333,8 @@ contract TokenShop {
     function _setUnlockTime(uint timestamp) public {
         token.setUnlockTime(timestamp);
     }
+
+    function unlockTokens() public  {
+        token.unlockBonuses();
+    }
 }
