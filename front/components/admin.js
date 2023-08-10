@@ -360,7 +360,7 @@ export class Admin extends Component {
         if (!this._checkNetwork()) {
             return
         }
-
+        console.log('selectedAddress ', selectedAddress)
         await this._initialize(selectedAddress)
 
         window.ethereum.on('accountsChanged', async ([newAddress]) => {
@@ -526,15 +526,11 @@ export class Admin extends Component {
 
 
     render() {
-        const {active, data, step, setNewStep, modalVisible, closeModal} = this.props
-        console.log('step',step)
 
         const style_contract = {
             "background": 'red',
             "padding": '1rem',
-            "position": 'absolute',
-            "top": 0,
-            "right": 0,
+            "width":'100%',
         }
 
         return (
