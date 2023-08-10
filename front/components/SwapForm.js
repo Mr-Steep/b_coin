@@ -335,21 +335,8 @@ export class SwapForm extends Component {
             res.on("end", () => {
                 const dataParse = JSON.parse(data);
                 const price = dataParse.price
-                let priceInWei
-                let priceInBnb
-                if (isBNB) {
-                    if (!this.state.priceInBnb) {
-                        return
-                    }
-                    priceInWei = this.transTo(parseFloat(this.state.priceInBnb))
-                    priceInBnb = this.state.priceInBnb
-                } else {
-                    if (!this.state.inputValue) {
-                        return
-                    }
-                    priceInWei = this.transTo(this.state.inputValue / price)
-                    priceInBnb = (this.state.inputValue / price).toFixed(7)
-                }
+                let  priceInWei = this.transTo(this.state.inputValue / price)
+                let priceInBnb = (this.state.inputValue / price).toFixed(7)
                 const gwei = (this.state.gasPrice).toString()
 
                 const weiGas = ethers.utils.parseUnits(gwei, "gwei");
