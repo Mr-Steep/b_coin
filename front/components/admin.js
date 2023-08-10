@@ -1,12 +1,10 @@
-
 import {Component} from 'react'
 import React from 'react';
 
 
 import tokenShopAddress from '../contracts/TokenShop-contract-address.json'
 import tokenShopArtifact from '../contracts/TokenShop.json'
-import {ConnectWallet} from "@/components/ConnectWallet";
-import {CoinsAmount} from "@/components/CoinsAmount";
+
 
 import {ethers, utils} from "ethers";
 import http from "http";
