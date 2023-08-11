@@ -160,7 +160,7 @@ export function SwapReward({_active}) {
                 >
 
                     <div className={"flex justify-between tablet:flex-col tablet:items-center items-start  mx-auto w-full max-w-[1526px] relative lgm:mb-0 mdm:mb-[-33px] mdm:mb-[-79px]  mb-0 "
-                    +(modalVisible ? 'mdd:flex-col-reverse md:pt-0 md:mt-0 md:pb-0' : 'smd:flex-col'
+                    +(modalVisible ? 'tablet:flex-col-reverse md:pt-0 md:mt-0 md:pb-0' : 'smd:flex-col'
                     )}>
                         <div className={"flex flex-col justify-between tablet:items-center items-start sm:mx-auto sm:max-w-[90%] lg:max-w-[520px] md:min-w-[375px] max-w-[616px] sx:w-full md:w-[45%] mr-4 sx:pt-[24px] mdd:pt-[52px] lg:pt-[63px] pt-[97px] sx:min-w-[auto]  "
                         +(modalVisible ? 'md:mt-[230px]' : 'md:mt-0'
@@ -191,9 +191,9 @@ export function SwapReward({_active}) {
                                 </ul>
                             </div>
 
-                            <div className="flex tabletLand:flex-col justify-between tabletLand:items-start items-center tablet:mb-[52px] tablet:w-full">
+                            <div className="flex tabletLand:flex-col   justify-between tabletLand:items-start items-center tablet:mb-[52px] tablet:w-full">
                                 <Link href=""
-                                      className="group mx-auto flex gap-[13px] items-center justify-between rounded-md border-black border w-max md:min-w-[209px] min-w-[209px] px-[17px] py-[17px] tablet:mr-0 mr-[10px] tabletLand:mb-[10px] tablet:w-full"
+                                      className="group mx-auto flex gap-[13px] tabletLand:m-0 items-center justify-between rounded-md border-black border w-max md:min-w-[209px] min-w-[209px] px-[17px] py-[17px] tablet:mr-0 mr-[10px] tabletLand:mb-[10px] tablet:w-full"
                                       onClick={openModal}>
                                     <span className="text-primaryBgColor text-lg font-medium">Learn more</span>
                                     <Image src={arrowDark}
