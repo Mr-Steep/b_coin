@@ -191,9 +191,9 @@ export function SwapReward({_active}) {
                                 </ul>
                             </div>
 
-                            <div className="flex tablet:flex-col justify-between items-center tablet:mb-[52px] tablet:w-full">
+                            <div className="flex tabletLand:flex-col justify-between tabletLand:items-start items-center tablet:mb-[52px] tablet:w-full">
                                 <Link href=""
-                                      className="group mx-auto flex gap-[13px] items-center justify-between rounded-md border-black border w-max md:min-w-[209px] min-w-[209px] px-[17px] py-[17px] tablet:mr-0 mr-[10px] tablet:mb-[10px] tablet:w-full"
+                                      className="group mx-auto flex gap-[13px] items-center justify-between rounded-md border-black border w-max md:min-w-[209px] min-w-[209px] px-[17px] py-[17px] tablet:mr-0 mr-[10px] tabletLand:mb-[10px] tablet:w-full"
                                       onClick={openModal}>
                                     <span className="text-primaryBgColor text-lg font-medium">Learn more</span>
                                     <Image src={arrowDark}
@@ -206,7 +206,7 @@ export function SwapReward({_active}) {
 
                                 <Link
                                     href={active?'/':'/reward'}
-                                    className="group mx-auto flex gap-[13px] bg-primaryBgColor items-center border justify-between rounded-md min-w-[209px]  w-max px-[17px] py-[17px] tablet:w-full">
+                                    className="group tabletLand:mx-0 mx-auto flex gap-[13px] bg-primaryBgColor items-center border justify-between rounded-md min-w-[209px]  w-max px-[17px] py-[17px] tablet:w-full">
                                     <span className="text-textColor text-lg font-medium">
                                         {
                                             !getIsUserUseMultiplayer && active && getMultiplier > 0 ? 'Back to Swap page' : 'Buy'

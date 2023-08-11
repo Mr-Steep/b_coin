@@ -584,7 +584,7 @@ export class SwapForm extends Component {
                             <div className="flex flex-col">
                                 <p className="text-buttonBgColor text-sm leading-4 mb-2">Your BNB balance</p>
                                 <div className="flex items-center">
-                                    <Image src={bnbLogo} className="w-[34px] h-[34px] mr-3" alt={bnbLogo}/>
+                                    <Image src={bnbLogo} className="mr-3" alt={bnbLogo}/>
                                     <span
                                         className="text-textColor sm:text-[32px] text-4xl font-semibold sm:leading-[34.82px] leading-10">
                                         {
@@ -940,7 +940,7 @@ export class SwapForm extends Component {
                                                                     buy={this.buy}
                                                                     currentError={this.state.currentError}
                                                                     _changeAddNetwork={this.changeAddNetwork}
-                                                                    _class={"text-textColor rounded-md w-full h-[60px] py-[17px] font-medium sm:text-[18px] shadow-[0px_12px_18px_0_#A5CADE] text-lg transform-gpu transition-transform duration-200 ease-in-out hover:scale-95 focus:scale-95 active:scale-95 relative mt-auto "
+                                                                    _class={"text-textColor rounded-md w-full h-[60px] py-[17px] font-medium sm:text-[18px] shadow-[0px_12px_18px_0_#A5CADE] text-lg transform-gpu transition-transform duration-200 ease-in-out  relative mt-auto "
                                                                         + (this.state.currentError && this.state.currentError === 'Please connect to another Network' ? "bg-errorColor  z-10" : "bg-gradient-to-r from-[#29C8A9] via-[#208ED0] to-[#703AAD]")
                                                                     }
                                                                 />
@@ -1008,7 +1008,7 @@ export class SwapForm extends Component {
                                     <Image src={bnbLogo} className="w-[88px] h-[88px]" alt={bnbLogo}/>
                                     <p className="text-3xl text-primaryBgColor font-medium leading-[32.64px]">Switch
                                         network</p>
-                                    <p className="text-base text-primaryBgColor font-normal leading-[26px]">Amet minim
+                                    <p className="text-base text-primaryBgColor font-normal leading-[26px] text-center">Amet minim
                                         mollit non deserunt
                                         ullamco est sit aliqua dolor do amet sint.</p>
                                 </div>
