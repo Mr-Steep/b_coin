@@ -191,9 +191,9 @@ export function SwapReward({_active}) {
                                 </ul>
                             </div>
 
-                            <div className="flex tabletLand:flex-col justify-between tabletLand:items-start items-center tablet:mb-[52px] tablet:w-full">
+                            <div className="flex tabletLand:flex-col   justify-between tabletLand:items-start items-center tablet:mb-[52px] tablet:w-full">
                                 <Link href=""
-                                      className="group mx-auto flex gap-[13px] items-center justify-between rounded-md border-black border w-max md:min-w-[209px] min-w-[209px] px-[17px] py-[17px] tablet:mr-0 mr-[10px] tabletLand:mb-[10px] tablet:w-full"
+                                      className="group mx-auto flex gap-[13px] tabletLand:m-0 items-center justify-between rounded-md border-black border w-max md:min-w-[209px] min-w-[209px] px-[17px] py-[17px] tablet:mr-0 mr-[10px] tabletLand:mb-[10px] tablet:w-full"
                                       onClick={openModal}>
                                     <span className="text-primaryBgColor text-lg font-medium">Learn more</span>
                                     <Image src={arrowDark}
