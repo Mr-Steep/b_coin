@@ -156,11 +156,11 @@ export function SwapReward({_active}) {
 
 
                 </div>
-                <div className="w-full grow bg-textColor sm:px-4  smn:px-[50px] mdm:px-[102px] lgm:px-[111px]   px-[16px] pb-[48px] "
+                <div className="w-full grow bg-textColor sm:px-4  smn:px-[50px] mdm:px-[102px] lgm:px-[111px] px-[16px] pb-[48px] "
                 >
 
-                    <div className={"flex justify-between tablet:flex-col tablet:items-center items-start  mx-auto w-full max-w-[1526px] relative lgm:mb-0 mdm:mb-[-33px] mdm:mb-[-79px]  mb-0 "
-                    +(modalVisible ? 'mdd:flex-col-reverse md:pt-0 md:mt-0 md:pb-0' : 'smd:flex-col'
+                    <div className={"flex justify-between tablet:flex-col tablet:items-center items-start mx-auto w-full max-w-[1526px] relative lgm:mb-0 mdm:mb-[-33px] mdm:mb-[-79px]  mb-0 "
+                    +(modalVisible ? 'tablet:flex-col-reverse md:pt-0 md:mt-[15px] md:pb-0' : 'smd:flex-col'
                     )}>
                         <div className={"flex flex-col justify-between tablet:items-center items-start sm:mx-auto sm:max-w-[90%] lg:max-w-[520px] md:min-w-[375px] max-w-[616px] sx:w-full md:w-[45%] mr-4 sx:pt-[24px] mdd:pt-[52px] lg:pt-[63px] pt-[97px] sx:min-w-[auto]  "
                         +(modalVisible ? 'md:mt-[230px]' : 'md:mt-0'
