@@ -5,7 +5,7 @@ export function SwapFormButton({_class, buy, currentError, _changeAddNetwork, di
 
     return (
         <button
-            className={disabledBtn ? `${_class} opacity-30` : _class}
+            className={disabledBtn ? `${_class} opacity-30` : `${_class} hover:scale-95 focus:scale-95 active:scale-95`}
             onClick={currentError? _changeAddNetwork:buy}
             disabled={disabledBtn}
         >{currentError && currentError === 'Please connect to another Network'
