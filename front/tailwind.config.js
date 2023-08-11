@@ -25,6 +25,9 @@ module.exports = {
         tablet: {
           max: '991px'
         },
+        tabletLand: {
+          max: '1200px'
+        },
         md: {
           max: '1268px'
         },

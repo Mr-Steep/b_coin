@@ -37,7 +37,7 @@ export function ThankYou({getMultiplier, handleSetActive, setTransactionComplete
                         <span className="text-textColor text-lg">
                             Back to Home page
                         </span>
-                                <Image src={arrowLight} className="w-[23px] h-[23px] ml-[90px] group-hover:rotate-45 transition duration-300 ease-in" alt={''}/>
+                                <Image src={arrowLight} className="w-[23px] h-[23px]  group-hover:rotate-45 transition duration-300 ease-in" alt={''}/>
                             </Link>
                         }
                     </div>
