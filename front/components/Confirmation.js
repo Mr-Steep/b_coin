@@ -3,25 +3,33 @@ import Image from "next/image";
 import cross from "../assets/images/cross-black.svg";
 import arrowLight from "../assets/images/arrow-light.svg";
 import Link from "next/link";
+import React, {useState} from "react";
+import loader from "../assets/images/loader.svg";
 
 
 export function Confirmation({setConfirmationComplete, setTransactionComplete, hash}) {
+
+    const [isLoading, setIsLoading] = useState(false);
     const confirm = async () => {
+        setIsLoading(true)
         const emailInput = document.querySelector('input[name="email"]');
         const termsCheckbox = document.querySelector('input[name="checkbox"][data-goal="terms"]');
         const statementCheckbox = document.querySelector('input[name="checkbox"][data-goal="statement"]');
 
         if (!emailInput.value || !isValidEmail(emailInput.value)) {
             alert('error valid email')
+            setIsLoading(false)
             return;
         }
         if (!termsCheckbox.checked || !statementCheckbox.checked) {
           alert('select checkboxes')
+            setIsLoading(false)
             return;
         }
 		let email = emailInput.value
 
         try {
+
             const requestData = { email,  hash};
              await fetch('/api/sendMessage', {
                 method: 'POST',
@@ -36,6 +44,7 @@ export function Confirmation({setConfirmationComplete, setTransactionComplete, h
         } catch (error) {
             console.error(error);
             alert(error)
+            setIsLoading(false)
         }
     };
 
@@ -78,9 +87,12 @@ export function Confirmation({setConfirmationComplete, setTransactionComplete, h
 
                     <Link href=""
                           onClick={confirm}
-                          className="group mx-auto flex gap-[13px] bg-primaryBgColor items-center justify-between rounded-md md:min-w-[293px] max-h-[60px] w-full px-[17px] py-[17px]">
-                        <span className="text-textColor text-lg">
+                          className={"group mx-auto flex gap-[20px] bg-primaryBgColor items-center justify-between rounded-md md:min-w-[293px] max-h-[60px] w-full px-[17px] py-[17px] " + (isLoading && " opacity-30 pointer-events-none ")}>
+                        <span className="text-textColor text-lg flex justify-center gap-[10px] items-center">
                             Confirm
+                            {isLoading &&
+                            <Image src={loader} className="w-[30px] h-[30px]" alt={'loader'}/>
+                            }
                         </span>
                         <Image src={arrowLight} className="w-[23px] h-[23px] ml-[90px] group-hover:rotate-45 transition duration-300 ease-in" alt={''}/>
                     </Link>
