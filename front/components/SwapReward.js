@@ -103,7 +103,7 @@ export function SwapReward({_active}) {
         <Layout modalVisible={modalVisible} closeModal={closeModal}>
             <div className="flex flex-col justify-between min-h-screen">
                 <div className={"lg:max-h-[380px] sm:px-4  smn:px-[50px] mdm:px-[102px] lgm:px-[111px] px-[16px] "
-                +(modalVisible && step!== 4 ? 'sm:h-[100px] h-[200px] ' : modalVisible && step === 4 ? 'md:h-[482px] h-[200px]' : 'h-[482px] '
+                +(modalVisible && step!== 4 ? 'tablet:h-[100px] h-[200px] ' : modalVisible && step === 4 ? 'tablet:h-[482px] h-[200px]' : 'h-[482px] '
                 )}
                      style={{
                          backgroundImage: `url(${headerProject.src})`,
@@ -160,10 +160,10 @@ export function SwapReward({_active}) {
                 >
 
                     <div className={"flex justify-between tablet:flex-col tablet:items-center items-start mx-auto w-full max-w-[1526px] relative lgm:mb-0 mdm:mb-[-33px] mdm:mb-[-79px]  mb-0 "
-                    +(modalVisible ? 'tablet:flex-col-reverse md:pt-0 md:mt-[15px] md:pb-0' : 'smd:flex-col'
+                    +(modalVisible ? 'tablet:flex-col-reverse md:pt-0 md:mt-[15px] md:pb-0' : ''
                     )}>
                         <div className={"flex flex-col justify-between tablet:items-center items-start sm:mx-auto sm:max-w-[90%] lg:max-w-[520px] md:min-w-[375px] max-w-[616px] sx:w-full md:w-[45%] mr-4 sx:pt-[24px] mdd:pt-[52px] lg:pt-[63px] pt-[97px] sx:min-w-[auto]  "
-                        +(modalVisible ? 'md:mt-[230px]' : 'md:mt-0'
+                        +(modalVisible ? '' : 'md:mt-0'
                         )}>
                             <div className={"md:mb-[33px] text-primaryBgColor text-lg sm:leading-[26px] "
                             + (active ? 'mb-[33px]' :

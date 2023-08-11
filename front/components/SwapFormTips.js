@@ -67,10 +67,10 @@ export class SwapFormTips extends Component {
             <>
 
                 <div
-                    className={"flex flex-col justify-between bg-textColor relative md:top-0 top-[-220px] " +
+                    className={"flex flex-col justify-between bg-textColor relative tablet:top-0 top-[-220px] " +
                     "max-w-[497px] " +
                     "min-h-[680px] sx:h-[auto] shadow-[19px_23px_87px_0_#6CB8EF33] " +
-                    "md:rounded-tl-2xl md:rounded-tr-2xl md:rounded-bl-none md:rounded-br-none rounded-md w-full md:mt-0 mt-[22px] sx:px-0 pb-[27px] sx:pb-[40px] md:mb-[-118px] "
+                    "md:rounded-tl-2xl md:rounded-tr-2xl md:rounded-bl-none md:rounded-br-none rounded-md w-full md:mt-[7px] mt-[22px] sx:px-0 pb-[27px] sx:pb-[40px] md:mb-[-118px] "
                     + (active ? "sx:h-[655px]" : step === 4 ? "z-10" : "sx:h-[543px]")
                     }
                 >
@@ -107,8 +107,8 @@ export class SwapFormTips extends Component {
 
                         </div>
 
-                        <Image src={walletPic} className="w-[211px] h-[175px] sm:hidden relative left-3" alt={walletPic}/>
-                        <Image src={walletPicMob} className="w-[115px] h-[185px] sm:block hidden relative left-3" alt={walletPicMob}/>
+                        <Image src={walletPic} className="w-[211px] h-[175px] tablet:hidden relative left-3" alt={walletPic}/>
+                        <Image src={walletPicMob} className="w-[115px] h-[185px] tablet:block hidden relative left-3" alt={walletPicMob}/>
 
                     </div>
 
@@ -166,31 +166,24 @@ export class SwapFormTips extends Component {
 
                                             <div className="bg-textColor relative flex justify-between h-[66px] w-full rounded-md py-[11px] mb-[23.5px] "
                                             >
-                                                <div className="flex flex-col justify-between items-start gap-[10px] relative">
-                                                    <div className="flex flex-col justify-between items-center max-w-[440px] gap-[10px] text-center mx-auto">
-                                                        <div
-                                                            className={"flex justify-between items-center w-full gap-[9px] "
-                                                            + ( step === 3 && "z-10")
-                                                            }>
-                                                            {data.slice(0, 5).map(el => (
-                                                                <CoinsAmount key={el.amount} amount={el.amount}
-                                                                             step={step}
-                                                                             tips={tips}
-                                                                />
-                                                            ))}
-                                                        </div>
-                                                        <div
-                                                            className={"flex justify-between items-center w-full gap-[9px] "
-                                                            + ( step === 3 && "z-10")
-                                                            }>
-                                                            {data.slice(-5).map(el => (
-                                                                <CoinsAmount key={el.amount} amount={el.amount}
-                                                                             step={step}
-                                                                />
-                                                            ))}
-                                                        </div>
+                                                <div
+                                                    className="flex flex-col justify-between items-center sx:w-full gap-[10px] text-center mx-auto">
+                                                    <div
+                                                        className={"flex justify-between items-center sx:w-full gap-[9px] "}>
+                                                        {data.slice(0, 5).map(el => (
+                                                            <CoinsAmount key={el.amount} amount={el.amount}
+                                                                         step={step}
+                                                                         tips={tips}/>
+                                                        ))}
                                                     </div>
-
+                                                    <div
+                                                        className="flex justify-between items-center sx:w-full gap-[9px]">
+                                                        {data.slice(-5).map(el => (
+                                                            <CoinsAmount key={el.amount} amount={el.amount}
+                                                                         step={step}
+                                                                         />
+                                                        ))}
+                                                    </div>
                                                 </div>
 
                                             </div>
