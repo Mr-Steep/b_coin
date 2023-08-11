@@ -76,7 +76,8 @@ export class SwapForm extends Component {
                 _balanceContractBonuses: 0,
                 _timeUnlockTime: "",
                 value: "",
-                activeAmount: ""
+                activeAmount: "",
+                isLoading: false
             }
 
         this.state = this.initialState
@@ -108,20 +109,33 @@ export class SwapForm extends Component {
 
 
     buy = async () => {
-        if(this.state.globalMultiplier>0){
-            await this.buyTokens()
-        }else{
-            if (this.props.active) {
-                console.log('buyTokensBonus')
-                await this.buyTokensBonus()
-            } else {
-                console.log('buyTokens')
+        this.setState({
+            isLoading: true
+        })
+        try {
+            if (this.state.globalMultiplier > 0) {
                 await this.buyTokens()
+            } else {
+                if (this.props.active) {
+                    console.log('buyTokensBonus')
+                    await this.buyTokensBonus()
+                } else {
+                    console.log('buyTokens')
+                    await this.buyTokens()
+                }
+
             }
 
+            this._clear()
+            this.setState({
+                isLoading: false
+            })
+        } catch (error) {
+            console.error('Error fetching data:', error);
+            this.setState({
+                isLoading: false
+            })
         }
-
-        this._clear()
     }
 
 
@@ -700,10 +714,12 @@ export class SwapForm extends Component {
                                 </div>
 
                                 <SwapFormButton
+                                    isLoading={this.state.isLoading}
+                                    disabledBtn={this.state.isLoading}
                                     buy={this.buy}
                                     currentError={this.state.currentError}
                                     _changeAddNetwork={this.changeAddNetwork}
-                                    _class={"text-textColor rounded-md w-full h-[60px] py-[17px] shadow-[0px_12px_18px_0_#40A6DF] font-medium sm:text-[18px] text-lg transform-gpu transition-transform duration-200 ease-in-out hover:scale-95 focus:scale-95 active:scale-95 relative "
+                                    _class={"text-textColor rounded-md w-full h-[60px] py-[17px] shadow-[0px_12px_18px_0_#40A6DF] font-medium sm:text-[18px] text-lg transform-gpu transition-transform duration-200 ease-in-out relative flex justify-center gap-[20px] "
                                         + (this.state.currentError && this.state.currentError === 'Please connect to another Network' ? "bg-errorColor text-textColor z-10" : "bg-gradient-to-r from-[#29C8A9] via-[#208ED0] to-[#703AAD] text-primaryBgColor")
                                     }
                                 />
@@ -734,7 +750,7 @@ export class SwapForm extends Component {
 
                                                 <>
                                                     {
-                                                        this.state.isUsedMultiplier > 0 ?
+                                                        this.state.isUsedMultiplier  ?
                                                             <>
                                                                 <div
                                                                     className="flex flex-col justify-content items-center gap-4 px-[70px] mt-[125px] mb-[118px]">
@@ -775,7 +791,7 @@ export class SwapForm extends Component {
                                                                                className="w-[30px] h-[30px] mr-[6px]"/>
                                                                         <span
                                                                             className="bg-textColor text-primaryBgColor sm:text-sm text-lg font-medium leading-5 "
-                                                                        >{this.state.countTokensCurrent * 1} BNXT (${this.state.countTokensCurrent * 1}) </span>
+                                                                        >{this.state.countTokensCurrent?+this.state.countTokensCurrent:0} BNXT (${+this.state.countTokensCurrent}) </span>
                                                                         <span className="mr-2 ml-2 sm:mr-1 sm:ml-1"> = </span>
                                                                         <Image src={bnbLogo}
                                                                                className="w-[30px] h-[30px] mr-[6px]"
@@ -828,10 +844,12 @@ export class SwapForm extends Component {
                                                                     </div>
                                                                 </div>
                                                                 <SwapFormButton
+                                                                    isLoading={this.state.isLoading}
+                                                                    disabledBtn={this.state.isLoading}
                                                                     buy={this.buy}
                                                                     currentError={this.state.currentError}
                                                                     _changeAddNetwork={this.changeAddNetwork}
-                                                                    _class={"text-textColor rounded-md w-full h-[60px] py-[17px] shadow-[0px_12px_18px_0_#A5CADE] font-medium sm:text-[18px] text-lg transform-gpu transition-transform duration-200 ease-in-out hover:scale-95 focus:scale-95 active:scale-95 relative "
+                                                                    _class={"text-textColor rounded-md w-full h-[60px] py-[17px] shadow-[0px_12px_18px_0_#A5CADE] font-medium sm:text-[18px] text-lg transform-gpu transition-transform duration-200 ease-in-out hover:scale-95 focus:scale-95 active:scale-95 relative flex justify-center gap-[20px] "
                                                                         + (this.state.currentError && this.state.currentError === 'Please connect to another Network' ? "bg-errorColor text-textColor z-10" : "bg-gradient-to-r from-[#29C8A9] via-[#208ED0] to-[#703AAD] text-primaryBgColor")
                                                                     }
                                                                 />
@@ -936,11 +954,12 @@ export class SwapForm extends Component {
                                                                 </>
                                                         }
                                                         <SwapFormButton
-                                                                    disabledBtn={!this.state.value}
+                                                                    isLoading={this.state.isLoading}
+                                                                    disabledBtn={!this.state.value || this.state.isLoading}
                                                                     buy={this.buy}
                                                                     currentError={this.state.currentError}
                                                                     _changeAddNetwork={this.changeAddNetwork}
-                                                                    _class={"text-textColor rounded-md w-full h-[60px] py-[17px] font-medium sm:text-[18px] shadow-[0px_12px_18px_0_#A5CADE] text-lg transform-gpu transition-transform duration-200 ease-in-out  relative mt-auto "
+                                                                    _class={"text-textColor rounded-md w-full h-[60px] py-[17px] font-medium sm:text-[18px] shadow-[0px_12px_18px_0_#A5CADE] text-lg transform-gpu transition-transform duration-200 ease-in-out  relative mt-auto flex justify-center gap-[20px] "
                                                                         + (this.state.currentError && this.state.currentError === 'Please connect to another Network' ? "bg-errorColor  z-10" : "bg-gradient-to-r from-[#29C8A9] via-[#208ED0] to-[#703AAD]")
                                                                     }
                                                                 />
@@ -1013,6 +1032,7 @@ export class SwapForm extends Component {
                                         ullamco est sit aliqua dolor do amet sint.</p>
                                 </div>
                                 <SwapFormButton
+                                    isLoading={this.state.isLoading}
                                     step={step}
                                     buy={this.buy}
                                     currentError={this.state.currentError}

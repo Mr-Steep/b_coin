@@ -1,7 +1,8 @@
 import React from "react";
+import loader from "../assets/images/loader.svg";
+import Image from "next/image";
 
-
-export function SwapFormButton({_class, buy, currentError, _changeAddNetwork, disabledBtn}) {
+export function SwapFormButton({_class, buy, currentError, _changeAddNetwork, disabledBtn, isLoading}) {
 
     return (
         <button
@@ -12,6 +13,9 @@ export function SwapFormButton({_class, buy, currentError, _changeAddNetwork, di
             ? 'Switch to Binance Smart Chain'
             : 'Buy BNXT'
         }
+            {isLoading &&
+            <Image src={loader} className="w-[30px] h-[30px]" alt={'loader'}/>
+            }
         </button>
     )
 }
