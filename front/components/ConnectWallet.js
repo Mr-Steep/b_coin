@@ -105,6 +105,7 @@ export function ConnectWallet({_class, connectWallet, setNetworkError}) {
                     className={_class}
                     disabled={isDisabled}
                     onClick={openModal}
+                    id='connect-wallet'
             >
                 Connect wallet
             </button>

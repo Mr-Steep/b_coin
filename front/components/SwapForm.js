@@ -991,7 +991,6 @@ export class SwapForm extends Component {
                                         deserunt ullamco est sit aliqua dolor do amet sint.</p>
                                 </div>
                                 <ConnectWallet
-                                    id='connect-wallet'
                                     connectWallet={this._connectWallet}
                                     setNetworkError={this._setNetworkError}
                                     _class={"bg-gradient-to-r from-[#29C8A9] via-[#208ED0] to-[#703AAD] text-textColor rounded-md w-full h-[60px] py-[17px] font-medium text-[18px] transform-gpu transition-transform duration-200 ease-in-out hover:scale-95 focus:scale-95 active:scale-95 shadow-[0_12px_18px_0_#A5CADE] relative "}
