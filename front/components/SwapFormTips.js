@@ -67,10 +67,10 @@ export class SwapFormTips extends Component {
             <>
 
                 <div
-                    className={"flex flex-col justify-between bg-textColor relative md:top-0 top-[-228px] " +
+                    className={"flex flex-col justify-between bg-textColor relative md:top-0 top-[-220px] " +
                     "max-w-[497px] " +
-                    "min-h-[670px] sx:h-[auto] shadow-[19px_23px_87px_0_#6CB8EF33] " +
-                    "md:rounded-tl-2xl md:rounded-tr-2xl md:rounded-bl-none md:rounded-br-none rounded-md sx:rounded-tr-none sx:rounded-tl-none w-full md:mt-0 mt-[22px] sx:px-4 pb-[27px] sx:pb-[40px] md:mb-[-118px] "
+                    "min-h-[680px] sx:h-[auto] shadow-[19px_23px_87px_0_#6CB8EF33] " +
+                    "md:rounded-tl-2xl md:rounded-tr-2xl md:rounded-bl-none md:rounded-br-none rounded-md w-full md:mt-0 mt-[22px] sx:px-0 pb-[27px] sx:pb-[40px] md:mb-[-118px] "
                     + (active ? "sx:h-[655px]" : step === 4 ? "z-10" : "sx:h-[543px]")
                     }
                 >
@@ -78,8 +78,8 @@ export class SwapFormTips extends Component {
                     {/*steps*/}
                     <Step step={step} setNewStep={setNewStep} closeModal={closeModal}/>
 
-                    <div className="bg-primaryBgColor flex justify-between items-end w-full sm:rounded-t-[10px] pt-5 mb-[27px] sm:px-4 pl-7 pr-[35px] sx:mx-auto sx:max-w-[343px]">
-                        <div className="flex flex-col gap-10 pb-5">
+                    <div className="bg-primaryBgColor flex justify-between w-full rounded-t-[10px] rounded-b-0 rounded-l-0 pt-[23px] sm:px-4 px-7 sx:mx-auto">
+                        <div className="flex flex-col justify-between pt-[10px] pb-5">
                             <div className="flex flex-col">
                                 <p className="text-buttonBgColor text-sm leading-4 mb-2">Your BNXT balance</p>
                                 <div className="flex items-center">
@@ -122,8 +122,8 @@ export class SwapFormTips extends Component {
 
                                 {
                                     step === 1 &&
-                                    <div className="flex flex-col justify-between items-center gap-4 max-w-[320px] mt-[83px] mb-[89px]">
-                                        <Image src={metamask} className="w-[88px] h-[88px]" alt={metamask}/>
+                                    <div className="flex flex-col justify-between items-center gap-4 max-w-[320px] mt-[97px] mb-[132px]">
+                                        <Image src={metamask} className="w-[100px] h-[100px]" alt={metamask}/>
                                         <p className="text-3xl font-medium leading-[32.64px] mt-10">Connect your wallet</p>
                                         <p className="text-base font-normal leading-[26px] text-center">Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint.</p>
                                     </div>
@@ -141,9 +141,14 @@ export class SwapFormTips extends Component {
 
                                 {
                                     (step === 3 || step === 4) &&
-                                    <>
-                                        <div className="bg-gradient-to-r from-[#34C4E1] via-[#5B86F8] to-[#7165ED] w-full rounded-[49px] p-[1px] mb-[26px] ">
-                                            <div className="bg-white p-2 flex justify-center gap-3 items-center rounded-[49px]  ">
+                                    <div className=" "
+
+                                    >
+                                        <div className="bg-gradient-to-r from-[#34C4E1] via-[#5B86F8] to-[#7165ED] w-full rounded-[49px] p-[1px] mb-[26px] "
+                                        >
+                                            <div className={"bg-white p-2 flex justify-center gap-3 items-center rounded-[49px] "
+
+                                            }>
                                                 <Image src={lightningBlue} className="" alt={lightningBlue}/>
                                                 <p className="text-primaryBgColor text-base leading-[17.41px] font-medium">1 bNXT <span
                                                     className="text-primaryBgColor text-base leading-[17.41px] font-light">($1.00)</span> = BNB
@@ -175,7 +180,9 @@ export class SwapFormTips extends Component {
                                                             ))}
                                                         </div>
                                                         <div
-                                                            className="flex justify-between items-center gap-[9px]">
+                                                            className={"flex justify-between items-center w-full gap-[9px] "
+                                                            + ( step === 3 && "z-10")
+                                                            }>
                                                             {data.slice(-5).map(el => (
                                                                 <CoinsAmount key={el.amount} amount={el.amount}
                                                                              step={step}
@@ -230,7 +237,7 @@ export class SwapFormTips extends Component {
                                             }
 
                                         </div>
-                                    </>
+                                    </div>
                                 }
 
                             </div>

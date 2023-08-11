@@ -4,12 +4,10 @@ import bnbLogo from "../assets/images/bnb-logo.svg";
 import metamask from "../assets/images/metamask.png";
 import walletPic from "../assets/images/wallet-pic.png";
 import walletPicMob from "../assets/images/wallet-pic-mob.png";
-import arrowDown from "../assets/images/arrow-narrow-down.svg";
-import wallet from "../assets/images/wallet.svg";
+
 import lightningBlue from "../assets/images/lightning-blue.svg";
 import gas from "../assets/images/gas-black.svg";
-import alert_circle from "../assets/images/alert-circle.svg";
-import Link from "next/link";
+
 import Image from "next/image";
 
 import {Component} from 'react'
@@ -23,11 +21,6 @@ import {CoinsAmount} from "@/components/CoinsAmount";
 
 import {ethers, utils} from "ethers";
 import http from "http";
-import {Withdrawal} from "@/components/Withdrawal";
-import {ChangeOwner} from "@/components/ChangeOwner";
-import {WaitingForTransactionMessage} from "@/components/WaitingForTransactionMessage";
-import {TransactionErrorMessage} from "@/components/TransactionErrorMessage";
-import {Step} from "@/components/Step";
 import {SwapFormButton} from "./SwapFormButton";
 
 const FIXED_VALUE = 7
@@ -115,20 +108,27 @@ export class SwapForm extends Component {
 
 
     buy = async () => {
-        if (this.props.active) {
-            console.log('buyTokensBonus')
-            await this.buyTokensBonus()
-        } else {
-            console.log('buyTokens')
+        if(this.state.globalMultiplier>0){
             await this.buyTokens()
+        }else{
+            if (this.props.active) {
+                console.log('buyTokensBonus')
+                await this.buyTokensBonus()
+            } else {
+                console.log('buyTokens')
+                await this.buyTokens()
+            }
+
         }
+
         this._clear()
     }
+
+
 
     buyTokensBonus = async () => {
         const balance = ethers.utils.formatUnits(this.state.countTokensCurrent, 0)
         const inWei = this.transTo(balance * this.state.multiplier / this.state.rate) / 10
-        // console.log(balance, inwei)
         try {
             const overrides = {
                 value: inWei.toString()
@@ -155,10 +155,13 @@ export class SwapForm extends Component {
     buyTokens = async () => {
         // const signer = this._provider.getSigner(0)
         try {
-            const amountToken = this.state.inputValue
+            let amountToken = this.state.inputValue
             const overrides = {
                 value: this.state.priceInWei.toString()
             };
+			if(this.state.globalMultiplier>0){
+                amountToken = this.state.countTokensCurrent
+            }
 
             const tx = await this._tokenShop.buyTokens(amountToken, overrides)
             this.setState({
@@ -204,84 +207,12 @@ export class SwapForm extends Component {
         }
     }
 
-
-    _setGlobalMultiplier = async () => {
-        try {
-            const multiplayer = this.state.globalMultiplier
-            const tx = await this._tokenShop.setGlobalMultiplier(multiplayer)
-            this.setState({
-                txBeingSent: tx.hash
-            })
-            await tx.wait()
-        } catch (e) {
-            this.checkError(e.message)
-            console.error(e);
-
-        } finally {
-            this.setState({
-                txBeingSent: null
-            })
-        }
-    }
-
-
-    unlockTokens = async () => {
-        try {
-            const tx = await this._tokenShop.unlockTokens()
-            this.setState({
-                txBeingSent: tx.hash
-            })
-            await tx.wait()
-        } catch (e) {
-            this.checkError(e.message)
-            console.error(e);
-        } finally {
-            this._resetState()
-        }
-    }
-    _setUnlockTime = async () => {
-        try {
-            const timestamp = this.state._timeUnlockTime
-            const tx = await this._tokenShop._setUnlockTime(timestamp)
-            this.setState({
-                txBeingSent: tx.hash
-            })
-            await tx.wait()
-        } catch (e) {
-            this.checkError(e.message)
-            console.error(e);
-        } finally {
-            this._resetState()
-        }
-    }
-
     showError = (error) => {
         this.setState({
             currentError: error
         })
     }
 
-    changeOwner = async () => {
-        const address = this.state.newAddressOwner
-        if (!utils.isAddress(address)) {
-            return this.showError('Invalid address');
-        }
-        try {
-            const tx = await this._tokenShop.transferOwnership(address)
-            this.setState({
-                txBeingSent: tx.hash
-            })
-            await tx.wait()
-        } catch (e) {
-            this.checkError(e.message)
-            console.error(e);
-
-        } finally {
-            this.setState({
-                txBeingSent: null
-            })
-        }
-    }
 
     async updateBalance() {
         await this.getRate()
@@ -336,6 +267,10 @@ export class SwapForm extends Component {
                 const weiGas = ethers.utils.parseUnits(gwei, "gwei");
                 const weiValue = ethers.utils.parseUnits(priceInWei, "wei");
                 const totalInWei = ethers.utils.formatUnits(weiGas.add(weiValue), "ether")
+                if(this.state.globalMultiplier > 0){
+                    priceInWei = priceInWei/10;
+                }
+
                 this.setState({
                     rate: price,
                     priceInWei: priceInWei,
@@ -344,6 +279,7 @@ export class SwapForm extends Component {
                     totalCostUSD: totalInWei
                 });
                 this.showError('')
+                console.log( this.state)
             });
         })
     }
@@ -498,16 +434,6 @@ export class SwapForm extends Component {
         return false;
     }
 
-    _fillTimestamp = (value) => {
-        this.setState({_timeUnlockTime: value});
-    }
-    _fillGlobalMultiplier = (value) => {
-        this.setState({globalMultiplier: value});
-    }
-
-    handleInputAddress = (value) => {
-        this.setState({newAddressOwner: value});
-    }
 
 
     _getRpcErrorMessage(error) {
@@ -808,7 +734,7 @@ export class SwapForm extends Component {
 
                                                 <>
                                                     {
-                                                        this.state.isUsedMultiplier ?
+                                                        this.state.isUsedMultiplier > 0 ?
                                                             <>
                                                                 <div
                                                                     className="flex flex-col justify-content items-center gap-4 px-[70px] mt-[125px] mb-[118px]">
@@ -830,7 +756,7 @@ export class SwapForm extends Component {
                                                                     className="flex justify-between items-center bg-[#F2F2F2] w-full rounded-[6px] pr-6 pl-4 py-[10px]">
                                                                     <input
                                                                         readOnly={active || modalVisible}
-                                                                        value={this.state.countTokensCurrent * this.state.multiplier}
+                                                                        value={this.state.inputValue}
                                                                         name="number"
                                                                         className="appearance-none bg-[#F2F2F2] text-primaryBgColor md:text-3xl text-[30px] sx:text-[24px]  outline-0 w-full h-[33px]"
                                                                     />

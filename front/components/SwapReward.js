@@ -102,7 +102,7 @@ export function SwapReward({_active}) {
     return (
         <Layout modalVisible={modalVisible} closeModal={closeModal}>
             <div className="flex flex-col justify-between min-h-screen">
-                <div className={"lg:max-h-[380px] sm:px-4  smn:px-[50px] mdm:px-[102px] lgm:px-[111px]   px-[16px] "
+                <div className={"lg:max-h-[380px] sm:px-4  smn:px-[50px] mdm:px-[102px] lgm:px-[111px] px-[16px] "
                 +(modalVisible && step!== 4 ? 'sm:h-[100px] h-[200px] ' : modalVisible && step === 4 ? 'md:h-[482px] h-[200px]' : 'h-[482px] '
                 )}
                      style={{
@@ -119,15 +119,11 @@ export function SwapReward({_active}) {
                             </Link>
                             {
                                 !selectAccount ?
-                                    <ConnectWallet
-                                        // active={this.state.selectAccount}
-                                        // connectWallet={this._connectWallet}
-                                        // networkError={this.state.networkError}
-                                        // dismiss={this._dismissNetworkError}
-                                        // _setNetworkError={this._setNetworkError}
-                                        _class="bg-gradient-to-r from-[#29C8A9] to-[#703AAD] text-textColor font-medium rounded-md sx:max-w-[157px] max-h-[50px] w-[200px] md:px-5 px-4 py-3 sm:text-[16px] text-[18px] sx:py-[12px] sx:px-[16px] transform-gpu transition-transform duration-200 ease-in-out hover:scale-95 focus:scale-95 active:scale-95 "
+                                    <button
+                                       	onClick={ ()=> document.getElementById('connect-wallet').click()}
+                                        className="bg-gradient-to-r from-[#29C8A9] to-[#703AAD] text-textColor font-medium rounded-md sx:max-w-[157px] max-h-[50px] w-[200px] md:px-5 px-4 py-3 sm:text-[16px] text-[18px] sx:py-[12px] sx:px-[16px] transform-gpu transition-transform duration-200 ease-in-out hover:scale-95 focus:scale-95 active:scale-95 "
 
-                                    /> :
+                                    >Connect Wallet</button> :
                                     selectAccount &&
                                     <div
                                         onClick={disconnect}
