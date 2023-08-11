@@ -122,10 +122,10 @@ export class SwapFormTips extends Component {
 
                                 {
                                     step === 1 &&
-                                    <div className="flex flex-col justify-between items-center gap-4 max-w-[320px] mt-[97px] mb-[132px]">
+                                    <div className="flex flex-col justify-between items-center gap-4 max-w-[320px] mt-[47px] mb-[70px]">
                                         <Image src={metamask} className="w-[100px] h-[100px]" alt={metamask}/>
-                                        <p className="text-3xl font-medium leading-[32.64px] mt-10">Connect your wallet</p>
-                                        <p className="text-base font-normal leading-[26px] text-center">Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint.</p>
+                                        <p className="text-primaryBgColor text-3xl font-medium leading-[32.64px]">Connect your wallet</p>
+                                        <p className="text-primaryBgColor text-base font-normal leading-[26px] text-center">Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint.</p>
                                     </div>
                                 }
 
@@ -133,8 +133,8 @@ export class SwapFormTips extends Component {
                                     step === 2 &&
                                     <div className="flex flex-col justify-between items-center gap-4 max-w-[320px] mt-[70px] mb-[72px]">
                                         <Image src={bnbLogo} className="w-[88px] h-[88px]" alt={bnbLogo}/>
-                                        <p className="text-3xl font-medium leading-[32.64px]">Switch network</p>
-                                        <p className="text-base font-normal leading-[26px]">Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint.</p>
+                                        <p className="text-primaryBgColor text-3xl font-medium leading-[32.64px]">Switch network</p>
+                                        <p className="text-primaryBgColor text-base font-normal leading-[26px]">Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint.</p>
                                     </div>
                                 }
 

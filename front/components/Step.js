@@ -52,12 +52,12 @@ export function Step({step, setNewStep, closeModal}) {
 
                    </div>
 
-                   <div className="absolute md:hidden bottom-[-220px] right-[30px] z-50">
+                   <div className="absolute md:hidden bottom-[-130px] right-[30px] z-50">
                        <Image src={arrow1} className="relative z-30" alt={arrow1}/>
                        <Image src={arrow2} className="relative z-30" alt={arrow2}/>
                    </div>
 
-                   <Image src={arrow3} className="absolute bottom-[-200px] right-[100px] md:block hidden z-30" alt={arrow3}/>
+                   <Image src={arrow3} className="absolute bottom-[-150px] right-[100px] md:block hidden z-30" alt={arrow3}/>
 
                </div>
 
