@@ -25,8 +25,8 @@ export function Step({step, setNewStep, closeModal}) {
 
                <div className="flex justify-between
                                absolute
-                               md:top-0 md:left-[60px] md:right-0
-                               top-[200px] left-[-460px] right-0
+                               tablet:top-0 tablet:left-[60px] tablet:right-0
+                               top-[200px] left-[-360px] right-0
                                text-white">
                    <Image src={cross} className="absolute z-10 top-0 right-0 cursor-pointer" onClick={closeModal} alt={cross} />
                    <div
@@ -52,12 +52,12 @@ export function Step({step, setNewStep, closeModal}) {
 
                    </div>
 
-                   <div className="absolute md:hidden bottom-[-220px] right-[30px] z-50">
+                   <div className="absolute tablet:hidden bottom-[-130px] right-[30px] z-50">
                        <Image src={arrow1} className="relative z-30" alt={arrow1}/>
                        <Image src={arrow2} className="relative z-30" alt={arrow2}/>
                    </div>
 
-                   <Image src={arrow3} className="absolute bottom-[-200px] right-[100px] md:block hidden z-30" alt={arrow3}/>
+                   <Image src={arrow3} className="absolute bottom-[-150px] right-[100px] tablet:block hidden z-30" alt={arrow3}/>
 
                </div>
 
@@ -67,8 +67,8 @@ export function Step({step, setNewStep, closeModal}) {
 
            <div className="flex justify-between
                                absolute
-                               md:top-0 md:left-[60px] md:right-0
-                               top-[200px] left-[-460px] right-0
+                               tablet:top-0 tablet:left-[60px] md:right-0
+                               top-[200px] left-[-360px] right-0
                                text-white">
                <Image src={cross} className="absolute z-10 top-0 right-0 cursor-pointer" onClick={closeModal} alt={cross} />
                <div
@@ -96,12 +96,12 @@ export function Step({step, setNewStep, closeModal}) {
 
                </div>
 
-               <div className="absolute md:hidden bottom-[-140px] right-0 z-50">
+               <div className="absolute tablet:hidden bottom-[-140px] right-0 z-50">
                    <Image src={arrow1} className="relative z-30" alt={arrow1}/>
                    <Image src={arrow2} className="relative z-50" alt={arrow2}/>
                </div>
 
-               <Image src={arrow3} className="absolute bottom-[-150px] right-[100px] md:block hidden z-30" alt={arrow3}/>
+               <Image src={arrow3} className="absolute bottom-[-150px] right-[100px] tablet:block hidden z-30" alt={arrow3}/>
 
            </div>
 
@@ -110,7 +110,8 @@ export function Step({step, setNewStep, closeModal}) {
            {step === 3 &&
 
                <div className="flex justify-between absolute
-                                md:top-[-220px] md:left-[38px]
+                                tablet:top-[-220px] tablet:left-[20px]
+                                md:left-[-300px]
                                 top-[130px] left-[-560px] right-0
                                 text-white z-20">
                    <Image src={cross} className="absolute z-10 md:top-[150px] top-[100px] right-0 cursor-pointer" onClick={closeModal} alt={cross} />
@@ -133,9 +134,9 @@ export function Step({step, setNewStep, closeModal}) {
 
                    </div>
 
-                   <Image src={arrow5} className="absolute md:hidden top-[240px] left-[270px]" alt={arrow5}/>
+                   <Image src={arrow5} className="absolute mdd:hidden top-[240px] left-[270px]" alt={arrow5}/>
 
-                   <Image src={arrow3} className="absolute top-[400px] right-[80px] md:block hidden" alt={arrow3}/>
+                   <Image src={arrow3} className="absolute top-[370px] right-[80px] tablet:block hidden" alt={arrow3}/>
 
                </div>
 
@@ -144,7 +145,8 @@ export function Step({step, setNewStep, closeModal}) {
            {step === 4 &&
 
            <div className="flex justify-between absolute
-                                md:top-[-500px] md:left-[38px]
+                                tablet:top-[-500px] tablet:left-[38px]
+                                md:left-[-300px]
                                 top-[30px] left-[-560px] right-0
                                 text-white z-20">
                <Image src={cross} className="absolute z-10 top-[150px] md:right-[25px] right-[-50px] cursor-pointer" onClick={closeModal} alt={cross} />
@@ -168,11 +170,11 @@ export function Step({step, setNewStep, closeModal}) {
 
                </div>
 
-               <Image src={arrow5} className="absolute md:hidden top-[240px] left-[270px]" alt={arrow5}/>
-               <Image src={arrow7} className="absolute md:top-[1135px] top-[580px] md:left-[-15px] left-[550px]" alt={arrow7}/>
-               <Image src={arrow8} className="absolute md:top-[830px] top-[290px] right-[100px]" alt={arrow8}/>
+               <Image src={arrow5} className="absolute mdd:hidden top-[240px] left-[270px]" alt={arrow5}/>
+               <Image src={arrow7} className="absolute sx:hidden tablet:top-[1120px] top-[580px] tablet:left-0 md:left-[300px] left-[550px]" alt={arrow7}/>
+               <Image src={arrow8} className="absolute sx:hidden sm:right-[130px] sx:top-[880px] sm:top-[860px] tablet:top-[820px] top-[290px] right-[100px]" alt={arrow8}/>
 
-               <Image src={arrow3} className="absolute top-[360px] right-[20px] md:block hidden" alt={arrow3}/>
+               <Image src={arrow3} className="absolute top-[360px] right-[20px] tablet:block hidden" alt={arrow3}/>
 
            </div>
 
