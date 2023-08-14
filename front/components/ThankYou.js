@@ -19,7 +19,7 @@ export function ThankYou({getMultiplier, handleSetActive, setConfirmationComplet
                     <Image src={cross} className="absolute z-10 top-[22px] sx:right-[30px] right-[22px] cursor-pointer"
                            onClick={()=>close()}
                            alt={cross} />
-                    <div className="flex flex-col justify-between items-center gap-[30px]">
+                    <div className="flex flex-col justify-between items-center gap-[30px] text-primaryBgColor">
                         <p className="text-3xl font-medium text-center">Thank you!</p>
                         <p className="text-base font-normal text-center">Amet minim mollit non deserunt ullamco est sit aliqua.
                         { !getIsUserUseMultiplayer  &&

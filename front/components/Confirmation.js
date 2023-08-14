@@ -79,8 +79,8 @@ export function Confirmation({setConfirmationComplete, setTransactionComplete, h
                        onClick={()=>close()}
                        alt={cross} />
                 <div className="flex flex-col justify-between items-center gap-[30px]">
-                    <p className="text-3xl font-medium text-center text-[#000000]">Confirm your email</p>
-                    <p className="text-base font-normal text-center max-w-[320px] text-[#414042]">Enter your email below to receive all details about this transaction.</p>
+                    <p className="text-primaryBgColor text-3xl font-medium text-center">Confirm your email</p>
+                    <p className="text-primaryBgColor text-base font-normal text-center max-w-[320px]">Enter your email below to receive all details about this transaction.</p>
                     <div className={" sm:w-[320px] w-[395px] rounded-[6px] p-[1px] "
                     + (emailError || checkboxError ? "bg-errorColor" : "bg-gradient-to-r from-[#33EFF1] to-[#198498]")
                     }>
@@ -99,15 +99,14 @@ export function Confirmation({setConfirmationComplete, setTransactionComplete, h
                         <div className="flex justify-between items-start  bg-white">
                             <input name="checkbox" onClick={() => setIsChecked(!isChecked)} data-goal="terms" type="checkbox" className="h-[20px] w-[20px] mr-3 opacity-0 h-0 absolute z-[1]"/>
                             <span className={"flex text-sm font-normal leading-[18px] relative z-0 text-[#414042] before:content-[''] before:inline-block before:w-[20px] before:h-[20px] before:border before:border-solid before:border-[#D0D5DD] before:rounded-[6px] before:mr-[12px] before:min-w-[20px] "
-                            + (isChecked ? "before:border-[#000000] after:content-[''] after:absolute after:left-[7px] after:top-[3px] after:rotate-45 after:h-[11px] after:w-[6px] after:border-b-[2px] after:border-[#000000] after:border-r-[2px] " : '') }>Read and accept
-                                <span className="font-bold text-[#000000] contents"> Terms of Use </span>and <span className="contents font-bold text-[#000000]">Privacy Policy</span>
-                            </span>
+                            + (isChecked ? "before:border-primaryBgColor after:content-[''] after:absolute after:left-[7px] after:top-[3px] after:rotate-45 after:h-[11px] after:w-[6px] after:border-b-[2px] after:border-[#000000] after:border-r-[2px] " : '') }>Read and accept
+                                <span className="font-bold text-primaryBgColor contents"> Terms of Use </span>and <span className="contents font-bold text-[#000000]">Privacy Policy</span></span>
                         </div>
                         <div className="flex justify-between items-start  bg-white">
                             <input name="checkbox" onClick={() => setIsCheckedSubmit(!isCheckedSubmit)}  data-goal="statement" type="checkbox" className="h-[20px] w-[20px] mr-3 opacity-0 h-0 absolute z-[1]"/>
                             <span className={"flex text-sm font-normal leading-[18px] relative z-0 text-[#414042] before:content-[''] before:inline-block before:w-[20px] before:h-[20px] before:border before:border-solid before:border-[#D0D5DD] before:rounded-[6px] before:mr-[12px] before:min-w-[20px] "
-                            + (isCheckedSubmit ? "before:border-[#000000] after:content-[''] after:absolute after:left-[7px] after:top-[3px] after:rotate-45 after:h-[11px] after:w-[6px] after:border-b-[2px] after:border-[#000000] after:border-r-[2px] " : '') }>Submit the
-                                <span className="font-bold text-[#000000] contents"> Buyer's Statement </span>as my official declaration</span>
+                            + (isCheckedSubmit ? "before:border-primaryBgColor after:content-[''] after:absolute after:left-[7px] after:top-[3px] after:rotate-45 after:h-[11px] after:w-[6px] after:border-b-[2px] after:border-[#000000] after:border-r-[2px] " : '') }>Submit the
+                                <span className="font-bold text-primaryBgColor contents"> Buyer's Statement </span>as my official declaration</span>
                         </div>
                     </div>
 
