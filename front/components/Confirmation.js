@@ -14,6 +14,8 @@ export function Confirmation({setConfirmationComplete, setTransactionComplete, h
     const [emailError, setEmailError] = useState(false)
     const [checkboxError, setCheckboxError] = useState(false)
 
+    const [isChecked, setIsChecked] = useState(false);
+    const [isCheckedSubmit, setIsCheckedSubmit] = useState(false);
     const confirm = async () => {
         setIsLoading(true)
         const emailInput = document.querySelector('input[name="email"]');
@@ -58,10 +60,10 @@ export function Confirmation({setConfirmationComplete, setTransactionComplete, h
         }
     };
 
-    close = () => {
-        setConfirmationComplete(true);
-        setTransactionComplete(false)
-    }
+    // close = () => {
+    //     setConfirmationComplete(true);
+    //     setTransactionComplete(false)
+    // }
 
     function isValidEmail(email) {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -83,7 +85,7 @@ export function Confirmation({setConfirmationComplete, setTransactionComplete, h
                     + (emailError || checkboxError ? "bg-errorColor" : "bg-gradient-to-r from-[#33EFF1] to-[#198498]")
                     }>
                         <input name="email" type="email"
-                               placeholder="Enter your email" className="w-full outline-0 rounded-[6px] px-[22px] py-4" />
+                               placeholder="Enter your email" className="w-full outline-0 rounded-[6px] px-[22px] py-4 bg-[#ffffff]" />
                     </div>
 
                     {emailError &&
@@ -94,13 +96,17 @@ export function Confirmation({setConfirmationComplete, setTransactionComplete, h
                     }
 
                     <div className="flex flex-col justify-between items-center gap-[10px] max-w-[320px] w-full">
-                        <div className="flex justify-between items-start">
-                            <input name="checkbox" data-goal="terms" type="checkbox" className="w-5 h-5 rounded-[6px] mr-3"/>
-                            <span className="text-primaryBgColor text-sm font-normal leading-[18px]">Read and accept <Link href="https://bnxt.network/terms-conditions/"><span className="font-bold">Terms of Use </span></Link>and <Link href="https://bnxt.network/privacy-policy/"><span className="font-bold">Privacy Policy</span></Link></span>
+                        <div className="flex justify-between items-start  bg-white">
+                            <input name="checkbox" onClick={() => setIsChecked(!isChecked)} data-goal="terms" type="checkbox" className="h-[20px] w-[20px] mr-3 opacity-0 h-0 absolute z-[1]"/>
+                            <span className={"flex text-sm font-normal leading-[18px] relative z-0 text-[#414042] before:content-[''] before:inline-block before:w-[20px] before:h-[20px] before:border before:border-solid before:border-[#D0D5DD] before:rounded-[6px] before:mr-[12px] before:min-w-[20px] "
+                            + (isChecked ? "before:border-primaryBgColor after:content-[''] after:absolute after:left-[7px] after:top-[3px] after:rotate-45 after:h-[11px] after:w-[6px] after:border-b-[2px] after:border-[#000000] after:border-r-[2px] " : '') }>Read and accept
+                                <span className="font-bold text-primaryBgColor contents"> Terms of Use </span>and <span className="contents font-bold text-[#000000]">Privacy Policy</span></span>
                         </div>
-                        <div className="flex justify-between items-start">
-                            <input name="checkbox" data-goal="statement" type="checkbox" className="w-5 h-5 rounded-[6px] mr-3"/>
-                            <span className="text-primaryBgColor text-sm font-normal leading-[18px]">Submit the <Link href=""><span className="font-bold">Buyer's Statement </span></Link>as my official declaration</span>
+                        <div className="flex justify-between items-start  bg-white">
+                            <input name="checkbox" onClick={() => setIsCheckedSubmit(!isCheckedSubmit)}  data-goal="statement" type="checkbox" className="h-[20px] w-[20px] mr-3 opacity-0 h-0 absolute z-[1]"/>
+                            <span className={"flex text-sm font-normal leading-[18px] relative z-0 text-[#414042] before:content-[''] before:inline-block before:w-[20px] before:h-[20px] before:border before:border-solid before:border-[#D0D5DD] before:rounded-[6px] before:mr-[12px] before:min-w-[20px] "
+                            + (isCheckedSubmit ? "before:border-primaryBgColor after:content-[''] after:absolute after:left-[7px] after:top-[3px] after:rotate-45 after:h-[11px] after:w-[6px] after:border-b-[2px] after:border-[#000000] after:border-r-[2px] " : '') }>Submit the
+                                <span className="font-bold text-primaryBgColor contents"> Buyer's Statement </span>as my official declaration</span>
                         </div>
                     </div>
 

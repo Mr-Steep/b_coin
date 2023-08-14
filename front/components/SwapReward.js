@@ -137,7 +137,7 @@ export function SwapReward({_active}) {
 
                             }
                         </div>
-                        <p className={"sx:text-[40px] text-textColor sx:leading-[43.52px] lg:leading-[60.93px] leading-[104.45px] font-bold w-full md:mb-4 "
+                        <p className={"sx:text-[40px] text-textColor sx:leading-[43.52px] lg:leading-[60.93px] font-bold w-full md:mb-4 "
                         + (active && !getIsUserUseMultiplayer ? 'lg:text-[40px] text-[60px] lg:leading-[43.52px] lg:max-w-[430px] max-w-[697px]' :
                             'lg:text-[56px] text-[96px] lg:max-w-[380px] max-w-[697px]')}>
                             <Link href="/" className=" items-center justify-start min-w-[148px] sm:flex hidden mb-[9px]">
@@ -272,7 +272,7 @@ export function SwapReward({_active}) {
                     <ThankYou
                         getMultiplier={getMultiplier}
                         handleSetActive={handleSetActive}
-                        setTransactionComplete={setTransactionComplete}
+                        setConfirmationComplete={setConfirmationComplete}
                         getIsUserUseMultiplayer={getIsUserUseMultiplayer}
                         getGlobalMultiplayer={getGlobalMultiplayer}
                     />
