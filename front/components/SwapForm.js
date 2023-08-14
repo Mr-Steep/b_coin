@@ -22,6 +22,7 @@ import {CoinsAmount} from "@/components/CoinsAmount";
 import {ethers, utils} from "ethers";
 import http from "http";
 import {SwapFormButton} from "./SwapFormButton";
+import gasPrice from "@/pages/api/gasPrice";
 
 const FIXED_VALUE = 7
 
@@ -265,60 +266,45 @@ export class SwapForm extends Component {
 
     getRate = async () => {
         await this.getGasPrice()
-        const url = 'https://api.binance.com/api/v3/ticker/price?symbol=BNBBUSD'
-        http.get(url, res => {
-            let data = "";
-            res.on("data", chunk => {
-                data += chunk;
-            })
-            res.on("end", () => {
-                const dataParse = JSON.parse(data);
-                const price = dataParse.price
-                let  priceInWei = this.transTo(this.state.inputValue / price)
-                let priceInBnb = (this.state.inputValue / price).toFixed(7)
-                const gwei = (this.state.gasPrice).toString()
 
-                const weiGas = ethers.utils.parseUnits(gwei, "gwei");
-                const weiValue = ethers.utils.parseUnits(priceInWei, "wei");
-                const totalInWei = ethers.utils.formatUnits(weiGas.add(weiValue), "ether")
-                if(this.state.globalMultiplier > 0){
-                    priceInWei = priceInWei/10;
-                }
+        const requestData = await fetch('/api/ratePrice', {
+            method: 'POST'
+        });
 
-                this.setState({
-                    rate: price,
-                    priceInWei: priceInWei,
-                    priceInBnb: priceInBnb,
-                    inputValue: (price * priceInBnb).toFixed(0),
-                    totalCostUSD: totalInWei
-                });
-                this.showError('')
-                console.log( this.state)
-            });
-        })
+
+        const dataParse = await requestData.json()
+        const price = dataParse.price
+        let  priceInWei = this.transTo(this.state.inputValue / price)
+        let priceInBnb = (this.state.inputValue / price).toFixed(7)
+        const gwei = (this.state.gasPrice).toString()
+
+        const weiGas = ethers.utils.parseUnits(gwei, "gwei");
+        const weiValue = ethers.utils.parseUnits(priceInWei, "wei");
+        const totalInWei = ethers.utils.formatUnits(weiGas.add(weiValue), "ether")
+        if(this.state.globalMultiplier > 0){
+            priceInWei = priceInWei/10;
+        }
+
+        this.setState({
+            rate: price,
+            priceInWei: priceInWei,
+            priceInBnb: priceInBnb,
+            inputValue: (price * priceInBnb).toFixed(0),
+            totalCostUSD: totalInWei
+        });
+        this.showError('')
+        console.log( this.state)
     }
 
     getGasPrice = async () => {
         if (this.state.gasPrice === 0) {
-            const url = 'https://api.bscscan.com/api?module=gastracker&action=gasoracle'
-            http.get(url, res => {
-                let data = "";
-                res.on("data", chunk => {
-                    data += chunk;
-                })
-                res.on("end", () => {
-                    const dataParse = JSON.parse(data);
-                    if (dataParse.message === "NOTOK") {
-                        return setTimeout(async () => {
-                            await this.getGasPrice()
-                        }, 1000)
-                    }
-                    const gasPrice = dataParse.result.SafeGasPrice
-                    return this.setState({
-                        gasPrice: gasPrice
-                    });
-                });
-            })
+            const requestData = await fetch('/api/gasPrice', {
+                method: 'POST'
+            });
+            const gasPrice = await requestData.json()
+            this.setState({
+                gasPrice: gasPrice
+            });
         }
 
     }
