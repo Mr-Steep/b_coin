@@ -7,10 +7,10 @@ import cross from "../assets/images/cross-black.svg";
 import Link from "next/link";
 
 
-export function ThankYou({getMultiplier, handleSetActive, setTransactionComplete, getIsUserUseMultiplayer, getGlobalMultiplayer}) {
+export function ThankYou({getMultiplier, handleSetActive, setConfirmationComplete, getIsUserUseMultiplayer, getGlobalMultiplayer}) {
 
     close = () => {
-        setTransactionComplete(false)
+        setConfirmationComplete(false)
     }
 
     return (
@@ -26,7 +26,7 @@ export function ThankYou({getMultiplier, handleSetActive, setTransactionComplete
                         {!getIsUserUseMultiplayer ?
                             <Link href="/reward"
                                   className="group mx-auto flex gap-[13px] bg-primaryBgColor items-center justify-between rounded-md md:min-w-[293px] max-w-[293px] max-h-[60px] w-full px-[17px] py-[17px]">
-                        <span className="text-textColor text-lg">
+                        <span className="text-textColor text-lg text-[#ffffff]">
                             Get Reward x{getMultiplier>0 && getMultiplier}
                         </span>
                                 <Image src={arrowLight} className="w-[23px] h-[23px] ml-[90px] group-hover:rotate-45 transition duration-300 ease-in" alt={''}/>
