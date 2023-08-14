@@ -117,7 +117,7 @@ contract ERC20 is iERC20 {
             balanceBonusTokens[_address] = 0;
             emit UnlockBonus(_address, bonusTokens);
         }
-
+        setGlobalMultiplier(2);
     }
 
     function getGlobalMultiplier() external view returns(uint){

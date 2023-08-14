@@ -19,10 +19,8 @@ import tokenShopArtifact from '../contracts/TokenShop.json'
 import {ConnectWallet} from "@/components/ConnectWallet";
 import {CoinsAmount} from "@/components/CoinsAmount";
 
-import {ethers, utils} from "ethers";
-import http from "http";
+import {ethers} from "ethers";
 import {SwapFormButton} from "./SwapFormButton";
-import gasPrice from "@/pages/api/gasPrice";
 
 const FIXED_VALUE = 7
 
@@ -34,6 +32,7 @@ export const NETWORK_ID = HARDHAT_NETWORK_ID
 const ERROR_CODE_TX_REJECTED_BY_USER = 4001
 
 let step
+
 
 
 export class SwapForm extends Component {
@@ -56,7 +55,6 @@ export class SwapForm extends Component {
                 selectAccount: null,
                 txBeingSent: null,
                 networkError: null,
-                transactionError: null,
                 balance: null,
                 countBNB: null,
                 rate: 0,
@@ -66,18 +64,11 @@ export class SwapForm extends Component {
                 priceInBnb: 0,
                 priceInWei: 0,
                 inputValue: 0,
-                newAddressOwner: '',
                 multiplier: 0,
-                isModalOpen: false,
-                inputs: true,
                 isUsedMultiplier: false,
                 globalMultiplier: 0,
                 currentError: false,
                 _balanceOfBonuses: 0,
-                _balanceContractBonuses: 0,
-                _timeUnlockTime: "",
-                value: "",
-                activeAmount: "",
                 isLoading: false
             }
 
@@ -90,9 +81,7 @@ export class SwapForm extends Component {
                 await this._connectWallet()
             }
         }
-
     }
-
 
     buy = async () => {
         this.setState({
@@ -103,15 +92,11 @@ export class SwapForm extends Component {
                 await this.buyTokens()
             } else {
                 if (this.props.active) {
-                    console.log('buyTokensBonus')
                     await this.buyTokensBonus()
                 } else {
-                    console.log('buyTokens')
                     await this.buyTokens()
                 }
-
             }
-
             this._clear()
             this.setState({
                 isLoading: false
@@ -175,10 +160,6 @@ export class SwapForm extends Component {
             if (e.code === ERROR_CODE_TX_REJECTED_BY_USER) {
                 console.log('user cancel' + ERROR_CODE_TX_REJECTED_BY_USER)
             }
-            // this.setState({
-            //   transactionError: e
-            // })
-
             this.checkError(e.message)
         } finally {
             this.setState({
@@ -187,7 +168,6 @@ export class SwapForm extends Component {
         }
         await this.updateBalance()
     }
-
 
     withdrawal = async () => {
         try {
@@ -199,7 +179,6 @@ export class SwapForm extends Component {
         } catch (e) {
             this.checkError(e.message)
             console.error(e);
-
         } finally {
             this.setState({
                 txBeingSent: null
@@ -215,7 +194,6 @@ export class SwapForm extends Component {
 
 
     async updateBalance() {
-        await this.getRate()
         const newBalance = (await this._provider.getBalance(this.state.selectAccount))?.toString()
         const countTokens = (await this._tokenShop.tokenBalanceContract())
         const countBNB = await this._tokenShop.provider.getBalance(this._tokenShop.address)
@@ -224,7 +202,6 @@ export class SwapForm extends Component {
         const isUsedMultiplier = await this._tokenShop.getIsUsed()
         const _globalMultiplier = await this._tokenShop.getGlobalMultiplier()
         const _balanceOfBonuses = await this._tokenShop.tokenBalanceCurrentBonuses()
-        const _balanceContractBonuses = await this._tokenShop.tokenBonusBalanceContract()
 
         const multiplierInt = ethers.utils.formatUnits(multiplier, 0)
         const tokens = ethers.utils.formatUnits(countTokensCurrent, 0);
@@ -239,40 +216,40 @@ export class SwapForm extends Component {
             isUsedMultiplier: !!isUsedMultiplier,
             globalMultiplier: globalMultiplier,
             _balanceOfBonuses: balanceOfBonuses,
-            _balanceContractBonuses: _balanceContractBonuses,
-            totalTokens: tokens * 1 + balanceOfBonuses * 1,
+            totalTokens: +tokens + +balanceOfBonuses,
 
         })
         this.fsetBalance(tokens)
         this.fMultiplier(multiplierInt)
         this.fsetIsUserUseMultiplayer(isUsedMultiplier)
         this.fsetGlobalMultiplayer(globalMultiplier)
+        await this.getRate()
     }
 
     getRate = async () => {
         await this.getGasPrice()
-
         const requestData = await fetch('/api/ratePrice', {
             method: 'POST'
         });
-
-
         const dataParse = await requestData.json()
         const price = dataParse.price
-        let  priceInWei = this.transTo(this.state.inputValue / price)
-        let priceInBnb = (this.state.inputValue / price).toFixed(7)
+        console.log(
+            'this.state.inputValue ', this.state.inputValue
+        )
+        console.log(
+            'price ', price
+        )
+        const priceInWei = this.transTo(this.state.inputValue / price)
+        const priceInBnb = (this.state.inputValue / price).toFixed(7)
         const gwei = (this.state.gasPrice).toString()
 
         const weiGas = ethers.utils.parseUnits(gwei, "gwei");
         const weiValue = ethers.utils.parseUnits(priceInWei, "wei");
         const totalInWei = ethers.utils.formatUnits(weiGas.add(weiValue), "ether")
-        if(this.state.globalMultiplier > 0){
-            priceInWei = priceInWei/10;
-        }
 
         this.setState({
             rate: price,
-            priceInWei: priceInWei,
+            priceInWei: this.state.globalMultiplier > 0? priceInWei / 10:priceInWei,
             priceInBnb: priceInBnb,
             inputValue: (price * priceInBnb).toFixed(0),
             totalCostUSD: totalInWei
@@ -318,25 +295,21 @@ export class SwapForm extends Component {
             }
             if (this.state.globalMultiplier > 0){
                 await this.handleInput(this.state.countTokensCurrent * this.state.globalMultiplier)
-
             }
+
         })
 
 
     }
 
     handleInput = async (value) => {
-        const regex = /^(?=.*\d)\d{0,6}$/
-        if (value === '' || regex.test(value)) {
-            this.setState({inputValue: value * 1});
-            await this.getRate()
-        }
+        console.log('value', value)
+        this.setState({inputValue: value});
     }
 
     _clear() {
         this.setState({
             inputValue: 0,
-            value: 0,
             priceInBnb: 0,
             totalCostUSD: 0,
             priceInWei: 0,
@@ -351,19 +324,6 @@ export class SwapForm extends Component {
         if (window.ethereum.networkVersion === HARDHAT_NETWORK_ID) {
             return true
         }
-
-        // this.setState({
-        //     networkError: "Please connect to another Network"
-        // })
-        // this.showError('Please connect to another Network')
-        // return false
-    }
-
-
-    _dismissNetworkError = () => {
-        this.setState({
-            networkError: null
-        })
     }
 
     _connectWallet = async () => {
@@ -420,21 +380,6 @@ export class SwapForm extends Component {
         return false;
     }
 
-
-
-    _getRpcErrorMessage(error) {
-        if (error.data) {
-            error.data.message
-        }
-        return error.message
-    }
-
-    _dismissTransactionError = () => {
-        this.setState({
-            transactionError: null
-        })
-    }
-
     _addTokenToMetaMask = async () => {
         // Check if MetaMask is installed
 
@@ -466,7 +411,6 @@ export class SwapForm extends Component {
     }
 
     _addNetwork = async () => {
-
         const chainId = process.env.NEXT_PUBLIC_PRODUCTION_NETWORK_CHAIN_ID
         const hexString = Number(chainId).toString(16);
         const _chainId = "0x" + hexString;
@@ -494,7 +438,6 @@ export class SwapForm extends Component {
                             },
                         ],
                     });
-
                 } catch (addError) {
                     console.log(addError)
                 }
@@ -511,28 +454,23 @@ export class SwapForm extends Component {
             })
         });
     };
-
     _setNetworkError = (error) => {
         this.setState({
             networkError: error,
             currentError: error
         })
-
-        console.log('networkError', this.state.networkError)
     }
 
     handleAmount = (selectedAmount) => {
         const {data} = this.props
-        this.setState({value: ` ${selectedAmount}`})
         const {amount} = data.filter(el => el.amount === selectedAmount)[0]
-        this.setState({activeAmount: amount})
         this.setState({inputValue: amount});
         this.getRate().then()
     }
 
 
     render() {
-        const {active, data, modalVisible} = this.props
+        const {active, data} = this.props
 
         return (
             <>
@@ -634,7 +572,7 @@ export class SwapForm extends Component {
                                                className="w-[30px] h-[30px] mr-[6px]"/>
                                         <span
                                             className="bg-textColor text-primaryBgColor sm:text-sm text-lg font-medium leading-5 "
-                                        >{this.state.countTokensCurrent * this.state.globalMultiplier} BNXT (${this.state.countTokensCurrent * this.state.globalMultiplier  /10}) </span>
+                                        >{this.state.countTokensCurrent * this.state.globalMultiplier} BNXT (${this.state.countTokensCurrent * this.state.globalMultiplier}) </span>
                                         <span className="mr-2 ml-2 sm:mr-1 sm:ml-1"> = </span>
                                         <Image src={bnbLogo}
                                                className="w-[30px] h-[30px] mr-[6px]"
@@ -677,7 +615,6 @@ export class SwapForm extends Component {
                                             Cost</p>
                                         {
                                             this.state.totalCostUSD &&
-
                                             <span className="sm:text-sm text-base font-normal leading-[17.41px]"> ~ $ {(this.state.totalCostUSD * this.state.rate / 10).toFixed(FIXED_VALUE)}</span>
                                         }
                                     </div>
@@ -685,7 +622,7 @@ export class SwapForm extends Component {
 
                                 <SwapFormButton
                                     isLoading={this.state.isLoading}
-                                    disabledBtn={this.state.isLoading}
+                                    disabledBtn={this.state.inputValue>0}
                                     buy={this.buy}
                                     currentError={this.state.currentError}
                                     _changeAddNetwork={this.changeAddNetwork}
@@ -741,14 +678,9 @@ export class SwapForm extends Component {
                                                                 <div
                                                                     className="flex justify-between items-center bg-[#F2F2F2] w-full rounded-[6px] pr-6 pl-4 py-[10px]">
                                                                     <div className="appearance-none bg-[#F2F2F2] text-primaryBgColor md:text-3xl text-[30px] sx:text-[24px]  outline-0 w-full h-[33px] leading-none font-semibold ">
-                                                                        {this.state.inputValue}
+                                                                        {this.state.inputValue > 0 ? this.state.inputValue : 0}
                                                                     </div>
-
-                                                                    <span className="text-primaryBgColor">$
-                                                                        {
-                                                                            +this.state.inputValue ?? 0
-                                                                        }
-                                       								 </span>
+                                                                    <span className="text-primaryBgColor">${this.state.inputValue > 0 ? this.state.inputValue : 0}</span>
 
                                                                 </div>
                                                                 <div className="bg-textColor relative flex justify-center items-center border-b-[1px] border-[#F2F2F2] pb-[20px] w-full rounded-md mb-5 mt-[26px]">
@@ -758,7 +690,7 @@ export class SwapForm extends Component {
                                                                                className="w-[30px] h-[30px] mr-[6px]"/>
                                                                         <span
                                                                             className="bg-textColor text-primaryBgColor sm:text-sm text-lg font-medium leading-5 "
-                                                                        >{this.state.countTokensCurrent ? +this.state.countTokensCurrent : 0} BNXT (${this.state.countTokensCurrent ? +this.state.countTokensCurrent : 0}) </span>
+                                                                        >{this.state.inputValue > 0 ? +this.state.inputValue : 0} BNXT (${this.state.inputValue ? +this.state.inputValue : 0}) </span>
                                                                         <span className="mr-2 ml-2 sm:mr-1 sm:ml-1"> = </span>
                                                                         <Image src={bnbLogo}
                                                                                className="w-[30px] h-[30px] mr-[6px]"
@@ -781,8 +713,7 @@ export class SwapForm extends Component {
 
                                                                         <div
                                                                             className="flex justify-between items-center text-primaryBgColor mb-[10px]">
-                                                                            <p className="sm:text-sm text-base font-normal leading-[17.41px]">Network
-                                                                                fee</p>
+                                                                            <p className="sm:text-sm text-base font-normal leading-[17.41px]">Network fee</p>
                                                                             <div
                                                                                 className="flex justify-between items-center gap-[8px]">
                                                                                 <Image src={gas} alt={''}/>
@@ -799,20 +730,14 @@ export class SwapForm extends Component {
                                                                             <p className="sm:text-sm text-base font-normal leading-[17.41px]">Total
                                                                                 Cost</p>
                                                                             {
-                                                                                this.state.totalCostUSD && this.props.active
-                                                                                    ?
-                                                                                    <span
-                                                                                        className="sm:text-sm text-base font-normal leading-[17.41px]"> ~ $ {(this.state.totalCostUSD * this.state.rate / 10).toFixed(FIXED_VALUE)}</span>
-                                                                                    :
-                                                                                    <span
-                                                                                        className="sm:text-sm text-base font-normal leading-[17.41px]"> ~ $ {(this.state.totalCostUSD * this.state.rate).toFixed(FIXED_VALUE)}</span>
+                                                                                <span className="sm:text-sm text-base font-normal leading-[17.41px]"> ~ $ {(this.state.totalCostUSD * this.state.rate / 10).toFixed(FIXED_VALUE)}</span>
                                                                             }
                                                                         </div>
                                                                     </div>
                                                                 </div>
                                                                 <SwapFormButton
                                                                     isLoading={this.state.isLoading}
-                                                                    disabledBtn={this.state.isLoading}
+                                                                    disabledBtn={this.state.inputValue>0}
                                                                     buy={this.buy}
                                                                     currentError={this.state.currentError}
                                                                     _changeAddNetwork={this.changeAddNetwork}
@@ -841,7 +766,7 @@ export class SwapForm extends Component {
                                                                 {data.slice(0, 5).map(el => (
                                                                     <CoinsAmount key={el.amount} amount={el.amount}
                                                                                  step={false}
-                                                                                 activeAmount={this.state.activeAmount}
+                                                                                 activeAmount={this.state.inputValue}
                                                                                  handleAmount={this.handleAmount}/>
                                                                 ))}
                                                             </div>
@@ -850,15 +775,14 @@ export class SwapForm extends Component {
                                                                 {data.slice(-5).map(el => (
                                                                     <CoinsAmount key={el.amount} amount={el.amount}
                                                                                  step={false}
-                                                                                 activeAmount={this.state.activeAmount}
+                                                                                 activeAmount={this.state.inputValue}
                                                                                  handleAmount={this.handleAmount}/>
                                                                 ))}
                                                             </div>
                                                         </div>
-                                                        {this.state.value &&
+                                                        {this.state.inputValue > 0 &&
                                                         <>
-
-                                                                    <p className="pt-[19px] w-full text-start">{this.state.value}$</p>
+                                                            <p className="pt-[19px] w-full text-start">{this.state.inputValue}$</p>
                                                             <div
                                                                 className="bg-textColor relative flex justify-center items-center w-full rounded-md mb-5 mt-[26px] border-b-[1px] border-[#F2F2F2] pb-[20px]"
                                                             >
@@ -872,19 +796,11 @@ export class SwapForm extends Component {
                                                                     <Image src={bnbLogo}
                                                                            className="w-[30px] h-[30px] mr-[6px]"
                                                                            alt={bnbLogo}/>
-                                                                    <span
-                                                                        className="bg-textColor text-primaryBgColor sm:text-sm text-lg font-medium leading-5">
-                                                            {
-                                                                (this.state.priceInBnb * 1).toFixed(FIXED_VALUE)
-                                                            }
-                                                                                BNB
-                                              						  </span>
-
-                                                                        </div>
-
+                                                                    <span className="bg-textColor text-primaryBgColor sm:text-sm text-lg font-medium leading-5">
+                                                           				 {(+this.state.priceInBnb).toFixed(FIXED_VALUE)}BNB
+                                                                    </span>
+                                                                </div>
                                                             </div>
-
-
                                                                 <div className="w-full">
                                                                     <div className="w-full mb-[23px]">
                                                                         <div
@@ -896,8 +812,7 @@ export class SwapForm extends Component {
                                                                                 <Image src={gas} alt={''}/>
                                                                                 {
                                                                                     this.state.gasPrice &&
-                                                                                    <span
-                                                                                        className="text-base font-normal leading-[17.41px]">{this.state.gasPrice} Gwei</span>
+                                                                                    <span className="text-base font-normal leading-[17.41px]">{this.state.gasPrice} Gwei</span>
                                                                                 }
                                                                             </div>
                                                                         </div>
@@ -907,13 +822,11 @@ export class SwapForm extends Component {
                                                                             <p className="sm:text-sm text-base font-normal leading-[17.41px]">Total
                                                                                 Cost</p>
                                                                             {
-                                                                                this.state.totalCostUSD && this.props.active
+                                                                                	this.state.totalCostUSD && this.props.active
                                                                                     ?
-                                                                                    <span
-                                                                                        className="sm:text-sm text-base font-normal leading-[17.41px]"> ~ $ {(this.state.totalCostUSD * this.state.rate / 10).toFixed(FIXED_VALUE)}</span>
+                                                                                    <span className="sm:text-sm text-base font-normal leading-[17.41px]"> ~ $ {(this.state.totalCostUSD * this.state.rate / 10).toFixed(FIXED_VALUE)}</span>
                                                                                     :
-                                                                                    <span
-                                                                                        className="sm:text-sm text-base font-normal leading-[17.41px]"> ~ $ {(this.state.totalCostUSD * this.state.rate).toFixed(FIXED_VALUE)}</span>
+                                                                                    <span className="sm:text-sm text-base font-normal leading-[17.41px]"> ~ $ {(this.state.totalCostUSD * this.state.rate).toFixed(FIXED_VALUE)}</span>
                                                                             }
                                                                         </div>
                                                                     </div>
@@ -922,7 +835,7 @@ export class SwapForm extends Component {
                                                         }
                                                         <SwapFormButton
                                                                     isLoading={this.state.isLoading}
-                                                                    disabledBtn={!this.state.value || this.state.isLoading}
+                                                                    disabledBtn={this.state.inputValue>0 || this.state.isLoading}
                                                                     buy={this.buy}
                                                                     currentError={this.state.currentError}
                                                                     _changeAddNetwork={this.changeAddNetwork}
@@ -933,35 +846,24 @@ export class SwapForm extends Component {
 
 
                                                             </>
-
                                                             :
-                                                            <>
-                                                                <div
-                                                                    className="flex flex-col justify-content items-center gap-4 px-[88px] mt-[125px] mb-[118px]">
-                                                                    <p className="text-3xl font-medium leading-[32.64px]">Please
-                                                                        note!</p>
-                                                                    <p className="text-base font-normal leading-[26px] text-center max-w-[320px] w-full">Your
-                                                                        current balance is 1000 BNXT.
-                                                                        You can no longer buy currency.
-                                                                        Please get your reward!</p>
-                                                                </div>
-
-                                                            </>
-
+                                                            <div
+                                                                className="flex flex-col justify-content items-center gap-4 px-[88px] mt-[125px] mb-[118px]">
+                                                                <p className="text-3xl font-medium leading-[32.64px]">Please
+                                                                    note!</p>
+                                                                <p className="text-base font-normal leading-[26px] text-center max-w-[320px] w-full">Your
+                                                                    current balance is 1000 BNXT.
+                                                                    You can no longer buy currency.
+                                                                    Please get your reward!</p>
+                                                            </div>
                                                     }
                                                 </>
                                         }
-
                                     </>
                                 }
-
                             </>
                         }
-
-
-
                         {/*notification*/}
-
                         {
                             !this.state.selectAccount && !this.state.currentError &&
                             <>
@@ -984,8 +886,6 @@ export class SwapForm extends Component {
                             </>
 
                         }
-
-
                         {
                             !this.state.selectAccount && this.state.currentError === 'Please connect to another Network' &&
                             <>

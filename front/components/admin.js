@@ -7,13 +7,11 @@ import tokenShopArtifact from '../contracts/TokenShop.json'
 
 
 import {ethers, utils} from "ethers";
-import http from "http";
 import {Withdrawal} from "@/components/Withdrawal";
 import {ChangeOwner} from "@/components/ChangeOwner";
 import {WaitingForTransactionMessage} from "@/components/WaitingForTransactionMessage";
 import {TransactionErrorMessage} from "@/components/TransactionErrorMessage";
-import {Step} from "@/components/Step";
-import {SwapFormButton} from "./SwapFormButton";
+
 
 const FIXED_VALUE = 7
 export const HARDHAT_NETWORK_ID = '31337'
@@ -227,74 +225,48 @@ export class Admin extends Component {
 
     }
 
-    getRate = async (isBNB = false) => {
+    getRate = async () => {
         await this.getGasPrice()
-        const url = 'https://api.binance.com/api/v3/ticker/price?symbol=BNBBUSD'
-        http.get(url, res => {
-            let data = "";
-            res.on("data", chunk => {
-                data += chunk;
-            })
-            res.on("end", () => {
-                const dataParse = JSON.parse(data);
-                const price = dataParse.price
-                let priceInWei
-                let priceInBnb
-                if (isBNB) {
-                    if (!this.state.priceInBnb) {
-                        return
-                    }
-                    priceInWei = this.transTo(parseFloat(this.state.priceInBnb))
-                    priceInBnb = this.state.priceInBnb
-                } else {
-                    if (!this.state.inputValue) {
-                        return
-                    }
-                    priceInWei = this.transTo(this.state.inputValue / price)
-                    priceInBnb = (this.state.inputValue / price).toFixed(7)
-                }
-                const gwei = (this.state.gasPrice).toString()
 
-                const weiGas = ethers.utils.parseUnits(gwei, "gwei");
-                const weiValue = ethers.utils.parseUnits(priceInWei, "wei");
-                const totalInWei = ethers.utils.formatUnits(weiGas.add(weiValue), "ether")
+        const requestData = await fetch('/api/ratePrice', {
+            method: 'POST'
+        });
 
 
-                this.setState({
-                    rate: price,
-                    priceInWei: priceInWei,
-                    priceInBnb: priceInBnb,
-                    inputValue: (price * priceInBnb).toFixed(0),
-                    totalCostUSD: totalInWei
-                });
-                this.showError('')
-            });
-        })
+        const dataParse = await requestData.json()
+        const price = dataParse.price
+        let  priceInWei = this.transTo(this.state.inputValue / price)
+        let priceInBnb = (this.state.inputValue / price).toFixed(7)
+        const gwei = (this.state.gasPrice).toString()
+
+        const weiGas = ethers.utils.parseUnits(gwei, "gwei");
+        const weiValue = ethers.utils.parseUnits(priceInWei, "wei");
+        const totalInWei = ethers.utils.formatUnits(weiGas.add(weiValue), "ether")
+        if(this.state.globalMultiplier > 0){
+            priceInWei = priceInWei/10;
+        }
+
+        this.setState({
+            rate: price,
+            priceInWei: priceInWei,
+            priceInBnb: priceInBnb,
+            inputValue: (price * priceInBnb).toFixed(0),
+            totalCostUSD: totalInWei
+        });
+        this.showError('')
+        console.log( this.state)
     }
 
     getGasPrice = async () => {
         if (this.state.gasPrice === 0) {
-            const url = 'https://api.bscscan.com/api?module=gastracker&action=gasoracle'
-            http.get(url, res => {
-                let data = "";
-                res.on("data", chunk => {
-                    data += chunk;
-                })
-                res.on("end", () => {
-                    const dataParse = JSON.parse(data);
-                    if (dataParse.message === "NOTOK") {
-                        return setTimeout(async () => {
-                            await this.getGasPrice()
-                        }, 1000)
-                    }
-                    const gasPrice = dataParse.result.SafeGasPrice
-                    return this.setState({
-                        gasPrice: gasPrice
-                    });
-                });
-            })
+            const requestData = await fetch('/api/gasPrice', {
+                method: 'POST'
+            });
+            const gasPrice = await requestData.json()
+            this.setState({
+                gasPrice: gasPrice
+            });
         }
-
     }
 
     transTo = function (riceInWei) {
@@ -338,11 +310,6 @@ export class Admin extends Component {
     }
 
 
-    _dismissNetworkError = () => {
-        this.setState({
-            networkError: null
-        })
-    }
 
     _connectWallet = async () => {
         if (window.ethereum === undefined) {
@@ -420,99 +387,6 @@ export class Admin extends Component {
         })
     }
 
-    _addTokenToMetaMask = async () => {
-        // Check if MetaMask is installed
-
-        if (typeof window.ethereum === 'undefined') {
-            console.log('MetaMask is not installed.');
-            return;
-        }
-
-        // Request the permission to access the MetaMask accounts
-        await window.ethereum.request({method: 'eth_requestAccounts'});
-
-        try {
-            // Add the token to MetaMask
-            await window.ethereum.request({
-                method: 'wallet_watchAsset',
-                params: {
-                    type: 'ERC20',
-                    options: {
-                        address: process.env.NEXT_PUBLIC_PRODUCTION_TOKEN_ADDRESS,
-                        symbol: process.env.NEXT_PUBLIC_PRODUCTION_TOKEN_SYMBOL,
-                        decimals: process.env.NEXT_PUBLIC_PRODUCTION_TOKEN_DECIMALS,
-                    },
-                },
-            });
-            console.log('Token added to MetaMask successfully.');
-        } catch (error) {
-            console.log('Error adding token to MetaMask:', error);
-        }
-    }
-
-    _addNetwork = async () => {
-
-        const chainId = process.env.NEXT_PUBLIC_PRODUCTION_NETWORK_CHAIN_ID
-        const hexString = Number(chainId).toString(16);
-        const _chainId = "0x" + hexString;
-        try {
-            await window.ethereum.request({
-                method: 'wallet_switchEthereumChain',
-                params: [{chainId: _chainId}],
-            });
-        } catch (switchError) {
-            const originallyError = switchError?.data?.originalError?.code
-            if (switchError.code === 4902 || originallyError === 4902) {
-                try {
-                    await window.ethereum.request({
-                        method: 'wallet_addEthereumChain',
-                        params: [
-                            {
-                                chainId: _chainId,
-                                chainName: process.env.NEXT_PUBLIC_PRODUCTION_NETWORK_CHAIN_NAME,
-                                nativeCurrency: {
-                                    name: process.env.NEXT_PUBLIC_PRODUCTION_NETWORK_NATIVE_CURRENCY_NAME,
-                                    symbol: process.env.NEXT_PUBLIC_PRODUCTION_NETWORK_NATIVE_CURRENCY_SYMBOL,
-                                    decimals: parseInt(process.env.NEXT_PUBLIC_PRODUCTION_NETWORK_NATIVE_CURRENCY_DECIMALS, 10),
-                                },
-                                rpcUrls: [process.env.NEXT_PUBLIC_PRODUCTION_NETWORK_RPC_URLS]
-                            },
-                        ],
-                    });
-
-                } catch (addError) {
-                    console.log(addError)
-                }
-            }
-        } finally {
-            this._resetState()
-        }
-    };
-
-    changeAddNetwork = () => {
-        this._addNetwork().then(() => {
-            this._addTokenToMetaMask().then(()=>{
-                setTimeout(this._connectWallet, 500);
-            })
-        });
-    };
-
-    _setNetworkError = (error) => {
-        this.setState({
-            networkError: error,
-            currentError: error
-        })
-
-        console.log( 'networkError', this.state.networkError)
-    }
-
-    changeInputs = () => {
-        if(this.state.inputs) {
-            this.setState({inputs: false})
-        } else {
-            this.setState({inputs: true})
-        }
-    }
 
     handleAmount = (selectedAmount) => {
         const {data} = this.props
