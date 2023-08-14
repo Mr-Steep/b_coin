@@ -1,7 +1,7 @@
-import https from "https";
+import https from 'https';
 
-let cachedData = null; // Variable to store cached data
-let cacheTimestamp = 0; // Variable to store the timestamp of the cached data
+let cachedData = null;
+let cacheTimestamp = 0;
 
 export default async function gasPrice(req, res) {
     const currentTime = Date.now();
@@ -11,26 +11,37 @@ export default async function gasPrice(req, res) {
         return res.status(200).json(cachedData);
     }
 
-    let dataParse  =  [];
+    await fetchData(res, currentTime);
+}
 
-    const url = 'https://api.bscscan.com/api?module=gastracker&action=gasoracle'
-    https.get(url, apiResponse => {
-        let data = "";
-        apiResponse.on("data", chunk => {
-            data += chunk;
-        })
-        apiResponse.on("end", () => {
-            const dataParse = JSON.parse(data);
-            if (dataParse.message === "NOTOK") {
-                return setTimeout(async () => {
-                    await this.getGasPrice()
-                }, 1000)
-            }
-            const gasPrice = dataParse.result.SafeGasPrice
+async function fetchData(res, currentTime) {
+    const url = 'https://api.bscscan.com/api?module=gastracker&action=gasoracle';
 
-            cachedData = gasPrice;
-            cacheTimestamp = currentTime;
-            return res.status(200).json(gasPrice);
+    try {
+        https.get(url, apiResponse => {
+            let data = "";
+            apiResponse.on("data", chunk => {
+                data += chunk;
+            })
+            apiResponse.on("end", async () => {
+                const dataParse = JSON.parse(data);
+                if (dataParse.message === "NOTOK") {
+                    // If NOTOK, wait and retry
+                    setTimeout(async () => {
+                        await fetchData(res, currentTime);
+                    }, 1000);
+                } else {
+                    const gasPrice = dataParse.result.SafeGasPrice;
+
+                    cachedData = gasPrice;
+                    cacheTimestamp = currentTime;
+                    return res.status(200).json(gasPrice);
+                }
+            });
         });
-    });
+    } catch (error) {
+        console.log(error);
+        // Handle error response here
+        return res.status(500).json({ error: "Internal server error" });
+    }
 }

@@ -93,21 +93,6 @@ export class SwapForm extends Component {
 
     }
 
-    componentDidUpdate = async (prevProps) => {
-        if (prevProps.active !== this.props.active) {
-            if (this.props.active) {
-                const tokens = ethers.utils.formatUnits(this.state.countTokensCurrent, 0)
-                this.setState({
-                    inputValue: this.state.globalMultiplier>0? tokens * this.state.globalMultiplier: tokens * this.state.multiplier
-                })
-                await this.getRate()
-            } else {
-                this._clear()
-            }
-
-        }
-    }
-
 
     buy = async () => {
         this.setState({
@@ -251,7 +236,7 @@ export class SwapForm extends Component {
             countTokensCurrent: countTokensCurrent,
             countBNB: countBNB,
             multiplier: multiplierInt,
-            isUsedMultiplier: isUsedMultiplier,
+            isUsedMultiplier: !!isUsedMultiplier,
             globalMultiplier: globalMultiplier,
             _balanceOfBonuses: balanceOfBonuses,
             _balanceContractBonuses: _balanceContractBonuses,
@@ -636,9 +621,8 @@ export class SwapForm extends Component {
 
 
                                     <span className="text-primaryBgColor">$
-                                        {
-                                            this.state.countTokensCurrent * 1
-                                        }
+                                        {this.state.countTokensCurrent * this.state.globalMultiplier}
+
                                     </span>
 
                                 </div>
@@ -762,7 +746,7 @@ export class SwapForm extends Component {
 
                                                                     <span className="text-primaryBgColor">$
                                                                         {
-                                                                            this.state.countTokensCurrent * 1
+                                                                            +this.state.inputValue ?? 0
                                                                         }
                                        								 </span>
 
