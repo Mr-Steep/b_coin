@@ -77,8 +77,8 @@ export function Confirmation({setConfirmationComplete, setTransactionComplete, h
                        onClick={()=>close()}
                        alt={cross} />
                 <div className="flex flex-col justify-between items-center gap-[30px]">
-                    <p className="text-3xl font-medium text-center">Confirm your email</p>
-                    <p className="text-base font-normal text-center max-w-[320px]">Enter your email below to receive all details about this transaction.</p>
+                    <p className="text-primaryBgColor text-3xl font-medium text-center">Confirm your email</p>
+                    <p className="text-primaryBgColor text-base font-normal text-center max-w-[320px]">Enter your email below to receive all details about this transaction.</p>
                     <div className={" sm:w-[320px] w-[395px] rounded-[6px] p-[1px] "
                     + (emailError || checkboxError ? "bg-errorColor" : "bg-gradient-to-r from-[#33EFF1] to-[#198498]")
                     }>
@@ -96,11 +96,11 @@ export function Confirmation({setConfirmationComplete, setTransactionComplete, h
                     <div className="flex flex-col justify-between items-center gap-[10px] max-w-[320px] w-full">
                         <div className="flex justify-between items-start">
                             <input name="checkbox" data-goal="terms" type="checkbox" className="w-5 h-5 rounded-[6px] mr-3"/>
-                            <span className="text-sm font-normal leading-[18px]">Read and accept <span className="font-bold">Terms of Use </span>and <span className="font-bold">Privacy Policy</span></span>
+                            <span className="text-primaryBgColor text-sm font-normal leading-[18px]">Read and accept <Link href="https://bnxt.network/terms-conditions/"><span className="font-bold">Terms of Use </span></Link>and <Link href="https://bnxt.network/privacy-policy/"><span className="font-bold">Privacy Policy</span></Link></span>
                         </div>
                         <div className="flex justify-between items-start">
                             <input name="checkbox" data-goal="statement" type="checkbox" className="w-5 h-5 rounded-[6px] mr-3"/>
-                            <span className="text-sm font-normal leading-[18px]">Submit the <span className="font-bold">Buyer's Statement </span>as my official declaration</span>
+                            <span className="text-primaryBgColor text-sm font-normal leading-[18px]">Submit the <Link href=""><span className="font-bold">Buyer's Statement </span></Link>as my official declaration</span>
                         </div>
                     </div>
 

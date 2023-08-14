@@ -27,7 +27,7 @@ export function Step({step, setNewStep, closeModal}) {
                                absolute
                                tablet:top-0 tablet:left-[60px] tablet:right-0
                                top-[200px] left-[-360px] right-0
-                               text-white">
+                               text-textColor">
                    <Image src={cross} className="absolute z-10 top-0 right-0 cursor-pointer" onClick={closeModal} alt={cross} />
                    <div
                        className="flex flex-col justify-between items-start max-w-[238px] mr-[69px] relative z-30">
@@ -69,7 +69,7 @@ export function Step({step, setNewStep, closeModal}) {
                                absolute
                                tablet:top-0 tablet:left-[60px] md:right-0
                                top-[200px] left-[-360px] right-0
-                               text-white">
+                               text-textColor">
                <Image src={cross} className="absolute z-10 top-0 right-0 cursor-pointer" onClick={closeModal} alt={cross} />
                <div
                    className="flex flex-col justify-between items-start max-w-[238px] mr-[69px] relative z-30">
@@ -113,7 +113,7 @@ export function Step({step, setNewStep, closeModal}) {
                                 tablet:top-[-220px] tablet:left-[20px]
                                 md:left-[-300px]
                                 top-[130px] left-[-560px] right-0
-                                text-white z-20">
+                                text-textColor z-20">
                    <Image src={cross} className="absolute z-10 md:top-[150px] top-[100px] right-0 cursor-pointer" onClick={closeModal} alt={cross} />
                    <div
                        className="flex flex-col justify-between items-start max-w-[238px] mt-[140px] mr-[69px] relative">
@@ -156,7 +156,7 @@ export function Step({step, setNewStep, closeModal}) {
            {/*                     tablet:top-[-500px] tablet:left-[38px]*/}
            {/*                     md:left-[-300px]*/}
            {/*                     top-[30px] left-[-560px] right-0*/}
-           {/*                     text-white z-20">*/}
+           {/*                     text-textColor z-20">*/}
            {/*    <Image src={cross} className="absolute z-10 top-[150px] md:right-[25px] right-[-50px] cursor-pointer" onClick={closeModal} alt={cross} />*/}
            {/*    <div*/}
            {/*        className="flex flex-col justify-between items-start max-w-[238px] mt-[140px] mr-[69px] relative">*/}
