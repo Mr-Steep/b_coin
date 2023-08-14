@@ -5,11 +5,15 @@ import arrowLight from "../assets/images/arrow-light.svg";
 import Link from "next/link";
 import React, {useState} from "react";
 import loader from "../assets/images/loader.svg";
+import alert_circle from "../assets/images/alert-circle.svg";
 
 
 export function Confirmation({setConfirmationComplete, setTransactionComplete, hash}) {
 
     const [isLoading, setIsLoading] = useState(false);
+    const [emailError, setEmailError] = useState(false)
+    const [checkboxError, setCheckboxError] = useState(false)
+
     const [isChecked, setIsChecked] = useState(false);
     const [isCheckedSubmit, setIsCheckedSubmit] = useState(false);
     const confirm = async () => {
@@ -19,14 +23,20 @@ export function Confirmation({setConfirmationComplete, setTransactionComplete, h
         const statementCheckbox = document.querySelector('input[name="checkbox"][data-goal="statement"]');
 
         if (!emailInput.value || !isValidEmail(emailInput.value)) {
-            alert('error valid email')
+            // alert('error valid email')
             setIsLoading(false)
+            setEmailError(true)
             return;
+        } else {
+            setEmailError(false)
         }
         if (!termsCheckbox.checked || !statementCheckbox.checked) {
-          alert('select checkboxes')
+          // alert('select checkboxes')
             setIsLoading(false)
+            setCheckboxError(true)
             return;
+        } else {
+            setCheckboxError(false)
         }
 		let email = emailInput.value
 
@@ -64,17 +74,26 @@ export function Confirmation({setConfirmationComplete, setTransactionComplete, h
 
     return (
         <Modal>
-            <div className="fixed top-[50%] left-[50%] rounded-md translate-x-[-50%] translate-y-[-50%] flex flex-col justify-between items-center bg-textColor sm:max-w-[350px] max-w-[485px] px-[45px] py-[50px] z-10">
+            <div className="fixed top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] flex flex-col justify-between items-center bg-textColor sx:max-w-[360px] sm:max-w-[400px] max-w-[485px] w-full rounded-md py-[50px] z-10">
                 <Image src={cross} className="absolute z-10 top-[22px] sx:right-[30px] right-[22px] cursor-pointer"
                        onClick={()=>close()}
                        alt={cross} />
                 <div className="flex flex-col justify-between items-center gap-[30px]">
                     <p className="text-3xl font-medium text-center text-[#000000]">Confirm your email</p>
                     <p className="text-base font-normal text-center max-w-[320px] text-[#414042]">Enter your email below to receive all details about this transaction.</p>
-                    <div className="bg-gradient-to-r from-[#33EFF1] to-[#198498] w-full rounded-[6px] p-[1px]">
+                    <div className={" sm:w-[320px] w-[395px] rounded-[6px] p-[1px] "
+                    + (emailError || checkboxError ? "bg-errorColor" : "bg-gradient-to-r from-[#33EFF1] to-[#198498]")
+                    }>
                         <input name="email" type="email"
                                placeholder="Enter your email" className="w-full outline-0 rounded-[6px] px-[22px] py-4 bg-[#ffffff]" />
                     </div>
+
+                    {emailError &&
+                    <div className="flex justify-between items-center mt-[-14px]">
+                        <Image src={alert_circle} className="mr-3" alt={alert_circle} />
+                        <span className="text-errorColor text-sm font-normal leading-[15.23px]">The field cannot be empty. Please enter your email </span>
+                        </div>
+                    }
 
                     <div className="flex flex-col justify-between items-center gap-[10px] max-w-[320px] w-full">
                         <div className="flex justify-between items-start  bg-white">
@@ -92,9 +111,16 @@ export function Confirmation({setConfirmationComplete, setTransactionComplete, h
                         </div>
                     </div>
 
+                    {checkboxError &&
+                    <div className="flex justify-between items-center">
+                        <Image src={alert_circle} className="mr-3" alt={alert_circle} />
+                        <span className="text-errorColor text-sm font-normal leading-[15.23px]">Checkboxes are required </span>
+                    </div>
+                    }
+
                     <Link href=""
                           onClick={confirm}
-                          className={"group mx-auto flex gap-[20px] bg-primaryBgColor items-center justify-between rounded-md md:min-w-[293px] max-h-[60px] w-full px-[17px] py-[17px] " + (isLoading && " opacity-30 pointer-events-none ")}>
+                          className={"group mx-auto flex gap-[20px] bg-primaryBgColor items-center justify-between rounded-md sm:w-[320px] max-h-[60px] w-full px-[17px] py-[17px] " + (isLoading && " opacity-30 pointer-events-none ")}>
                         <span className="text-textColor text-lg flex justify-center gap-[10px] items-center">
                             Confirm
                             {isLoading &&

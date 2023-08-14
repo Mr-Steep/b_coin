@@ -7,15 +7,15 @@ import Link from "next/link";
 export function Footer() {
 
     return (
-        <div className="bg-primaryBgColor sm:pt-[65px] pt-[4.813rem] sm:px-[35px] lg:px-[105px] px-[197px] mb-[-50px] relative overflow-hidden">
+        <div className="bg-primaryBgColor sm:pt-[65px] pt-[4.813rem] px-[17px] mdm:pl-[104px] mdm:pr-[105px] mb-[-50px] relative overflow-hidden">
 
             <div className="max-w-[1920px] mx-auto text-textColor "
                  >
 
                 <div className="grid sm:grid-cols-1 grid-cols-2 justify-between items-center sm:gap-0 gap-[67px] sm:border-b-0 border-b-[1px] border-solid border-[#0B2D44] sm:pb-[27px] pb-[42px] relative"
                      >
-                        <Image src={logo} className="sm:max-w-[230px] sm:mx-auto sm:mb-9 md:row-start-1 md:row-end-2 md:col-start-1 md:col-end-3 md:mx-auto" alt={''}/>
-                        <div className="flex sm:flex-col items-center justify-end md:row-start-4 md:row-end-5 md:col-start-1 md:col-end-3 md:justify-center"
+                        <Image src={logo} className="sm:max-w-[230px] sm:mx-auto sm:mb-9 mdd:row-start-1 mdd:row-end-2 mdd:col-start-1 mdd:col-end-3 mdd:mx-auto" alt={''}/>
+                        <div className="flex sm:flex-col items-center justify-end md:row-start-4 mdd:row-end-5 mdd:col-start-1 mdd:col-end-3 mdd:justify-center"
 
                         >
                             <p className="md:mb-4 sm:mr-0 mr-[40px] text-lg">Interested in working with us?</p>
@@ -25,18 +25,19 @@ export function Footer() {
                             </Link>
                         </div>
 
-                        <div className="self-start sm:mb-[60px] max-w-[310px] w-full md:grid md:mx-auto md:row-start-2 md:row-end-3 md:col-start-1 md:col-end-3 md:text-center">
-                            <div className="text-lg font-normal leading-[26px] text-textColor mb-[30px]">
-                                <p>+380 4657-4883-32</p>
-                            </div>
-                            <div className="text-lg font-normal leading-[26px] text-textColor max-w-[300px]">
-                                <p className="mb-[30px]">info@bnxt.com</p>
-                                <p>Feliksa Nowowiejskiego 55, 61-734 Poznań, Poland</p>
-                            </div>
+                    <div className="self-start sm:mb-[60px] max-w-[310px] w-full md:grid md:mx-auto md:row-start-2 md:row-end-3 md:col-start-1 md:col-end-3 md:text-center">
+                        <div className="mb-[30px]">
+                            <p className="sm:text-lg text-base text-textColor">BE NEXT SPÓŁKA Z OGRANICZONĄ ODPOWIEDZIALNOŚCIĄ</p>
                         </div>
+                        <div className="mb-[30px]">
+                            <p className="sm:text-lg text-base text-textColor">ul. Romana Dmowskiego 3/9</p>
+                            <p className="sm:text-lg text-base text-textColor">50-203 Wrocław</p>
+                        </div>
+                        <p className="text-lg">NIP 898-229-2125</p>
+                    </div>
 
-                        <div className="flex sm:flex-col sm:mb-14 sm:items-center justify-end min-h-[273px] sm:gap-[50px] gap-[78px] md:row-start-3 md:row-end-4 md:col-start-1 md:col-end-3 md:justify-center">
-                            <div>
+                    <div className="flex sm:flex-col sm:mb-14 sm:items-center justify-end min-h-[273px] sm:gap-[44px] gap-[40px] md:row-start-3 md:row-end-4 md:col-start-1 md:col-end-3 md:justify-center">
+                            <div className="min-w-[145px]">
                                 <ul className="sm:text-center text-left">
                                     <p className="sm:mb-7 mb-10 text-xl leading-5 font-bold">Project</p>
                                     <li className="mb-[20px] text-lg leading-5 font-normal hover:text-buttonBgColor transition duration-300 ease-in"><Link href="/onboarding">How to buy</Link></li>
@@ -51,7 +52,7 @@ export function Footer() {
                                 </ul>
                             </div>
 
-                            <div>
+                            <div className="min-w-[131px]">
                                 <ul className="sm:text-center text-left sm:hidden block">
                                     <p className="sm:mb-7 mb-10 text-xl leading-5 font-bold">Community</p>
                                     <li className="group mb-[20px] text-lg leading-5 font-normal hover:text-buttonBgColor transition duration-300 ease-in"><Link href="https://twitter.com/bNXT_network?s=20">Twitter</Link>
@@ -72,7 +73,7 @@ export function Footer() {
                                 </ul>
                             </div>
 
-                            <div>
+                            <div className="min-w-[138px]">
                                 <ul className="sm:text-center text-left">
                                     <p className="sm:mb-7 mb-10 text-xl leading-5 font-bold">About bNXT</p>
                                     <li className="mb-[20px] text-lg leading-5 font-normal hover:text-buttonBgColor transition duration-300 ease-in"><Link href="https://bnxt.network/home/#about">About</Link></li>
@@ -99,7 +100,7 @@ export function Footer() {
                         <p className="text-base leading-4 font-normal text-textColor sm:justify-center">© 2023 bNXT. All rights reserved.</p>
                     </div>
 
-                    <div className="flex gap-[40px] sm:py-[22px] sm:w-full sm:justify-between">
+                    <div className="flex gap-[40px] sm:py-[22px] sm:w-full sm:justify-between px-[23px]">
                         <Link href="https://bnxt.network/terms-conditions/" className="text-base leading-4 font-normal text-textColor hover:text-buttonBgColor transition duration-300 ease-in">Terms & Conditions</Link>
                         <Link href="https://bnxt.network/privacy-policy/" className="text-base leading-4 font-normal text-textColor hover:text-buttonBgColor transition duration-300 ease-in">Privacy & Policy</Link>
                     </div>

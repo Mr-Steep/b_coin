@@ -39,21 +39,14 @@ export function OnBoarding() {
                     <div className="max-w-[1920px] mx-auto relative">
 
 
-                        {/*<div className="md:flex justify-between items-start w-full">*/}
-                        {/*    <Link href="/onboarding">*/}
-                        {/*        <Image src={logo} className="ml-2 md:mb-[68px] mb-[96px] md:w-[138px] md:h-[23px] w-[188px] h-8 z-10" alt="logo"/>*/}
-                        {/*    </Link>*/}
-                        {/*    <Image src={burger} className="md:block hidden" alt={burger} />*/}
-                        {/*</div>*/}
-
-                        <div className="flex flex-col w-full relative z-10">
+                        <div className="flex flex-col w-full">
 
 
                             <p className="content-start text-lg text-primaryBgColor max-w-[608px] md:mb-[55px] mt-[50px] mb-[92px]">Worem ipsum dolor sit amet, consectetur
                                 adipiscing elit. Etiam eu turpis molestie, dictum est a, mattis tellus. Sed dignissim, metus nec
                                 fringilla. </p>
 
-                            <div className="flex flex-col text-primaryBgColor md:mb-0 mb-[114px]">
+                            <div className="flex flex-col text-primaryBgColor mb-[114px]">
 
                                 <div className="flex md:flex-col justify-between items-center mb-[90px]">
                                     <div className="max-w-[480px] md:mr-0 mr-[150px] md:mb-10">
@@ -76,11 +69,11 @@ export function OnBoarding() {
 
                                         </div>
                                     </div>
-                                    <Image src={mockVideo} className="md:w-[343px] w-[594px] md:h-[134px] h-[230px]" alt="mock-video"/>
+                                    <Image src={mockVideo} className="mdd:w-[343px] lg:w-[594px] w-[744px] mdd:h-[134px] lg:h-[230px] h-[288px]" alt="mock-video"/>
                                 </div>
 
                                 <div className="flex md:flex-col-reverse justify-between items-center mb-[90px]">
-                                    <Image src={mockVideo} className="md:w-[343px] w-[594px] md:h-[134px] h-[230px]" alt="mock-video"/>
+                                    <Image src={mockVideo} className="mdd:w-[343px] lg:w-[594px] w-[744px] mdd:h-[134px] lg:h-[230px] h-[288px]" alt="mock-video"/>
                                     <div className="max-w-[480px] md:ml-0 ml-[104px] md:mb-10">
                                         <div className="flex">
                                             <div className="bg-primaryBgColor w-[50px] h-[31px] mr-[26px]"></div>
@@ -115,11 +108,11 @@ export function OnBoarding() {
                                             </div>
                                         </div>
                                     </div>
-                                    <Image src={mockVideo} className="md:w-[343px] w-[594px] md:h-[134px] h-[230px]" alt="mock-video"/>
+                                    <Image src={mockVideo} className="mdd:w-[343px] lg:w-[594px] w-[744px] mdd:h-[134px] lg:h-[230px] h-[288px]" alt="mock-video"/>
                                 </div>
 
                                 <div className="flex md:flex-col-reverse justify-between items-center md:pl-[35px]">
-                                    <Image src={mockVideo} className="md:w-[343px] w-[594px] md:h-[134px] h-[230px]" alt="mock-video"/>
+                                    <Image src={mockVideo} className="mdd:w-[343px] lg:w-[594px] w-[744px] mdd:h-[134px] lg:h-[230px] h-[288px]" alt="mock-video"/>
                                     <div className="max-w-[480px] md:ml-0 ml-[104px] md:mb-10">
                                         <p className="md:text-2xl text-3xl font-bold mb-[14px]">Get Reward!</p>
                                         <p className="text-lg mb-8">Amet minim mollit non deserunt ullamco est sit aliqua dolor do

@@ -552,7 +552,7 @@ export class SwapForm extends Component {
         return (
             <>
                 <div
-                    className={"flex flex-col  tablet:top-0 top-[-211px] relative  right-0 " +
+                    className={"flex flex-col  tablet:top-0 top-[-211px] relative right-0 " +
                         "max-w-[497px] " +
                         "mdd:min-h-[650px] min-h-[680px] sx:h-[auto] shadow-[19px_23px_87px_0_#6CB8EF33] " +
                         "md:rounded-tl-2xl md:rounded-tr-2xl md:rounded-bl-none md:rounded-br-none rounded-md sx:rounded-tr-none sx:rounded-tl-none w-full "

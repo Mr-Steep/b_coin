@@ -102,7 +102,7 @@ export function SwapReward({_active}) {
     return (
         <Layout modalVisible={modalVisible} closeModal={closeModal}>
             <div className="flex flex-col justify-between min-h-screen">
-                <div className={"lg:max-h-[380px] sm:px-4  smn:px-[50px] mdm:px-[102px] lgm:px-[111px] px-[16px] "
+                <div className={"lg:max-h-[380px] sm:px-4 smn:px-[50px] mdm:px-[102px] lgm:px-[111px] px-[16px] "
                 +(modalVisible && step!== 4 ? 'tablet:h-[100px] h-[200px] ' : modalVisible && step === 4 ? 'tablet:h-[482px] h-[200px]' : 'h-[482px] '
                 )}
                      style={{
@@ -111,7 +111,7 @@ export function SwapReward({_active}) {
                          backgroundSize: 'cover'
                      }}
                 >
-                    <div className="flex flex-col h-full justify-between max-w-[1526px] mx-auto md:pt-[25px] pt-[25px] lg:pb-[52px] pb-[35px] ">
+                    <div className="flex flex-col h-full justify-between max-w-[1920px] mx-auto md:pt-[25px] pt-[25px] lg:pb-[52px] pb-[35px] ">
                         <div className="flex justify-between items-center">
                             <Link  className="flex " href="https://dev.bnxt.network/home/">
                                 <Image className="sm:w-[126px] w-[188px]" src={logo} alt={logo}
@@ -159,11 +159,11 @@ export function SwapReward({_active}) {
                 <div className="w-full grow bg-textColor sm:px-4  smn:px-[50px] mdm:px-[102px] lgm:px-[111px] px-[16px] pb-[48px] "
                 >
 
-                    <div className={"flex justify-between tablet:flex-col tablet:items-center items-start mx-auto w-full max-w-[1526px] relative lgm:mb-0 mdm:mb-[-33px] mdm:mb-[-79px]  mb-0 "
+                    <div className={"flex justify-between tablet:flex-col tablet:items-center items-start mx-auto w-full max-w-[1920px] relative lgm:mb-0 mdm:mb-[-33px] mdm:mb-[-79px]  mb-0 "
                     +(modalVisible ? 'tablet:flex-col-reverse md:pt-0 md:mt-[15px] md:pb-0' : ''
                     )}>
                         <div className={"flex flex-col justify-between tablet:items-center items-start sm:mx-auto sm:max-w-[90%] lg:max-w-[520px] md:min-w-[375px] max-w-[616px] sx:w-full md:w-[45%] mr-4 sx:pt-[24px] mdd:pt-[52px] lg:pt-[63px] pt-[97px] sx:min-w-[auto]  "
-                        +(modalVisible ? '' : 'md:mt-0'
+                        +(modalVisible ? 'tablet:mt-[100px]' : 'md:mt-0'
                         )}>
                             <div className={"md:mb-[33px] text-primaryBgColor text-lg sm:leading-[26px] "
                             + (active ? 'mb-[33px]' :
@@ -250,6 +250,7 @@ export function SwapReward({_active}) {
                         }
 
                     </div>
+
                 </div>
 
                 <Footer/>
