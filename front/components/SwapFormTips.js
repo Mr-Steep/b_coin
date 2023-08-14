@@ -69,7 +69,7 @@ export class SwapFormTips extends Component {
                 <div
                     className={"flex flex-col justify-between bg-textColor relative tablet:top-0 top-[-220px] " +
                     "max-w-[497px] " +
-                    "min-h-[680px] sx:h-[auto] shadow-[19px_23px_87px_0_#6CB8EF33] " +
+                    "mdd:min-h-[650px] min-h-[680px] sx:h-[auto] shadow-[19px_23px_87px_0_#6CB8EF33] " +
                     "md:rounded-tl-2xl md:rounded-tr-2xl md:rounded-bl-none md:rounded-br-none rounded-md w-full md:mt-[7px] mt-[22px] sx:px-0 pb-[27px] sx:pb-[40px] md:mb-[-118px] "
                     + (active ? "sx:h-[655px]" : step === 4 ? "z-10" : "sx:h-[543px]")
                     }
