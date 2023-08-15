@@ -9,7 +9,7 @@ export function Footer() {
     return (
         <div className="bg-primaryBgColor sm:pt-[65px] pt-[4.813rem] px-[17px] mdm:pl-[104px] mdm:pr-[105px] mb-[-50px] relative overflow-hidden">
 
-            <div className="max-w-[1920px] mx-auto text-textColor "
+            <div className="max-w-[1526px] mx-auto text-textColor "
                  >
 
                 <div className="grid sm:grid-cols-1 grid-cols-2 justify-between items-center sm:gap-0 gap-[67px] sm:border-b-0 border-b-[1px] border-solid border-[#0B2D44] sm:pb-[27px] pb-[42px] relative"

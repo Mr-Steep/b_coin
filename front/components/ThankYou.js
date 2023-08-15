@@ -11,6 +11,7 @@ export function ThankYou({getMultiplier, handleSetActive, setConfirmationComplet
 
     close = () => {
         setConfirmationComplete(false)
+        document.body.style.overflow = 'none';
     }
 
     return (

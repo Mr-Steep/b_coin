@@ -139,7 +139,9 @@ export function SwapReward({_active}) {
                             }
                         </div>
                         <p className={"sx:text-[40px] text-textColor sx:leading-[43.52px] lg:leading-[60.93px] font-bold w-full md:mb-4 "
-                        + (active && !getIsUserUseMultiplayer ? 'lg:text-[40px] text-[60px] lg:leading-[43.52px] lg:max-w-[430px] max-w-[697px]' :
+                        + (active
+                        && !getIsUserUseMultiplayer
+                            ? 'lg:text-[40px] text-[60px] lg:leading-[43.52px] lg:max-w-[430px] max-w-[697px]' :
                             'lg:text-[56px] text-[96px] lg:max-w-[380px] max-w-[697px]')}>
                             <Link href="https://bnxt.network/home/" className=" items-center justify-start min-w-[148px] sm:flex hidden mb-[9px]">
                                 <Image src={arrowBack} className="inline-block" alt={arrowBack}/>
@@ -147,7 +149,9 @@ export function SwapReward({_active}) {
                             </Link>
                             {!modalVisible &&
                             <>
-                                {active && !getIsUserUseMultiplayer ?
+                                {active
+                                && !getIsUserUseMultiplayer
+                                    ?
                                     'Get your 90% discount with x' + getMultiplier + ' multiplier'
                                     : 'Join the bNXT Network'}
                             </>
@@ -170,29 +174,56 @@ export function SwapReward({_active}) {
                             + (active ? 'mb-[33px]' :
                                 'lg:mb-[37px] mb-[65px]')}
                                  >
-                                <p className="sm:mb-[1.45rem] mb-4 sx:text-[16px] lg:text-[18px] text-[22px] lg:mb-[22px] mb-[32px]">Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet
-                                    sint. Velit officia consequat duis enim velit mollit. Exercitation veniam consequat sunt
-                                    nostrud amet.</p>
 
-                                <ul className="sx:text-[16px] lg:text-[18px] text-[22px] list-disc pl-4">
+                                {active
+                                && !getIsUserUseMultiplayer
+                                    ?
+                                    <div className="flex flex-col justify-between items-start mt-[-35px]">
+                                        <ul className="sx:text-base lg:text-lg text-[22px] font-semibold text-primaryBgColor list-disc mb-5">ONE TIME BONUS MULTIPLIER:
+                                            <li className="sx:text-base lg:text-lg text-[22px] font-normal text-greyColor mt-5 mb-[10px] ml-7">Works until 40000 packages are sold</li>
+                                            <li className="sx:text-base lg:text-lg text-[22px] font-normal text-greyColor mb-[10px] ml-7">Multiplies your packages the same number of times that the number of your packages</li>
+                                            <li className="sx:text-base lg:text-lg text-[22px] font-normal text-greyColor mb-[10px] ml-7">You can use it once</li>
+                                            <li className="sx:text-base lg:text-lg text-[22px] font-normal text-greyColor mb-[10px] ml-7">You can multiply it for 10% fee of the reward equivalent</li>
+                                        </ul>
 
-                                    <li className="mdd:mb-[8px] mb-4 ml-5"
-                                    >Amet minim mollit non deserunt ullamco est sit aliqua dolor do
-                                        amet sint. Velit officia consequat duis enim velit mollit.
-                                    </li>
-                                    <li className={"ml-5 "
-                                    + (active ? 'mdd:mb-[8px] mb-0' :
-                                        'mdd:mb-[8px] mb-4')}>
-                                        Amet minim mollit non deserunt ullamco est sit aliqua.
-                                    </li>
-                                    {!active &&
-                                    <li className="ml-5">Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet
-                                        sint. Velit officia.</li>
-                                    }
-                                </ul>
+                                        <ul className="sx:text-base lg:text-lg text-[22px] font-semibold text-primaryBgColor list-disc mb-5">GLOBAL MULTIPLIER:
+                                            <li className="sx:text-base lg:text-lg text-[22px] font-normal text-greyColor mt-5 mb-[10px] ml-7">Works after 40000 packages are sold</li>
+                                            <li className="sx:text-base lg:text-lg text-[22px] font-normal text-greyColor mb-[10px] ml-7">Multiplies your packages x2</li>
+                                            <li className="sx:text-base lg:text-lg text-[22px] font-normal text-greyColor mb-[10px] ml-7">You can use it as many times as you want</li>
+                                            <li className="sx:text-base lg:text-lg text-[22px] font-normal text-greyColor mb-[10px] ml-7">You can multiply it for 10% fee of the reward equivalent</li>
+                                        </ul>
+
+                                    </div> :
+                                    <>
+                                        <p className="sm:mb-[1.45rem] mb-4 sx:text-[16px] lg:text-[18px] text-[22px] lg:mb-[22px] mb-[32px]">Amet
+                                            minim mollit non deserunt ullamco est sit aliqua dolor do amet
+                                            sint. Velit officia consequat duis enim velit mollit. Exercitation veniam
+                                            consequat sunt
+                                            nostrud amet.</p>
+
+                                        <ul className="sx:text-[16px] lg:text-[18px] text-[22px] list-disc pl-4">
+
+                                            <li className="mdd:mb-[8px] mb-4 ml-5"
+                                            >Amet minim mollit non deserunt ullamco est sit aliqua dolor do
+                                                amet sint. Velit officia consequat duis enim velit mollit.
+                                            </li>
+                                            <li className={"ml-5 "
+                                            + (active ? 'mdd:mb-[8px] mb-0' :
+                                                'mdd:mb-[8px] mb-4')}>
+                                                Amet minim mollit non deserunt ullamco est sit aliqua.
+                                            </li>
+                                            {!active &&
+                                            <li className="ml-5">Amet minim mollit non deserunt ullamco est sit aliqua
+                                                dolor do amet
+                                                sint. Velit officia.</li>
+                                            }
+                                        </ul>
+                                    </>
+                                }
+
                             </div>
 
-                            <div className="flex tabletLand:flex-col   justify-between tabletLand:items-start items-center tablet:mb-[52px] tablet:w-full">
+                            <div className="flex tabletLand:flex-col justify-between tabletLand:items-start items-center tablet:mb-[52px] tablet:w-full">
                                 <Link href=""
                                       className="group mx-auto flex gap-[13px] tabletLand:m-0 items-center justify-between rounded-md border-black border w-max md:min-w-[209px] min-w-[209px] px-[17px] py-[17px] tablet:mr-0 mr-[10px] tabletLand:mb-[10px] tablet:w-full"
                                       onClick={openModal}>
