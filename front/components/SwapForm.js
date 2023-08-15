@@ -664,7 +664,7 @@ export class SwapForm extends Component {
                                                                 </> :
                                                                 <>
                         		      					<span
-                                                            className={"text-primaryBgColor sm:text-sm text-base font-semibold pb-[20px] leading-[17.41px] sx:mr-[0] w-full text-primaryBgColor "}>
+                                                            className={"sm:text-sm text-base font-semibold pb-[20px] leading-[17.41px] sx:mr-[0] w-full text-primaryBgColor "}>
                            			   						 Buy BNXT with multiplier x{this.state.multiplier}
                            			 					</span>
 
@@ -855,7 +855,7 @@ export class SwapForm extends Component {
                                                             </>
                                                             :
                                                             <div
-                                                                className="flex flex-col justify-content items-center gap-4 text-primaryBgColor px-[88px] mt-[125px] mb-[118px]">
+                                                                className="flex flex-col justify-content items-center gap-4 text-primaryBgColor px-[88px] mt-auto mb-auto">
                                                                 <p className="text-3xl font-medium leading-[32.64px]">Please
                                                                     note!</p>
                                                                 <p className="text-base font-normal leading-[26px] text-center max-w-[320px] w-full">Your
