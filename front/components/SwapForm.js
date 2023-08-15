@@ -123,6 +123,7 @@ export class SwapForm extends Component {
             })
             await tx.wait()
             this.fsetTransactionComplete(true)
+            document.body.style.overflow = 'hidden';
             this.fsetHash(tx.hash)
         } catch (e) {
             console.error(e);
@@ -153,6 +154,7 @@ export class SwapForm extends Component {
             })
             await tx.wait()
             this.fsetTransactionComplete(true)
+            document.body.style.overflow = 'hidden';
             this.fsetHash(tx.hash)
         } catch (e) {
             console.error(e);

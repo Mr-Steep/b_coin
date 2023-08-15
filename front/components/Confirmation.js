@@ -63,6 +63,7 @@ export function Confirmation({setConfirmationComplete, setTransactionComplete, h
     close = () => {
         setConfirmationComplete(true);
         setTransactionComplete(false)
+        document.body.style.overflow = 'none';
     }
 
     function isValidEmail(email) {
