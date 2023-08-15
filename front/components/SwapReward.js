@@ -112,7 +112,7 @@ export function SwapReward({_active}) {
                          backgroundSize: 'cover'
                      }}
                 >
-                    <div className="flex flex-col h-full justify-between max-w-[1526 px] mx-auto md:pt-[25px] pt-[25px] lg:pb-[52px] pb-[35px] ">
+                    <div className="flex flex-col h-full justify-between max-w-[1526px] mx-auto md:pt-[25px] pt-[25px] lg:pb-[52px] pb-[35px] ">
                         <div className="flex justify-between items-center">
                             <Link  className="flex " href="https://dev.bnxt.network/home/">
                                 <Image className="sm:w-[126px] w-[188px]" src={logo} alt={logo}

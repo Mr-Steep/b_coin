@@ -29,7 +29,7 @@ export const HARDHAT_NETWORK_ID = '31337'
 export const BSC_NETWORK_ID = '97'
 export const NETWORK_ID = HARDHAT_NETWORK_ID
 
-const ERROR_CODE_TX_REJECTED_BY_USER = 4001
+const ERROR_CODE_TX_REJECTED_BY_USER = 'ACTION_REJECTED'
 
 let step
 
@@ -96,7 +96,6 @@ export class SwapForm extends Component {
                     await this.buyTokens()
                 }
             }
-            this._clear()
             this.setState({
                 isLoading: false
             })
@@ -107,7 +106,6 @@ export class SwapForm extends Component {
             })
         }
     }
-
 
 
     buyTokensBonus = async () => {
@@ -125,16 +123,16 @@ export class SwapForm extends Component {
             this.fsetTransactionComplete(true)
             document.body.style.overflow = 'hidden';
             this.fsetHash(tx.hash)
+            this._clear()
         } catch (e) {
+            if (e.code === ERROR_CODE_TX_REJECTED_BY_USER) {
+                console.log('user cancel' + ERROR_CODE_TX_REJECTED_BY_USER)
+                return
+            }
             console.error(e);
             this.checkError(e.message)
-        } finally {
-            this.setState({
-                txBeingSent: null
-            })
         }
         await this.updateBalance()
-
     }
 
     buyTokens = async () => {
@@ -144,7 +142,7 @@ export class SwapForm extends Component {
             const overrides = {
                 value: this.state.priceInWei.toString()
             };
-			if (this.state.globalMultiplier>0){
+            if (this.state.globalMultiplier > 0) {
                 amountToken = this.state.countTokensCurrent
             }
 
@@ -156,35 +154,19 @@ export class SwapForm extends Component {
             this.fsetTransactionComplete(true)
             document.body.style.overflow = 'hidden';
             this.fsetHash(tx.hash)
+            this._clear()
         } catch (e) {
             console.error(e);
             if (e.code === ERROR_CODE_TX_REJECTED_BY_USER) {
                 console.log('user cancel' + ERROR_CODE_TX_REJECTED_BY_USER)
+                if (this.state.globalMultiplier === 0) {
+                    this._clear()
+                }
+                return
             }
             this.checkError(e.message)
-        } finally {
-            this.setState({
-                txBeingSent: null
-            })
         }
         await this.updateBalance()
-    }
-
-    withdrawal = async () => {
-        try {
-            const tx = await this._tokenShop.withdrawal()
-            this.setState({
-                txBeingSent: tx.hash
-            })
-            await tx.wait()
-        } catch (e) {
-            this.checkError(e.message)
-            console.error(e);
-        } finally {
-            this.setState({
-                txBeingSent: null
-            })
-        }
     }
 
     showError = (error) => {
@@ -368,7 +350,7 @@ export class SwapForm extends Component {
         ]
         for (const i in errors) {
             if (message.includes(errors[i])) {
-                this.showError(errors[i]);
+                alert(errors[i]);
             }
         }
         return false;
@@ -617,7 +599,7 @@ export class SwapForm extends Component {
 
                                     <SwapFormButton
                                         isLoading={this.state.isLoading}
-                                        disabledBtn={this.state.inputValue > 0}
+                                        disabledBtn={!this.state.inputValue || this.state.isLoading}
                                         buy={this.buy}
                                         currentError={this.state.currentError}
                                         _changeAddNetwork={this.changeAddNetwork}
@@ -666,7 +648,7 @@ export class SwapForm extends Component {
                                                                 </> :
                                                                 <>
                         		      					<span
-                                                            className={"text-primaryBgColor sm:text-sm text-base font-semibold pb-[20px] leading-[17.41px] sx:mr-[0] w-full text-primaryBgColor "}>
+                                                            className={"sm:text-sm text-base font-semibold pb-[20px] leading-[17.41px] sx:mr-[0] w-full text-primaryBgColor "}>
                            			   						 Buy BNXT with multiplier x{this.state.multiplier}
                            			 					</span>
 
@@ -739,11 +721,11 @@ export class SwapForm extends Component {
                                                                     </div>
                                                                     <SwapFormButton
                                                                         isLoading={this.state.isLoading}
-                                                                        disabledBtn={this.state.inputValue > 0}
+                                                                        disabledBtn={!this.state.inputValue || this.state.isLoading}
                                                                         buy={this.buy}
                                                                         currentError={this.state.currentError}
                                                                         _changeAddNetwork={this.changeAddNetwork}
-                                                                        _class={"text-textColor rounded-md w-full h-[60px] py-[17px] shadow-[0px_12px_18px_0_#A5CADE] font-medium sm:text-[18px] text-lg transform-gpu transition-transform duration-200 ease-in-out hover:scale-95 focus:scale-95 active:scale-95 relative flex justify-center gap-[20px] mt-auto "
+                                                                        _class={"text-textColor rounded-md w-full h-[60px] py-[17px] shadow-[0px_12px_18px_0_#A5CADE] font-medium sm:text-[18px] text-lg transform-gpu transition-transform duration-200 ease-in-out relative flex justify-center gap-[20px] mt-auto "
                                                                         + (this.state.currentError && this.state.currentError === 'Please connect to another Network' ? "bg-errorColor text-textColor z-10" : "bg-gradient-to-r from-[#29C8A9] via-[#208ED0] to-[#703AAD] text-primaryBgColor")
                                                                         }
                                                                     />
@@ -788,7 +770,7 @@ export class SwapForm extends Component {
                                                                     <>
                                                                         <p className="pt-[16px] w-full text-start">${this.state.inputValue}</p>
                                                                         <div
-                                                                            className="bg-textColor relative flex justify-center items-center w-full rounded-md mb-[15.6px] mt-[26px] border-b-[1px] border-[#F2F2F2] pb-[20px]"
+                                                                            className="bg-textColor relative flex justify-center items-center w-full rounded-md mb-[15.6px] mt-[23.7px] border-b-[1px] border-[#F2F2F2] pb-[20px]"
                                                                         >
                                                                             <div
                                                                                 className="flex justify-between   items-center ">
@@ -854,23 +836,23 @@ export class SwapForm extends Component {
                                                                     />
 
 
-                                                            </>
-                                                            :
-                                                            <div
-                                                                className="flex flex-col justify-content items-center gap-4 text-primaryBgColor px-[88px] mt-[125px] mb-[118px]">
-                                                                <p className="text-3xl font-medium leading-[32.64px]">Please
-                                                                    note!</p>
-                                                                <p className="text-base font-normal leading-[26px] text-center max-w-[320px] w-full">Your
-                                                                    current balance is 1000 BNXT.
-                                                                    You can no longer buy currency.
-                                                                    Please get your reward!</p>
-                                                            </div>
-                                                    }
-                                                </>
-                                        }
-                                    </>
-                                }
-                            </>
+                                                                </>
+                                                                :
+                                                                <div
+                                                                    className="flex flex-col justify-content items-center gap-4 text-primaryBgColor px-[88px] mt-auto mb-auto">
+                                                                    <p className="text-3xl font-medium leading-[32.64px]">Please
+                                                                        note!</p>
+                                                                    <p className="text-base font-normal leading-[26px] text-center max-w-[320px] w-full">Your
+                                                                        current balance is 1000 BNXT.
+                                                                        You can no longer buy currency.
+                                                                        Please get your reward!</p>
+                                                                </div>
+                                                        }
+                                                    </>
+                                            }
+                                        </>
+                                    }
+                                </>
                         }
                         {/*notification*/}
                         {

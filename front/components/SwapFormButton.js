@@ -2,7 +2,7 @@ import {useState, useEffect} from 'react'
 import loader from "../assets/images/loader.svg";
 import Image from "next/image";
 
-export function SwapFormButton({_class, buy, step, currentError, _changeAddNetwork, disabledBtn, isLoading}) {
+export function SwapFormButton({_class, buy, step, currentError, _changeAddNetwork, disabledBtn = false, isLoading}) {
 
 
     return (
