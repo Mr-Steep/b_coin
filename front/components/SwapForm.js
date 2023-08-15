@@ -652,7 +652,7 @@ export class SwapForm extends Component {
                                                             this.state.isUsedMultiplier ?
                                                                 <>
                                                                     <div
-                                                                        className="flex flex-col justify-content items-center gap-4 px-[70px] mt-auto mb-auto">
+                                                                        className="flex flex-col justify-content items-center gap-4 text-primaryBgColor px-[70px] mt-auto mb-auto">
                                                                         <p className="text-3xl font-medium leading-[32.64px] text-center max-w-[438px] w-full">You
                                                                             have already used the reward</p>
                                                                         <p className="text-base font-normal leading-[26px] text-center max-w-[320px] w-full">Amet
@@ -664,7 +664,7 @@ export class SwapForm extends Component {
                                                                 </> :
                                                                 <>
                         		      					<span
-                                                            className={"sm:text-sm text-base font-semibold pb-[20px] leading-[17.41px] sx:mr-[0] w-full text-[#000000] "}>
+                                                            className={"text-primaryBgColor sm:text-sm text-base font-semibold pb-[20px] leading-[17.41px] sx:mr-[0] w-full text-primaryBgColor "}>
                            			   						 Buy BNXT with multiplier x{this.state.multiplier}
                            			 					</span>
 
@@ -852,23 +852,23 @@ export class SwapForm extends Component {
                                                                     />
 
 
-                                                                </>
-                                                                :
-                                                                <div
-                                                                    className="flex flex-col justify-content items-center gap-4 px-[88px] mt-auto mb-auto">
-                                                                    <p className="text-3xl font-medium leading-[32.64px]">Please
-                                                                        note!</p>
-                                                                    <p className="text-base font-normal leading-[26px] text-center max-w-[320px] w-full">Your
-                                                                        current balance is 1000 BNXT.
-                                                                        You can no longer buy currency.
-                                                                        Please get your reward!</p>
-                                                                </div>
-                                                        }
-                                                    </>
-                                            }
-                                        </>
-                                    }
-                                </>
+                                                            </>
+                                                            :
+                                                            <div
+                                                                className="flex flex-col justify-content items-center gap-4 text-primaryBgColor px-[88px] mt-[125px] mb-[118px]">
+                                                                <p className="text-3xl font-medium leading-[32.64px]">Please
+                                                                    note!</p>
+                                                                <p className="text-base font-normal leading-[26px] text-center max-w-[320px] w-full">Your
+                                                                    current balance is 1000 BNXT.
+                                                                    You can no longer buy currency.
+                                                                    Please get your reward!</p>
+                                                            </div>
+                                                    }
+                                                </>
+                                        }
+                                    </>
+                                }
+                            </>
                         }
                         {/*notification*/}
                         {

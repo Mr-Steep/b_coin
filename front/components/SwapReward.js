@@ -22,8 +22,9 @@ import styles from '../styles/custom-styles.module.css';
 import {SwapFormTips} from "./SwapFormTips";
 
 const NAME_COOKIE = 'is_close'
-export function SwapReward({_active}) {
 
+
+export function SwapReward({_active}) {
 
     const [modalVisible, setModalVisible] = useState(false);
     const [selectAccount, setSelectAccount] = useState(null);
@@ -140,7 +141,7 @@ export function SwapReward({_active}) {
                         <p className={"sx:text-[40px] text-textColor sx:leading-[43.52px] lg:leading-[60.93px] font-bold w-full md:mb-4 "
                         + (active && !getIsUserUseMultiplayer ? 'lg:text-[40px] text-[60px] lg:leading-[43.52px] lg:max-w-[430px] max-w-[697px]' :
                             'lg:text-[56px] text-[96px] lg:max-w-[380px] max-w-[697px]')}>
-                            <Link href="/" className=" items-center justify-start min-w-[148px] sm:flex hidden mb-[9px]">
+                            <Link href="https://bnxt.network/home/" className=" items-center justify-start min-w-[148px] sm:flex hidden mb-[9px]">
                                 <Image src={arrowBack} className="inline-block" alt={arrowBack}/>
                                 <span className="text-sm font-medium text-textColor ml-2">Back to Home page</span>
                             </Link>

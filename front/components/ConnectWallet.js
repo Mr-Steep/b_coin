@@ -102,7 +102,7 @@ export function ConnectWallet({_class, connectWallet, setNetworkError}) {
     return (
         <>
             <button type="button"
-                    className={_class}
+                    className={!isDisabled ? `${_class} hover:scale-95 focus:scale-95 active:scale-95` : `${_class}` }
                     disabled={isDisabled}
                     onClick={openModal}
                     id='connect-wallet'
