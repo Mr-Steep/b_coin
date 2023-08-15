@@ -244,13 +244,13 @@ export class SwapFormTips extends Component {
                                 step === 1
                                     ?
                                     <ConnectWallet
-                                        _class={"bg-gradient-to-r from-[#29C8A9] via-[#208ED0] to-[#703AAD] text-textColor rounded-md max-w-[440px] w-full h-[60px] py-[17px] font-medium text-[18px] transform-gpu transition-transform duration-200 ease-in-out hover:scale-95 focus:scale-95 active:scale-95 shadow-[0_12px_18px_0_#40A6DF5C] relative "
+                                        _class={"bg-gradient-to-r from-[#29C8A9] via-[#208ED0] to-[#703AAD] text-textColor rounded-md max-w-[440px] w-full h-[60px] py-[17px] font-medium text-[18px] transform-gpu transition-transform duration-200 ease-in-out shadow-[0_12px_18px_0_#40A6DF5C] relative "
                                         + (step === 1 && "z-10")}
                                     />
                                     :
                                     <SwapFormButton
                                         step={step === 2}
-                                        _class={"rounded-md w-full h-[60px] py-[17px] font-medium sm:text-sm text-lg text-textColor transform-gpu transition-transform duration-200 ease-in-out hover:scale-95 focus:scale-95 active:scale-95 relative "
+                                        _class={"rounded-md w-full h-[60px] py-[17px] font-medium sm:text-sm text-lg text-textColor transform-gpu transition-transform duration-200 ease-in-out relative "
                                         + (step === 2 ? "bg-errorColor text-textColor z-10" : "bg-gradient-to-r from-[#29C8A9] via-[#208ED0] to-[#703AAD] text-primaryBgColor"
                                         )
                                         }
