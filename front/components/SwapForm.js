@@ -69,6 +69,7 @@ export class SwapForm extends Component {
                 globalMultiplier: 0,
                 currentError: false,
                 _balanceOfBonuses: 0,
+                activeAmount: 0,
                 isLoading: false
             }
 
@@ -125,6 +126,7 @@ export class SwapForm extends Component {
             await tx.wait()
             this.fsetTransactionComplete(true)
             this.fsetHash(tx.hash)
+            document.body.style.overflow = 'hidden';
         } catch (e) {
             console.error(e);
             this.checkError(e.message)
@@ -155,6 +157,7 @@ export class SwapForm extends Component {
             await tx.wait()
             this.fsetTransactionComplete(true)
             this.fsetHash(tx.hash)
+            document.body.style.overflow = 'hidden';
         } catch (e) {
             console.error(e);
             if (e.code === ERROR_CODE_TX_REJECTED_BY_USER) {
@@ -241,6 +244,7 @@ export class SwapForm extends Component {
         )
         const priceInWei = this.transTo(this.state.inputValue / price)
         const priceInBnb = (this.state.inputValue / price).toFixed(7)
+        console.log('priceInBnb', priceInBnb)
         const gwei = (this.state.gasPrice).toString()
 
         const weiGas = ethers.utils.parseUnits(gwei, "gwei");
@@ -249,13 +253,17 @@ export class SwapForm extends Component {
 
         this.setState({
             rate: price,
-            priceInWei: this.state.globalMultiplier > 0? priceInWei / 10:priceInWei,
+            priceInWei: this.state.globalMultiplier > 0 ? priceInWei / 10 : priceInWei,
             priceInBnb: priceInBnb,
-            inputValue: (price * priceInBnb).toFixed(0),
+            // inputValue: Number((price * priceInBnb).toFixed(0)),
             totalCostUSD: totalInWei
         });
         this.showError('')
         console.log( this.state)
+        console.log(
+            'this.state.inputValue ', this.state.inputValue
+        )
+
     }
 
     getGasPrice = async () => {
@@ -660,7 +668,7 @@ export class SwapForm extends Component {
                                                         this.state.isUsedMultiplier  ?
                                                             <>
                                                                 <div
-                                                                    className="flex flex-col justify-content items-center gap-4 px-[70px] mt-[125px] mb-[118px]">
+                                                                    className="flex flex-col justify-content items-center gap-4 text-primaryBgColor px-[70px] mt-[125px] mb-[118px]">
                                                                     <p className="text-3xl font-medium leading-[32.64px] text-center max-w-[438px] w-full">You
                                                                         have already used the reward</p>
                                                                     <p className="text-base font-normal leading-[26px] text-center max-w-[320px] w-full">Amet
@@ -671,7 +679,7 @@ export class SwapForm extends Component {
                                                             </> :
                                                             <>
                         		      					<span
-                                                            className={"sm:text-sm text-base font-semibold pb-[20px] leading-[17.41px] sx:mr-[0] w-full text-[#000000] "}>
+                                                            className={"text-primaryBgColor sm:text-sm text-base font-semibold pb-[20px] leading-[17.41px] sx:mr-[0] w-full text-primaryBgColor "}>
                            			   						 Buy BNXT with multiplier x{this.state.multiplier}
                            			 					</span>
 
@@ -840,7 +848,7 @@ export class SwapForm extends Component {
                                                                     currentError={this.state.currentError}
                                                                     _changeAddNetwork={this.changeAddNetwork}
                                                                     _class={"text-textColor rounded-md w-full h-[60px] py-[17px] font-medium sm:text-[18px] shadow-[0px_12px_18px_0_#A5CADE] text-lg transform-gpu transition-transform duration-200 ease-in-out  relative mt-auto flex justify-center gap-[20px] "
-                                                                        + (this.state.currentError && this.state.currentError === 'Please connect to another Network' ? "bg-errorColor  z-10" : "bg-gradient-to-r from-[#29C8A9] via-[#208ED0] to-[#703AAD]")
+                                                                        + (this.state.currentError && this.state.currentError === 'Please connect to another Network' ? "bg-errorColor z-10" : "bg-gradient-to-r from-[#29C8A9] via-[#208ED0] to-[#703AAD]")
                                                                     }
                                                                 />
 
@@ -848,7 +856,7 @@ export class SwapForm extends Component {
                                                             </>
                                                             :
                                                             <div
-                                                                className="flex flex-col justify-content items-center gap-4 px-[88px] mt-[125px] mb-[118px]">
+                                                                className="flex flex-col justify-content items-center gap-4 text-primaryBgColor px-[88px] mt-[125px] mb-[118px]">
                                                                 <p className="text-3xl font-medium leading-[32.64px]">Please
                                                                     note!</p>
                                                                 <p className="text-base font-normal leading-[26px] text-center max-w-[320px] w-full">Your
