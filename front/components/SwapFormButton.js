@@ -6,9 +6,9 @@ export function SwapFormButton({_class, buy, currentError, _changeAddNetwork, di
 
     return (
         <button
-            className={disabledBtn ? `${_class} hover:scale-95 focus:scale-95 active:scale-95`:`${_class} opacity-30`}
+            className={ !disabledBtn ? `${_class} hover:scale-95 focus:scale-95 active:scale-95`:`${_class} opacity-30`}
             onClick={currentError? _changeAddNetwork:buy}
-            disabled={!disabledBtn}
+            disabled={disabledBtn}
         >{currentError && currentError === 'Please connect to another Network'
             ? 'Switch to Binance Smart Chain'
             : 'Buy BNXT'

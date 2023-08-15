@@ -23,9 +23,9 @@ export function ThankYou({getMultiplier, handleSetActive, setConfirmationComplet
                         <p className="text-3xl font-medium text-center">Thank you!</p>
                         <p className="text-base font-normal text-center">Amet minim mollit non deserunt ullamco est sit aliqua.
                         { !getIsUserUseMultiplayer  &&
-                            <>
+                            <span className="block">
                                Get your 90% discount with x{getMultiplier>0 && getMultiplier} multiplier!
-                           </>
+                           </span>
                         }
                         </p>
                         {!getIsUserUseMultiplayer ?
