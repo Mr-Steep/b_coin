@@ -5,13 +5,22 @@ import arrowLight from "../assets/images/arrow-light.svg";
 import thanksArrow from "../assets/images/thanks-arrow.svg";
 import cross from "../assets/images/cross-black.svg";
 import Link from "next/link";
+import {useEffect} from "react";
 
 
-export function ThankYou({getMultiplier, handleSetActive, setConfirmationComplete, getIsUserUseMultiplayer, getGlobalMultiplayer}) {
+export function ThankYou({getMultiplier, handleSetActive, getConfirmationComplete, setConfirmationComplete, getIsUserUseMultiplayer, getGlobalMultiplayer}) {
+
+    useEffect(() => {
+        if(getConfirmationComplete) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = 'auto';
+        }
+    }, [])
 
     close = () => {
         setConfirmationComplete(false)
-        document.body.style.overflow = 'none';
+        document.body.style.overflow = 'auto';
     }
 
     return (

@@ -52,12 +52,12 @@ export function Step({step, setNewStep, closeModal}) {
 
                    </div>
 
-                   <div className="absolute tablet:hidden bottom-[-130px] right-[30px] z-50">
+                   <div className="absolute tablet:hidden bottom-[-130px] right-[10px] z-50">
                        <Image src={arrow1} className="relative z-30" alt={arrow1}/>
                        <Image src={arrow2} className="relative z-30" alt={arrow2}/>
                    </div>
 
-                   <Image src={arrow3} className="absolute bottom-[-120px] right-[50px] tablet:block hidden z-30" alt={arrow3}/>
+                   <Image src={arrow3} className="absolute bottom-[-90px] right-[50px] tablet:block hidden z-30" alt={arrow3}/>
 
                </div>
 
@@ -96,7 +96,7 @@ export function Step({step, setNewStep, closeModal}) {
 
                </div>
 
-               <div className="absolute tablet:hidden bottom-[-130px] right-[30px] z-50">
+               <div className="absolute tablet:hidden bottom-[-130px] right-[10px] z-50">
                    <Image src={arrow1} className="relative z-30" alt={arrow1}/>
                    <Image src={arrow2} className="relative z-30" alt={arrow2}/>
                </div>
