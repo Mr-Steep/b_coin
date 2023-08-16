@@ -83,6 +83,10 @@ export function SwapReward({_active}) {
 
     }, []);
 
+    useEffect(() => {
+            document.body.style.overflow = 'auto';
+    }, [])
+
 
     const handleSetActive = (state) => {
         setActive(state)
@@ -95,8 +99,6 @@ export function SwapReward({_active}) {
         Cookies.set(NAME_COOKIE, true)
         document.body.style.overflow = 'auto';
     }
-
-
 
 
 
@@ -294,6 +296,7 @@ export function SwapReward({_active}) {
 
                 {!!getTransactionComplete &&
                     <Confirmation
+                    getTransactionComplete={getTransactionComplete}
                     setConfirmationComplete={setConfirmationComplete}
                     setTransactionComplete={setTransactionComplete}
                     hash={getHash}
@@ -304,6 +307,7 @@ export function SwapReward({_active}) {
                     <ThankYou
                         getMultiplier={getMultiplier}
                         handleSetActive={handleSetActive}
+                        getConfirmationComplete={getConfirmationComplete}
                         setConfirmationComplete={setConfirmationComplete}
                         getIsUserUseMultiplayer={getIsUserUseMultiplayer}
                         getGlobalMultiplayer={getGlobalMultiplayer}

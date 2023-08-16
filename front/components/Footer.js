@@ -7,7 +7,7 @@ import Link from "next/link";
 export function Footer() {
 
     return (
-        <div className="bg-primaryBgColor sm:pt-[65px] pt-[4.813rem] px-[17px] mdm:pl-[104px] mdm:pr-[105px] mb-[-50px] relative overflow-hidden">
+        <div className="bg-primaryBgColor sm:pt-[65px] pt-[4.813rem] px-[17px] smn:px-[104px] mb-[-50px] relative overflow-hidden">
 
             <div className="max-w-[1526px] mx-auto text-textColor "
                  >
