@@ -8,7 +8,7 @@ import loader from "../assets/images/loader.svg";
 import alert_circle from "../assets/images/alert-circle.svg";
 
 
-export function Confirmation({setConfirmationComplete, setTransactionComplete, hash}) {
+export function Confirmation({setConfirmationComplete, setTransactionComplete, hash, countTokens}) {
 
     const [isLoading, setIsLoading] = useState(false);
     const [emailError, setEmailError] = useState(false)
@@ -42,7 +42,7 @@ export function Confirmation({setConfirmationComplete, setTransactionComplete, h
 
         try {
 
-            const requestData = { email,  hash};
+            const requestData = { email, hash, countTokens};
              await fetch('/api/sendMessage', {
                 method: 'POST',
                 headers: {
@@ -69,6 +69,7 @@ export function Confirmation({setConfirmationComplete, setTransactionComplete, h
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return emailRegex.test(email);
     }
+
 
 
 
