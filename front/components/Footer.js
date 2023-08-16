@@ -19,7 +19,7 @@ export function Footer() {
 
                         >
                             <p className="md:mb-4 sm:mr-0 mr-[40px] text-lg">Interested in working with us?</p>
-                            <Link href="" className="group grid grid-cols-2 gap-[13px] bg-buttonBgColor hover:bg-buttonHoverBgColor items-center justify-between rounded-md max-w-[282px] max-h-[60px] w-full px-[17px] pt-[17px] pb-[20px]">
+                            <Link href="mailto:info@bnxt.com" className="group grid grid-cols-2 gap-[13px] bg-buttonBgColor hover:bg-buttonHoverBgColor items-center justify-between rounded-md max-w-[282px] max-h-[60px] w-full px-[17px] pt-[17px] pb-[20px]">
                                 <span className="text-secondaryBgColor text-lg">Get In Touch</span>
                                 <Image src={arrowDark} className="w-[23px] h-[23px] ml-[90px] group-hover:rotate-45 transition duration-300 ease-in" alt={''}/>
                             </Link>
@@ -44,7 +44,7 @@ export function Footer() {
                                     <li className="mb-[20px] text-lg leading-5 font-normal hover:text-buttonBgColor transition duration-300 ease-in"><Link href="https://bnxt.network/home/#use-cases">Use cases</Link></li>
                                     <li className="mb-[20px] text-lg leading-5 font-normal hover:text-buttonBgColor transition duration-300 ease-in"><Link href="https://bnxt.network/home/#tokenomics">Tokenomics</Link></li>
                                     <li className="mb-[20px] text-lg leading-5 font-normal hover:text-buttonBgColor transition duration-300 ease-in"><Link href="https://bnxt.network/home/#roadmap">Roadmap</Link></li>
-                                    <li className="group text-lg leading-5 hover:text-buttonBgColor transition duration-300 ease-in"><Link href="https://bnxt.network/home/">Whitepaper</Link>
+                                    <li className="group mb-[20px] text-lg leading-5 hover:text-buttonBgColor transition duration-300 ease-in"><Link href="https://bnxt.network/home/">Whitepaper</Link>
                                         <svg src={arrowLight} className="inline-block ml-5 cursor-pointer group-hover:rotate-45 fill-white group-hover:fill-buttonBgColor transition duration-300 ease-in" width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <path d="M1.29231 12L0 10.7077L8.86154 1.84615H0.923077V0H12V11.0769H10.1538V3.13846L1.29231 12Z"/>
                                         </svg>
@@ -53,7 +53,7 @@ export function Footer() {
                             </div>
 
                             <div className="min-w-[131px]">
-                                <ul className="sm:text-center text-left sm:hidden block">
+                                <ul className="sm:text-center text-left block">
                                     <p className="sm:mb-7 mb-10 text-xl leading-5 font-bold">Community</p>
                                     <li className="group mb-[20px] text-lg leading-5 font-normal hover:text-buttonBgColor transition duration-300 ease-in"><Link href="https://twitter.com/bNXT_network?s=20">Twitter</Link>
                                         <svg src={arrowLight} className="inline-block ml-5 cursor-pointer group-hover:rotate-45 fill-white group-hover:fill-buttonBgColor transition duration-300 ease-in" width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -82,7 +82,7 @@ export function Footer() {
                                             <path d="M1.29231 12L0 10.7077L8.86154 1.84615H0.923077V0H12V11.0769H10.1538V3.13846L1.29231 12Z"/>
                                         </svg>
                                     </li>
-                                    <li className="group mb-[20px] text-lg leading-5 font-normal hover:text-buttonBgColor transition duration-300 ease-in"><Link href="https://bnxt.network/home/">Contact us</Link>
+                                    <li className="group mb-[20px] text-lg leading-5 font-normal hover:text-buttonBgColor transition duration-300 ease-in"><Link href="mailto:info@bnxt.com">Contact us</Link>
                                         <svg src={arrowLight} className="inline-block ml-5 cursor-pointer group-hover:rotate-45 fill-white group-hover:fill-buttonBgColor transition duration-300 ease-in" width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <path d="M1.29231 12L0 10.7077L8.86154 1.84615H0.923077V0H12V11.0769H10.1538V3.13846L1.29231 12Z"/>
                                         </svg>
