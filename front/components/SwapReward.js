@@ -301,6 +301,7 @@ export function SwapReward({_active}) {
                     setConfirmationComplete={setConfirmationComplete}
                     setTransactionComplete={setTransactionComplete}
                     hash={getHash}
+                    countTokens={getBalance}
                     />
                 }
                 {
