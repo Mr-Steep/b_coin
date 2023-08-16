@@ -22,8 +22,9 @@ import styles from '../styles/custom-styles.module.css';
 import {SwapFormTips} from "./SwapFormTips";
 
 const NAME_COOKIE = 'is_close'
-export function SwapReward({_active}) {
 
+
+export function SwapReward({_active}) {
 
     const [modalVisible, setModalVisible] = useState(false);
     const [selectAccount, setSelectAccount] = useState(null);
@@ -82,6 +83,10 @@ export function SwapReward({_active}) {
 
     }, []);
 
+    useEffect(() => {
+            document.body.style.overflow = 'auto';
+    }, [])
+
 
     const handleSetActive = (state) => {
         setActive(state)
@@ -97,8 +102,6 @@ export function SwapReward({_active}) {
 
 
 
-
-
     return (
         <Layout modalVisible={modalVisible} closeModal={closeModal}>
             <div className="flex flex-col justify-between min-h-screen">
@@ -111,7 +114,7 @@ export function SwapReward({_active}) {
                          backgroundSize: 'cover'
                      }}
                 >
-                    <div className="flex flex-col h-full justify-between max-w-[1920px] mx-auto md:pt-[25px] pt-[25px] lg:pb-[52px] pb-[35px] ">
+                    <div className="flex flex-col h-full justify-between max-w-[1526px] mx-auto md:pt-[25px] pt-[25px] lg:pb-[52px] pb-[35px] ">
                         <div className="flex justify-between items-center">
                             <Link  className="flex " href="https://dev.bnxt.network/home/">
                                 <Image className="sm:w-[126px] w-[188px]" src={logo} alt={logo}
@@ -138,15 +141,19 @@ export function SwapReward({_active}) {
                             }
                         </div>
                         <p className={"sx:text-[40px] text-textColor sx:leading-[43.52px] lg:leading-[60.93px] font-bold w-full md:mb-4 "
-                        + (active && !getIsUserUseMultiplayer ? 'lg:text-[40px] text-[60px] lg:leading-[43.52px] lg:max-w-[430px] max-w-[697px]' :
+                        + (active
+                        && !getIsUserUseMultiplayer
+                            ? 'lg:text-[40px] text-[60px] lg:leading-[43.52px] lg:max-w-[430px] max-w-[697px]' :
                             'lg:text-[56px] text-[96px] lg:max-w-[380px] max-w-[697px]')}>
-                            <Link href="/" className=" items-center justify-start min-w-[148px] sm:flex hidden mb-[9px]">
+                            <Link href="https://bnxt.network/home/" className=" items-center justify-start min-w-[148px] sm:flex hidden mb-[9px]">
                                 <Image src={arrowBack} className="inline-block" alt={arrowBack}/>
                                 <span className="text-sm font-medium text-textColor ml-2">Back to Home page</span>
                             </Link>
                             {!modalVisible &&
                             <>
-                                {active && !getIsUserUseMultiplayer ?
+                                {active
+                                && !getIsUserUseMultiplayer
+                                    ?
                                     'Get your 90% discount with x' + getMultiplier + ' multiplier'
                                     : 'Join the bNXT Network'}
                             </>
@@ -159,7 +166,7 @@ export function SwapReward({_active}) {
                 <div className="w-full grow bg-textColor sm:px-4  smn:px-[50px] mdm:px-[102px] lgm:px-[111px] px-[16px] pb-[48px] "
                 >
 
-                    <div className={"flex justify-between tablet:flex-col tablet:items-center items-start mx-auto w-full max-w-[1920px] relative lgm:mb-0 mdm:mb-[-33px] mdm:mb-[-79px]  mb-0 "
+                    <div className={"flex justify-between tablet:flex-col tablet:items-center items-start mx-auto w-full max-w-[1526px] relative lgm:mb-0 mdm:mb-[-33px] mdm:mb-[-79px]  mb-0 "
                     +(modalVisible ? 'tablet:flex-col-reverse md:pt-0 md:mt-[15px] md:pb-0' : ''
                     )}>
                         <div className={"flex flex-col justify-between tablet:items-center items-start sm:mx-auto sm:max-w-[90%] lg:max-w-[520px] md:min-w-[375px] max-w-[616px] sx:w-full md:w-[45%] mr-4 sx:pt-[24px] mdd:pt-[52px] lg:pt-[63px] pt-[97px] sx:min-w-[auto]  "
@@ -169,29 +176,56 @@ export function SwapReward({_active}) {
                             + (active ? 'mb-[33px]' :
                                 'lg:mb-[37px] mb-[65px]')}
                                  >
-                                <p className="sm:mb-[1.45rem] mb-4 sx:text-[16px] lg:text-[18px] text-[22px] lg:mb-[22px] mb-[32px]">Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet
-                                    sint. Velit officia consequat duis enim velit mollit. Exercitation veniam consequat sunt
-                                    nostrud amet.</p>
 
-                                <ul className="sx:text-[16px] lg:text-[18px] text-[22px] list-disc pl-4">
+                                {active
+                                && !getIsUserUseMultiplayer
+                                    ?
+                                    <div className="flex flex-col justify-between items-start mt-[-35px]">
+                                        <ul className="sx:text-base lg:text-lg text-[22px] font-semibold text-primaryBgColor list-disc mb-5">ONE TIME BONUS MULTIPLIER:
+                                            <li className="sx:text-base lg:text-lg text-[22px] font-normal text-greyColor mt-5 mb-[10px] ml-7">Works until 40000 packages are sold</li>
+                                            <li className="sx:text-base lg:text-lg text-[22px] font-normal text-greyColor mb-[10px] ml-7">Multiplies your packages the same number of times that the number of your packages</li>
+                                            <li className="sx:text-base lg:text-lg text-[22px] font-normal text-greyColor mb-[10px] ml-7">You can use it once</li>
+                                            <li className="sx:text-base lg:text-lg text-[22px] font-normal text-greyColor mb-[10px] ml-7">You can multiply it for 10% fee of the reward equivalent</li>
+                                        </ul>
 
-                                    <li className="mdd:mb-[8px] mb-4 ml-5"
-                                    >Amet minim mollit non deserunt ullamco est sit aliqua dolor do
-                                        amet sint. Velit officia consequat duis enim velit mollit.
-                                    </li>
-                                    <li className={"ml-5 "
-                                    + (active ? 'mdd:mb-[8px] mb-0' :
-                                        'mdd:mb-[8px] mb-4')}>
-                                        Amet minim mollit non deserunt ullamco est sit aliqua.
-                                    </li>
-                                    {!active &&
-                                    <li className="ml-5">Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet
-                                        sint. Velit officia.</li>
-                                    }
-                                </ul>
+                                        <ul className="sx:text-base lg:text-lg text-[22px] font-semibold text-primaryBgColor list-disc mb-5">GLOBAL MULTIPLIER:
+                                            <li className="sx:text-base lg:text-lg text-[22px] font-normal text-greyColor mt-5 mb-[10px] ml-7">Works after 40000 packages are sold</li>
+                                            <li className="sx:text-base lg:text-lg text-[22px] font-normal text-greyColor mb-[10px] ml-7">Multiplies your packages x2</li>
+                                            <li className="sx:text-base lg:text-lg text-[22px] font-normal text-greyColor mb-[10px] ml-7">You can use it as many times as you want</li>
+                                            <li className="sx:text-base lg:text-lg text-[22px] font-normal text-greyColor mb-[10px] ml-7">You can multiply it for 10% fee of the reward equivalent</li>
+                                        </ul>
+
+                                    </div> :
+                                    <>
+                                        <p className="sm:mb-[1.45rem] mb-4 sx:text-[16px] lg:text-[18px] text-[22px] lg:mb-[22px] mb-[32px]">Amet
+                                            minim mollit non deserunt ullamco est sit aliqua dolor do amet
+                                            sint. Velit officia consequat duis enim velit mollit. Exercitation veniam
+                                            consequat sunt
+                                            nostrud amet.</p>
+
+                                        <ul className="sx:text-[16px] lg:text-[18px] text-[22px] list-disc pl-4">
+
+                                            <li className="mdd:mb-[8px] mb-4 ml-5"
+                                            >Amet minim mollit non deserunt ullamco est sit aliqua dolor do
+                                                amet sint. Velit officia consequat duis enim velit mollit.
+                                            </li>
+                                            <li className={"ml-5 "
+                                            + (active ? 'mdd:mb-[8px] mb-0' :
+                                                'mdd:mb-[8px] mb-4')}>
+                                                Amet minim mollit non deserunt ullamco est sit aliqua.
+                                            </li>
+                                            {!active &&
+                                            <li className="ml-5">Amet minim mollit non deserunt ullamco est sit aliqua
+                                                dolor do amet
+                                                sint. Velit officia.</li>
+                                            }
+                                        </ul>
+                                    </>
+                                }
+
                             </div>
 
-                            <div className="flex tabletLand:flex-col   justify-between tabletLand:items-start items-center tablet:mb-[52px] tablet:w-full">
+                            <div className="flex tabletLand:flex-col justify-between tabletLand:items-start items-center tablet:mb-[52px] tablet:w-full">
                                 <Link href=""
                                       className="group mx-auto flex gap-[13px] tabletLand:m-0 items-center justify-between rounded-md border-black border w-max md:min-w-[209px] min-w-[209px] px-[17px] py-[17px] tablet:mr-0 mr-[10px] tabletLand:mb-[10px] tablet:w-full"
                                       onClick={openModal}>
@@ -262,6 +296,7 @@ export function SwapReward({_active}) {
 
                 {!!getTransactionComplete &&
                     <Confirmation
+                    getTransactionComplete={getTransactionComplete}
                     setConfirmationComplete={setConfirmationComplete}
                     setTransactionComplete={setTransactionComplete}
                     hash={getHash}
@@ -273,6 +308,7 @@ export function SwapReward({_active}) {
                     <ThankYou
                         getMultiplier={getMultiplier}
                         handleSetActive={handleSetActive}
+                        getConfirmationComplete={getConfirmationComplete}
                         setConfirmationComplete={setConfirmationComplete}
                         getIsUserUseMultiplayer={getIsUserUseMultiplayer}
                         getGlobalMultiplayer={getGlobalMultiplayer}

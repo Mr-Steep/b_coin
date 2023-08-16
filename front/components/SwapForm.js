@@ -29,10 +29,9 @@ export const HARDHAT_NETWORK_ID = '31337'
 export const BSC_NETWORK_ID = '97'
 export const NETWORK_ID = HARDHAT_NETWORK_ID
 
-const ERROR_CODE_TX_REJECTED_BY_USER = 4001
+const ERROR_CODE_TX_REJECTED_BY_USER = 'ACTION_REJECTED'
 
 let step
-
 
 
 export class SwapForm extends Component {
@@ -97,7 +96,6 @@ export class SwapForm extends Component {
                     await this.buyTokens()
                 }
             }
-            this._clear()
             this.setState({
                 isLoading: false
             })
@@ -108,7 +106,6 @@ export class SwapForm extends Component {
             })
         }
     }
-
 
 
     buyTokensBonus = async () => {
@@ -125,16 +122,16 @@ export class SwapForm extends Component {
             await tx.wait()
             this.fsetTransactionComplete(true)
             this.fsetHash(tx.hash)
+            this._clear()
         } catch (e) {
+            if (e.code === ERROR_CODE_TX_REJECTED_BY_USER) {
+                console.log('user cancel' + ERROR_CODE_TX_REJECTED_BY_USER)
+                return
+            }
             console.error(e);
             this.checkError(e.message)
-        } finally {
-            this.setState({
-                txBeingSent: null
-            })
         }
         await this.updateBalance()
-
     }
 
     buyTokens = async () => {
@@ -144,7 +141,7 @@ export class SwapForm extends Component {
             const overrides = {
                 value: this.state.priceInWei.toString()
             };
-			if(this.state.globalMultiplier>0){
+            if (this.state.globalMultiplier > 0) {
                 amountToken = this.state.countTokensCurrent
             }
 
@@ -155,35 +152,19 @@ export class SwapForm extends Component {
             await tx.wait()
             this.fsetTransactionComplete(true)
             this.fsetHash(tx.hash)
+            this._clear()
         } catch (e) {
             console.error(e);
             if (e.code === ERROR_CODE_TX_REJECTED_BY_USER) {
                 console.log('user cancel' + ERROR_CODE_TX_REJECTED_BY_USER)
+                if (this.state.globalMultiplier === 0) {
+                    this._clear()
+                }
+                return
             }
             this.checkError(e.message)
-        } finally {
-            this.setState({
-                txBeingSent: null
-            })
         }
         await this.updateBalance()
-    }
-
-    withdrawal = async () => {
-        try {
-            const tx = await this._tokenShop.withdrawal()
-            this.setState({
-                txBeingSent: tx.hash
-            })
-            await tx.wait()
-        } catch (e) {
-            this.checkError(e.message)
-            console.error(e);
-        } finally {
-            this.setState({
-                txBeingSent: null
-            })
-        }
     }
 
     showError = (error) => {
@@ -233,12 +214,6 @@ export class SwapForm extends Component {
         });
         const dataParse = await requestData.json()
         const price = dataParse.price
-        console.log(
-            'this.state.inputValue ', this.state.inputValue
-        )
-        console.log(
-            'price ', price
-        )
         const priceInWei = this.transTo(this.state.inputValue / price)
         const priceInBnb = (this.state.inputValue / price).toFixed(7)
         const gwei = (this.state.gasPrice).toString()
@@ -249,13 +224,12 @@ export class SwapForm extends Component {
 
         this.setState({
             rate: price,
-            priceInWei: this.state.globalMultiplier > 0? priceInWei / 10:priceInWei,
+            priceInWei: this.state.globalMultiplier > 0 ? priceInWei / 10 : priceInWei,
             priceInBnb: priceInBnb,
-            inputValue: (price * priceInBnb).toFixed(0),
+            inputValue: +(price * priceInBnb).toFixed(0),
             totalCostUSD: totalInWei
         });
         this.showError('')
-        console.log( this.state)
     }
 
     getGasPrice = async () => {
@@ -293,7 +267,7 @@ export class SwapForm extends Component {
             if (this.props.active) {
                 await this.handleInput(this.state.countTokensCurrent * this.state.multiplier)
             }
-            if (this.state.globalMultiplier > 0){
+            if (this.state.globalMultiplier > 0) {
                 await this.handleInput(this.state.countTokensCurrent * this.state.globalMultiplier)
             }
 
@@ -304,7 +278,7 @@ export class SwapForm extends Component {
 
     handleInput = async (value) => {
         console.log('value', value)
-        this.setState({inputValue: value});
+        this.setState({inputValue: +value});
     }
 
     _clear() {
@@ -374,7 +348,7 @@ export class SwapForm extends Component {
         ]
         for (const i in errors) {
             if (message.includes(errors[i])) {
-                this.showError(errors[i]);
+                alert(errors[i]);
             }
         }
         return false;
@@ -464,7 +438,7 @@ export class SwapForm extends Component {
     handleAmount = (selectedAmount) => {
         const {data} = this.props
         const {amount} = data.filter(el => el.amount === selectedAmount)[0]
-        this.setState({inputValue: amount});
+        this.setState({inputValue: +amount});
         this.getRate().then()
     }
 
@@ -476,10 +450,10 @@ export class SwapForm extends Component {
             <>
                 <div
                     className={"flex flex-col  tablet:top-0 top-[-211px] relative right-0 " +
-                        "max-w-[497px] " +
-                        "mdd:min-h-[650px] min-h-[680px] sx:h-[auto] shadow-[19px_23px_87px_0_#6CB8EF33] " +
-                        "md:rounded-tl-2xl md:rounded-tr-2xl md:rounded-bl-none md:rounded-br-none rounded-md sx:rounded-tr-none sx:rounded-tl-none w-full "
-                        + (active ? "sx:h-[655px]" : "sx:h-[543px]")
+                    "max-w-[497px] " +
+                    "mdd:min-h-[650px] min-h-[680px] sx:h-[auto] shadow-[19px_23px_87px_0_#6CB8EF33] " +
+                    "md:rounded-tl-2xl md:rounded-tr-2xl md:rounded-bl-none md:rounded-br-none rounded-md sx:rounded-tr-none sx:rounded-tl-none w-full "
+                    + (active ? "sx:h-[655px]" : "sx:h-[543px]")
 
                     }
                 >
@@ -500,9 +474,9 @@ export class SwapForm extends Component {
 
                                 </div>
                                 {this.state._balanceOfBonuses > 0 &&
-                                    <p className='text-amber-300'>
-                                        ({ethers.utils.formatUnits(this.state._balanceOfBonuses, 0)})
-                                    </p>
+                                <p className='text-amber-300'>
+                                    ({ethers.utils.formatUnits(this.state._balanceOfBonuses, 0)})
+                                </p>
                                 }
                             </div>
                             <div className="flex flex-col">
@@ -531,337 +505,352 @@ export class SwapForm extends Component {
 
                         {
                             this.state.globalMultiplier > 0 ?
-                            <>
-                                <div
-                                    className="bg-gradient-to-r from-[#34C4E1] via-[#5B86F8] to-[#7165ED] w-full rounded-[49px] p-[1px] mb-[26px] ">
+                                <>
                                     <div
-                                        className="bg-white p-2 flex justify-center gap-3 items-center rounded-[49px]  ">
-                                        <Image src={lightningBlue} className="" alt={lightningBlue}/>
-                                        <p className="text-primaryBgColor text-base leading-[17.41px] font-medium">1
-                                            bNXT <span
-                                                className="text-primaryBgColor text-base leading-[17.41px] font-light">($1.00)</span> = {parseFloat(1 / (this.state.rate * 1)).toFixed(5)} BNB
-                                        </p>
+                                        className="bg-gradient-to-r from-[#34C4E1] via-[#5B86F8] to-[#7165ED] w-full rounded-[49px] p-[1px] mb-[26px] ">
+                                        <div
+                                            className="bg-white p-2 flex justify-center gap-3 items-center rounded-[49px]  ">
+                                            <Image src={lightningBlue} className="" alt={lightningBlue}/>
+                                            <p className="text-primaryBgColor text-base leading-[17.41px] font-medium">1
+                                                bNXT <span
+                                                    className="text-primaryBgColor text-base leading-[17.41px] font-light">($1.00)</span> = {parseFloat(1 / (this.state.rate * 1)).toFixed(5)} BNB
+                                            </p>
+                                        </div>
                                     </div>
-                                </div>
 
-                                <span
-                                    className={"sm:text-sm text-base font-semibold pb-[20px] leading-[17.41px] sx:mr-[0] w-full text-[#000000] "}>
+                                    <span
+                                        className={"sm:text-sm text-base font-semibold pb-[20px] leading-[17.41px] sx:mr-[0] w-full text-[#000000] "}>
                            			   						 Buy BNXT with Global multiplier x{this.state.globalMultiplier}
                                 </span>
 
 
-                                <div
-                                    className="flex justify-between items-center bg-[#F2F2F2] w-full rounded-[6px] pr-6 pl-4 py-[10px]">
+                                    <div
+                                        className="flex justify-between items-center bg-[#F2F2F2] w-full rounded-[6px] pr-6 pl-4 py-[10px]">
 
-                                    <div  className="appearance-none bg-[#F2F2F2] text-primaryBgColor font-semibold md:text-3xl text-[30px] sx:text-[24px]  outline-0 w-full h-[33px] leading-none ">
-                                        {this.state.countTokensCurrent * this.state.globalMultiplier}
-                                    </div>
+                                        <div
+                                            className="appearance-none bg-[#F2F2F2] text-primaryBgColor font-semibold md:text-3xl text-[30px] sx:text-[24px]  outline-0 w-full h-[33px] leading-none ">
+                                            {this.state.countTokensCurrent * this.state.globalMultiplier}
+                                        </div>
 
 
-                                    <span className="text-primaryBgColor">$
-                                        {this.state.countTokensCurrent * this.state.globalMultiplier}
+                                        <span className="text-primaryBgColor">$
+                                            {this.state.countTokensCurrent * this.state.globalMultiplier}
 
                                     </span>
 
-                                </div>
+                                    </div>
 
-                                <div className="bg-textColor relative flex justify-between items-center border-b-[1px] border-[#F2F2F2] pb-[20px] w-full rounded-md mb-5 mt-[26px]">
                                     <div
-                                        className="flex justify-between items-center">
-                                        <Image src={swapArrowWhite} alt={swapArrowWhite}
-                                               className="w-[30px] h-[30px] mr-[6px]"/>
-                                        <span
-                                            className="bg-textColor text-primaryBgColor sm:text-sm text-lg font-medium leading-5 "
-                                        >{this.state.countTokensCurrent * this.state.globalMultiplier} BNXT (${this.state.countTokensCurrent * this.state.globalMultiplier}) </span>
-                                        <span className="mr-2 ml-2 sm:mr-1 sm:ml-1"> = </span>
-                                        <Image src={bnbLogo}
-                                               className="w-[30px] h-[30px] mr-[6px]"
-                                               alt={bnbLogo}/>
-                                        <span
-                                            className="bg-textColor text-primaryBgColor sm:text-sm text-lg font-medium leading-5">
+                                        className="bg-textColor relative flex justify-between items-center border-b-[1px] border-[#F2F2F2] pb-[20px] w-full rounded-md mb-[15.6px] mt-[26px]">
+                                        <div
+                                            className="flex justify-between items-center">
+                                            <Image src={swapArrowWhite} alt={swapArrowWhite}
+                                                   className="w-[30px] h-[30px] mr-[6px]"/>
+                                            <span
+                                                className="bg-textColor text-primaryBgColor sm:text-sm text-lg font-medium leading-5 "
+                                            >{this.state.countTokensCurrent * this.state.globalMultiplier} BNXT (${this.state.countTokensCurrent * this.state.globalMultiplier}) </span>
+                                            <span className="mr-2 ml-2 sm:mr-1 sm:ml-1"> = </span>
+                                            <Image src={bnbLogo}
+                                                   className="w-[30px] h-[30px] mr-[6px]"
+                                                   alt={bnbLogo}/>
+                                            <span
+                                                className="bg-textColor text-primaryBgColor sm:text-sm text-lg font-medium leading-5">
                                                                             {(this.state.priceInBnb / 10).toFixed(FIXED_VALUE)} BNB
                                         </span>
-                                    </div>
-                                </div>
-
-
-
-                                <div className="w-full mb-[23px]">
-                                    <div
-                                        className="flex justify-between items-center text-[#EB5757] mb-[10px]">
-                                        <p className="sm:text-sm text-base font-normal leading-[17.41px]">Discount</p>
-                                        <span
-                                            className="sm:text-sm text-base font-normal leading-[17.41px]">90% ( - ${this.state.countTokensCurrent * this.state.globalMultiplier - this.state.countTokensCurrent * this.state.globalMultiplier / 10})</span>
+                                        </div>
                                     </div>
 
-                                    <div
-                                        className="flex justify-between items-center text-primaryBgColor mb-[10px]">
-                                        <p className="sm:text-sm text-base font-normal leading-[17.41px]">Network
-                                            fee</p>
+
+                                    <div className="w-full mb-[23px]">
                                         <div
-                                            className="flex justify-between items-center gap-[8px]">
-                                            <Image src={gas} alt={''}/>
+                                            className="flex justify-between items-center text-[#EB5757] mb-[10px]">
+                                            <p className="sm:text-sm text-base font-normal leading-[17.41px]">Discount</p>
+                                            <span
+                                                className="sm:text-sm text-base font-normal leading-[17.41px]">90% ( - ${this.state.countTokensCurrent * this.state.globalMultiplier - this.state.countTokensCurrent * this.state.globalMultiplier / 10})</span>
+                                        </div>
+
+                                        <div
+                                            className="flex justify-between items-center text-primaryBgColor mb-[10px]">
+                                            <p className="sm:text-sm text-base font-normal leading-[17.41px]">Network
+                                                fee</p>
+                                            <div
+                                                className="flex justify-between items-center gap-[8px]">
+                                                <Image src={gas} alt={''}/>
+                                                {
+                                                    this.state.gasPrice &&
+                                                    <span
+                                                        className="text-base font-normal leading-[17.41px]">{this.state.gasPrice} Gwei</span>
+                                                }
+                                            </div>
+                                        </div>
+
+                                        <div
+                                            className="flex justify-between items-center text-primaryBgColor ">
+                                            <p className="sm:text-sm text-base font-normal leading-[17.41px]">Total
+                                                Cost</p>
                                             {
-                                                this.state.gasPrice &&
-                                                <span
-                                                    className="text-base font-normal leading-[17.41px]">{this.state.gasPrice} Gwei</span>
+                                                this.state.totalCostUSD &&
+                                                <span className="sm:text-sm text-base font-normal leading-[17.41px]"> ~ $ {(this.state.totalCostUSD * this.state.rate / 10).toFixed(FIXED_VALUE)}</span>
                                             }
                                         </div>
                                     </div>
 
-                                    <div
-                                        className="flex justify-between items-center text-primaryBgColor ">
-                                        <p className="sm:text-sm text-base font-normal leading-[17.41px]">Total
-                                            Cost</p>
-                                        {
-                                            this.state.totalCostUSD &&
-                                            <span className="sm:text-sm text-base font-normal leading-[17.41px]"> ~ $ {(this.state.totalCostUSD * this.state.rate / 10).toFixed(FIXED_VALUE)}</span>
-                                        }
-                                    </div>
-                                </div>
-
-                                <SwapFormButton
-                                    isLoading={this.state.isLoading}
-                                    disabledBtn={this.state.inputValue>0}
-                                    buy={this.buy}
-                                    currentError={this.state.currentError}
-                                    _changeAddNetwork={this.changeAddNetwork}
-                                    _class={"text-textColor rounded-md w-full h-[60px] py-[17px] shadow-[0px_12px_18px_0_#40A6DF] font-medium sm:text-[18px] text-lg transform-gpu transition-transform duration-200 ease-in-out relative flex justify-center gap-[20px] mt-auto "
+                                    <SwapFormButton
+                                        isLoading={this.state.isLoading}
+                                        disabledBtn={!this.state.inputValue || this.state.isLoading}
+                                        buy={this.buy}
+                                        currentError={this.state.currentError}
+                                        _changeAddNetwork={this.changeAddNetwork}
+                                        _class={"text-textColor rounded-md w-full h-[60px] py-[17px] shadow-[0px_12px_18px_0_#40A6DF] font-medium sm:text-[18px] text-lg transform-gpu transition-transform duration-200 ease-in-out relative flex justify-center gap-[20px] mt-auto "
                                         + (this.state.currentError && this.state.currentError === 'Please connect to another Network' ? "bg-errorColor text-textColor z-10" : "bg-gradient-to-r from-[#29C8A9] via-[#208ED0] to-[#703AAD] text-primaryBgColor")
-                                    }
-                                />
+                                        }
+                                    />
 
 
+                                </> :
+                                <>
+                                    {
+                                        this.state.selectAccount &&
+                                        <>
 
-                            </> :
-                            <>
-                                {
-                                    this.state.selectAccount &&
-                                    <>
-
-                                        <div
-                                            className="bg-gradient-to-r from-[#34C4E1] via-[#5B86F8] to-[#7165ED] w-full rounded-[49px] p-[1px] mb-[26px] ">
                                             <div
-                                                className="bg-white p-2 flex justify-center gap-3 items-center rounded-[49px]  ">
-                                                <Image src={lightningBlue} className="" alt={lightningBlue}/>
-                                                <p className="text-primaryBgColor text-base leading-[17.41px] font-medium">1
-                                                    bNXT <span
-                                                        className="text-primaryBgColor text-base leading-[17.41px] font-light">($1.00)</span> = {parseFloat(1 / (this.state.rate * 1)).toFixed(5)} BNB
-                                                </p>
+                                                className="bg-gradient-to-r from-[#34C4E1] via-[#5B86F8] to-[#7165ED] w-full rounded-[49px] p-[1px] mb-[26px] ">
+                                                <div
+                                                    className="bg-white p-2 flex justify-center gap-3 items-center rounded-[49px]  ">
+                                                    <Image src={lightningBlue} className="" alt={lightningBlue}/>
+                                                    <p className="text-primaryBgColor text-base leading-[17.41px] font-medium">1
+                                                        bNXT <span
+                                                            className="text-primaryBgColor text-base leading-[17.41px] font-light">($1.00)</span> = {parseFloat(1 / (this.state.rate * 1)).toFixed(5)} BNB
+                                                    </p>
+                                                </div>
                                             </div>
-                                        </div>
 
 
-                                        {
-                                            this.props.active ?
+                                            {
+                                                this.props.active ?
 
-                                                <>
-                                                    {
-                                                        this.state.isUsedMultiplier  ?
-                                                            <>
-                                                                <div
-                                                                    className="flex flex-col justify-content items-center gap-4 px-[70px] mt-[125px] mb-[118px]">
-                                                                    <p className="text-3xl font-medium leading-[32.64px] text-center max-w-[438px] w-full">You
-                                                                        have already used the reward</p>
-                                                                    <p className="text-base font-normal leading-[26px] text-center max-w-[320px] w-full">Amet
-                                                                        minim mollit non deserunt ullamco est sit aliqua dolor
-                                                                        do amet sint.</p>
-                                                                </div>
+                                                    <>
+                                                        {
+                                                            this.state.isUsedMultiplier ?
+                                                                <>
+                                                                    <div
+                                                                        className="flex flex-col justify-content items-center gap-4 text-primaryBgColor px-[70px] mt-auto mb-auto">
+                                                                        <p className="text-3xl font-medium leading-[32.64px] text-center max-w-[438px] w-full">You
+                                                                            have already used the reward</p>
+                                                                        <p className="text-base font-normal leading-[26px] text-center max-w-[320px] w-full">Amet
+                                                                            minim mollit non deserunt ullamco est sit
+                                                                            aliqua dolor
+                                                                            do amet sint.</p>
+                                                                    </div>
 
-                                                            </> :
-                                                            <>
+                                                                </> :
+                                                                <>
                         		      					<span
-                                                            className={"sm:text-sm text-base font-semibold pb-[20px] leading-[17.41px] sx:mr-[0] w-full text-[#000000] "}>
+                                                            className={"sm:text-sm text-base font-semibold pb-[20px] leading-[17.41px] sx:mr-[0] w-full text-primaryBgColor "}>
                            			   						 Buy BNXT with multiplier x{this.state.multiplier}
                            			 					</span>
 
-                                                                <div
-                                                                    className="flex justify-between items-center bg-[#F2F2F2] w-full rounded-[6px] pr-6 pl-4 py-[10px]">
-                                                                    <div className="appearance-none bg-[#F2F2F2] text-primaryBgColor md:text-3xl text-[30px] sx:text-[24px]  outline-0 w-full h-[33px] leading-none font-semibold ">
-                                                                        {this.state.inputValue > 0 ? this.state.inputValue : 0}
-                                                                    </div>
-                                                                    <span className="text-primaryBgColor">${this.state.inputValue > 0 ? this.state.inputValue : 0}</span>
-
-                                                                </div>
-                                                                <div className="bg-textColor relative flex justify-center items-center border-b-[1px] border-[#F2F2F2] pb-[20px] w-full rounded-md mb-5 mt-[26px]">
                                                                     <div
-                                                                        className="flex justify-between items-center ">
-                                                                        <Image src={swapArrowWhite} alt={swapArrowWhite}
-                                                                               className="w-[30px] h-[30px] mr-[6px]"/>
+                                                                        className="flex justify-between items-center bg-[#F2F2F2] w-full rounded-[6px] pr-6 pl-4 py-[10px]">
+                                                                        <div
+                                                                            className="appearance-none bg-[#F2F2F2] text-primaryBgColor md:text-3xl text-[30px] sx:text-[24px]  outline-0 w-full h-[33px] leading-none font-semibold ">
+                                                                            {this.state.inputValue > 0 ? this.state.inputValue : 0}
+                                                                        </div>
                                                                         <span
-                                                                            className="bg-textColor text-primaryBgColor sm:text-sm text-lg font-medium leading-5 "
-                                                                        >{this.state.inputValue > 0 ? +this.state.inputValue : 0} BNXT (${this.state.inputValue ? +this.state.inputValue : 0}) </span>
-                                                                        <span className="mr-2 ml-2 sm:mr-1 sm:ml-1"> = </span>
-                                                                        <Image src={bnbLogo}
-                                                                               className="w-[30px] h-[30px] mr-[6px]"
-                                                                               alt={bnbLogo}/>
-                                                                        <span
-                                                                            className="bg-textColor text-primaryBgColor sm:text-sm text-lg font-medium leading-5">
+                                                                            className="text-primaryBgColor">${this.state.inputValue > 0 ? this.state.inputValue : 0}</span>
+
+                                                                    </div>
+                                                                    <div
+                                                                        className="bg-textColor relative flex justify-center items-center border-b-[1px] border-[#F2F2F2] pb-[20px] w-full rounded-md mb-5 mt-[26px]">
+                                                                        <div
+                                                                            className="flex justify-between items-center ">
+                                                                            <Image src={swapArrowWhite}
+                                                                                   alt={swapArrowWhite}
+                                                                                   className="w-[30px] h-[30px] mr-[6px]"/>
+                                                                            <span
+                                                                                className="bg-textColor text-primaryBgColor sm:text-sm text-lg font-medium leading-5 "
+                                                                            >{this.state.inputValue > 0 ? +this.state.inputValue : 0} BNXT (${this.state.inputValue ? +this.state.inputValue : 0}) </span>
+                                                                            <span
+                                                                                className="mr-2 ml-2 sm:mr-1 sm:ml-1"> = </span>
+                                                                            <Image src={bnbLogo}
+                                                                                   className="w-[30px] h-[30px] mr-[6px]"
+                                                                                   alt={bnbLogo}/>
+                                                                            <span
+                                                                                className="bg-textColor text-primaryBgColor sm:text-sm text-lg font-medium leading-5">
                                                                             {(this.state.priceInBnb / 10).toFixed(FIXED_VALUE)} BNB
                                                 						</span>
-                                                                    </div>
-                                                                </div>
-
-                                                                <div className="w-full">
-                                                                    <div className="w-full mb-[23px]">
-                                                                        <div
-                                                                            className="flex justify-between items-center text-[#EB5757] mb-[10px]">
-                                                                            <p className="sm:text-sm text-base font-normal leading-[17.41px]">Discount</p>
-                                                                            <span
-                                                                                className="sm:text-sm text-base font-normal leading-[17.41px]">90% ( - ${this.state.countTokensCurrent * this.state.multiplier - this.state.countTokensCurrent * this.state.multiplier / 10})</span>
                                                                         </div>
+                                                                    </div>
 
-                                                                        <div
-                                                                            className="flex justify-between items-center text-primaryBgColor mb-[10px]">
-                                                                            <p className="sm:text-sm text-base font-normal leading-[17.41px]">Network fee</p>
+                                                                    <div className="w-full">
+                                                                        <div className="w-full mb-[23px]">
                                                                             <div
-                                                                                className="flex justify-between items-center gap-[8px]">
-                                                                                <Image src={gas} alt={''}/>
+                                                                                className="flex justify-between items-center text-[#EB5757] mb-[10px]">
+                                                                                <p className="sm:text-sm text-base font-normal leading-[17.41px]">Discount</p>
+                                                                                <span
+                                                                                    className="sm:text-sm text-base font-normal leading-[17.41px]">90% ( - ${this.state.countTokensCurrent * this.state.multiplier - this.state.countTokensCurrent * this.state.multiplier / 10})</span>
+                                                                            </div>
+
+                                                                            <div
+                                                                                className="flex justify-between items-center text-primaryBgColor mb-[10px]">
+                                                                                <p className="sm:text-sm text-base font-normal leading-[17.41px]">Network
+                                                                                    fee</p>
+                                                                                <div
+                                                                                    className="flex justify-between items-center gap-[8px]">
+                                                                                    <Image src={gas} alt={''}/>
+                                                                                    {
+                                                                                        this.state.gasPrice &&
+                                                                                        <span
+                                                                                            className="text-base font-normal leading-[17.41px]">{this.state.gasPrice} Gwei</span>
+                                                                                    }
+                                                                                </div>
+                                                                            </div>
+
+                                                                            <div
+                                                                                className="flex justify-between items-center text-primaryBgColor ">
+                                                                                <p className="sm:text-sm text-base font-normal leading-[17.41px]">Total
+                                                                                    Cost</p>
                                                                                 {
-                                                                                    this.state.gasPrice &&
                                                                                     <span
-                                                                                        className="text-base font-normal leading-[17.41px]">{this.state.gasPrice} Gwei</span>
+                                                                                        className="sm:text-sm text-base font-normal leading-[17.41px]"> ~ $ {(this.state.totalCostUSD * this.state.rate / 10).toFixed(FIXED_VALUE)}</span>
                                                                                 }
                                                                             </div>
                                                                         </div>
-
-                                                                        <div
-                                                                            className="flex justify-between items-center text-primaryBgColor ">
-                                                                            <p className="sm:text-sm text-base font-normal leading-[17.41px]">Total
-                                                                                Cost</p>
-                                                                            {
-                                                                                <span className="sm:text-sm text-base font-normal leading-[17.41px]"> ~ $ {(this.state.totalCostUSD * this.state.rate / 10).toFixed(FIXED_VALUE)}</span>
-                                                                            }
-                                                                        </div>
                                                                     </div>
-                                                                </div>
-                                                                <SwapFormButton
-                                                                    isLoading={this.state.isLoading}
-                                                                    disabledBtn={this.state.inputValue>0}
-                                                                    buy={this.buy}
-                                                                    currentError={this.state.currentError}
-                                                                    _changeAddNetwork={this.changeAddNetwork}
-                                                                    _class={"text-textColor rounded-md w-full h-[60px] py-[17px] shadow-[0px_12px_18px_0_#A5CADE] font-medium sm:text-[18px] text-lg transform-gpu transition-transform duration-200 ease-in-out hover:scale-95 focus:scale-95 active:scale-95 relative flex justify-center gap-[20px] mt-auto "
+                                                                    <SwapFormButton
+                                                                        isLoading={this.state.isLoading}
+                                                                        disabledBtn={!this.state.inputValue || this.state.isLoading}
+                                                                        buy={this.buy}
+                                                                        currentError={this.state.currentError}
+                                                                        _changeAddNetwork={this.changeAddNetwork}
+                                                                        _class={"text-textColor rounded-md w-full h-[60px] py-[17px] shadow-[0px_12px_18px_0_#A5CADE] font-medium sm:text-[18px] text-lg transform-gpu transition-transform duration-200 ease-in-out relative flex justify-center gap-[20px] mt-auto "
                                                                         + (this.state.currentError && this.state.currentError === 'Please connect to another Network' ? "bg-errorColor text-textColor z-10" : "bg-gradient-to-r from-[#29C8A9] via-[#208ED0] to-[#703AAD] text-primaryBgColor")
-                                                                    }
-                                                                />
-                                                            </>
-                                                    }
-                                                </>
+                                                                        }
+                                                                    />
+                                                                </>
+                                                        }
+                                                    </>
 
-                                                :
-                                                <>
-                                                    {
-                                                        this.state.totalTokens < 1000
-                                                            ?
-                                                            <>
+                                                    :
+                                                    <>
+                                                        {
+                                                            this.state.totalTokens < 1000
+                                                                ?
+                                                                <>
                                                      <span
                                                          className={"sm:text-sm text-base font-semibold pb-[20px] leading-[17.41px] sx:mr-[0] sm:mr-[120px] mr-[140px] sx:w-full text-[#000000] "}>
                             	   						 	Set up how many BNXT you want to buy
                                            				 </span>
-                                                        <div
-                                                            className="flex flex-col justify-between items-center sx:w-full gap-[10px] text-center mx-auto">
-                                                            <div
-                                                                className={"flex justify-between items-center sx:w-full gap-[9px] "}>
-                                                                {data.slice(0, 5).map(el => (
-                                                                    <CoinsAmount key={el.amount} amount={el.amount}
-                                                                                 step={false}
-                                                                                 activeAmount={this.state.inputValue}
-                                                                                 handleAmount={this.handleAmount}/>
-                                                                ))}
-                                                            </div>
-                                                            <div
-                                                                className="flex justify-between items-center sx:w-full gap-[9px]">
-                                                                {data.slice(-5).map(el => (
-                                                                    <CoinsAmount key={el.amount} amount={el.amount}
-                                                                                 step={false}
-                                                                                 activeAmount={this.state.inputValue}
-                                                                                 handleAmount={this.handleAmount}/>
-                                                                ))}
-                                                            </div>
-                                                        </div>
-                                                        {this.state.inputValue > 0 &&
-                                                        <>
-                                                            <p className="pt-[19px] w-full text-start">{this.state.inputValue}$</p>
-                                                            <div
-                                                                className="bg-textColor relative flex justify-center items-center w-full rounded-md mb-5 mt-[26px] border-b-[1px] border-[#F2F2F2] pb-[20px]"
-                                                            >
-                                                                <div
-                                                                    className="flex justify-between   items-center ">
-                                                                    <Image src={swapArrowWhite} alt={swapArrowWhite}
-                                                                           className="w-[30px] h-[30px] mr-[6px]"/>
-                                                                    <span
-                                                                        className="bg-textColor text-primaryBgColor sm:text-sm text-lg font-medium leading-5 mr-2"
-                                                                    >{this.state.inputValue} BNXT (${this.state.inputValue}) = </span>
-                                                                    <Image src={bnbLogo}
-                                                                           className="w-[30px] h-[30px] mr-[6px]"
-                                                                           alt={bnbLogo}/>
-                                                                    <span className="bg-textColor text-primaryBgColor sm:text-sm text-lg font-medium leading-5">
-                                                           				 {(+this.state.priceInBnb).toFixed(FIXED_VALUE)}BNB
-                                                                    </span>
-                                                                </div>
-                                                            </div>
-                                                                <div className="w-full">
-                                                                    <div className="w-full mb-[23px]">
+                                                                    <div
+                                                                        className="flex flex-col justify-between items-center sx:w-full gap-[10px] text-center mx-auto">
                                                                         <div
-                                                                            className="flex justify-between items-center text-primaryBgColor mb-[10px]">
-                                                                            <p className="sm:text-sm text-base font-normal leading-[17.41px]">Network
-                                                                                fee</p>
-                                                                            <div
-                                                                                className="flex justify-between items-center gap-[8px]">
-                                                                                <Image src={gas} alt={''}/>
-                                                                                {
-                                                                                    this.state.gasPrice &&
-                                                                                    <span className="text-base font-normal leading-[17.41px]">{this.state.gasPrice} Gwei</span>
-                                                                                }
-                                                                            </div>
+                                                                            className={"flex justify-between items-center sx:w-full gap-[9px] "}>
+                                                                            {data.slice(0, 5).map(el => (
+                                                                                <CoinsAmount key={el.amount}
+                                                                                             amount={el.amount}
+                                                                                             step={false}
+                                                                                             activeAmount={this.state.inputValue}
+                                                                                             handleAmount={this.handleAmount}/>
+                                                                            ))}
                                                                         </div>
-
                                                                         <div
-                                                                            className="flex justify-between items-center text-primaryBgColor ">
-                                                                            <p className="sm:text-sm text-base font-normal leading-[17.41px]">Total
-                                                                                Cost</p>
-                                                                            {
-                                                                                	this.state.totalCostUSD && this.props.active
-                                                                                    ?
-                                                                                    <span className="sm:text-sm text-base font-normal leading-[17.41px]"> ~ $ {(this.state.totalCostUSD * this.state.rate / 10).toFixed(FIXED_VALUE)}</span>
-                                                                                    :
-                                                                                    <span className="sm:text-sm text-base font-normal leading-[17.41px]"> ~ $ {(this.state.totalCostUSD * this.state.rate).toFixed(FIXED_VALUE)}</span>
-                                                                            }
+                                                                            className="flex justify-between items-center sx:w-full gap-[9px]">
+                                                                            {data.slice(-5).map(el => (
+                                                                                <CoinsAmount key={el.amount}
+                                                                                             amount={el.amount}
+                                                                                             step={false}
+                                                                                             activeAmount={this.state.inputValue}
+                                                                                             handleAmount={this.handleAmount}/>
+                                                                            ))}
                                                                         </div>
                                                                     </div>
-                                                                </div>
-                                                                </>
-                                                        }
-                                                        <SwapFormButton
-                                                                    isLoading={this.state.isLoading}
-                                                                    disabledBtn={this.state.inputValue>0 || this.state.isLoading}
-                                                                    buy={this.buy}
-                                                                    currentError={this.state.currentError}
-                                                                    _changeAddNetwork={this.changeAddNetwork}
-                                                                    _class={"text-textColor rounded-md w-full h-[60px] py-[17px] font-medium sm:text-[18px] shadow-[0px_12px_18px_0_#A5CADE] text-lg transform-gpu transition-transform duration-200 ease-in-out  relative mt-auto flex justify-center gap-[20px] "
-                                                                        + (this.state.currentError && this.state.currentError === 'Please connect to another Network' ? "bg-errorColor  z-10" : "bg-gradient-to-r from-[#29C8A9] via-[#208ED0] to-[#703AAD]")
+                                                                    {this.state.inputValue > 0 &&
+                                                                    <>
+                                                                        <p className="pt-[16px] w-full text-start">${this.state.inputValue}</p>
+                                                                        <div
+                                                                            className="bg-textColor relative flex justify-center items-center w-full rounded-md mb-[15.6px] mt-[23.7px] border-b-[1px] border-[#F2F2F2] pb-[20px]"
+                                                                        >
+                                                                            <div
+                                                                                className="flex justify-between   items-center ">
+                                                                                <Image src={swapArrowWhite}
+                                                                                       alt={swapArrowWhite}
+                                                                                       className="w-[30px] h-[30px] mr-[6px]"/>
+                                                                                <span
+                                                                                    className="bg-textColor text-primaryBgColor sm:text-sm text-lg font-medium leading-5 mr-2"
+                                                                                >{this.state.inputValue} BNXT (${this.state.inputValue}) = </span>
+                                                                                <Image src={bnbLogo}
+                                                                                       className="w-[30px] h-[30px] mr-[6px]"
+                                                                                       alt={bnbLogo}/>
+                                                                                <span
+                                                                                    className="bg-textColor text-primaryBgColor sm:text-sm text-lg font-medium leading-5">
+                                                           				 {(+this.state.priceInBnb).toFixed(FIXED_VALUE)}BNB
+                                                                    </span>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div className="w-full">
+                                                                            <div className="w-full mb-[23px]">
+                                                                                <div
+                                                                                    className="flex justify-between items-center text-primaryBgColor mb-[10px]">
+                                                                                    <p className="sm:text-sm text-base font-normal leading-[17.41px]">Network
+                                                                                        fee</p>
+                                                                                    <div
+                                                                                        className="flex justify-between items-center gap-[8px]">
+                                                                                        <Image src={gas} alt={''}/>
+                                                                                        {
+                                                                                            this.state.gasPrice &&
+                                                                                            <span
+                                                                                                className="text-base font-normal leading-[17.41px]">{this.state.gasPrice} Gwei</span>
+                                                                                        }
+                                                                                    </div>
+                                                                                </div>
+
+                                                                                <div
+                                                                                    className="flex justify-between items-center text-primaryBgColor ">
+                                                                                    <p className="sm:text-sm text-base font-normal leading-[17.41px]">Total
+                                                                                        Cost</p>
+                                                                                    {
+                                                                                        this.state.totalCostUSD && this.props.active
+                                                                                            ?
+                                                                                            <span
+                                                                                                className="sm:text-sm text-base font-normal leading-[17.41px]"> ~ $ {(this.state.totalCostUSD * this.state.rate / 10).toFixed(FIXED_VALUE)}</span>
+                                                                                            :
+                                                                                            <span
+                                                                                                className="sm:text-sm text-base font-normal leading-[17.41px]"> ~ $ {(this.state.totalCostUSD * this.state.rate).toFixed(FIXED_VALUE)}</span>
+                                                                                    }
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </>
                                                                     }
-                                                                />
+                                                                    <SwapFormButton
+                                                                        isLoading={this.state.isLoading}
+                                                                        disabledBtn={!this.state.inputValue || this.state.isLoading}
+                                                                        buy={this.buy}
+                                                                        currentError={this.state.currentError}
+                                                                        _changeAddNetwork={this.changeAddNetwork}
+                                                                        _class={"text-textColor rounded-md w-full h-[60px] py-[17px] font-medium sm:text-[18px] shadow-[0px_12px_18px_0_#A5CADE] text-lg transform-gpu transition-transform duration-200 ease-in-out  relative mt-auto flex justify-center gap-[20px] "
+                                                                        + (this.state.currentError && this.state.currentError === 'Please connect to another Network' ? "bg-errorColor  z-10" : "bg-gradient-to-r from-[#29C8A9] via-[#208ED0] to-[#703AAD]")
+                                                                        }
+                                                                    />
 
 
-                                                            </>
-                                                            :
-                                                            <div
-                                                                className="flex flex-col justify-content items-center gap-4 px-[88px] mt-[125px] mb-[118px]">
-                                                                <p className="text-3xl font-medium leading-[32.64px]">Please
-                                                                    note!</p>
-                                                                <p className="text-base font-normal leading-[26px] text-center max-w-[320px] w-full">Your
-                                                                    current balance is 1000 BNXT.
-                                                                    You can no longer buy currency.
-                                                                    Please get your reward!</p>
-                                                            </div>
-                                                    }
-                                                </>
-                                        }
-                                    </>
-                                }
-                            </>
+                                                                </>
+                                                                :
+                                                                <div
+                                                                    className="flex flex-col justify-content items-center gap-4 text-primaryBgColor px-[88px] mt-auto mb-auto">
+                                                                    <p className="text-3xl font-medium leading-[32.64px]">Please
+                                                                        note!</p>
+                                                                    <p className="text-base font-normal leading-[26px] text-center max-w-[320px] w-full">Your
+                                                                        current balance is 1000 BNXT.
+                                                                        You can no longer buy currency.
+                                                                        Please get your reward!</p>
+                                                                </div>
+                                                        }
+                                                    </>
+                                            }
+                                        </>
+                                    }
+                                </>
                         }
                         {/*notification*/}
                         {
@@ -869,7 +858,7 @@ export class SwapForm extends Component {
                             <>
 
                                 <div
-                                    className="flex flex-col justify-between items-center gap-4 max-w-[320px] mdd:mt-[27px] mt-[83px] mdd:mb-[36px] mb-[89px]">
+                                    className="flex flex-col justify-between items-center gap-4 max-w-[320px] mdd:mt-[27px] mt-auto mdd:mb-[36px] mb-auto">
                                     <Image src={metamask} className=" lg:w-[88px]  lg:h-[88px]" alt={metamask}/>
                                     <p className="text-3xl text-primaryBgColor font-medium leading-[32.64px] mdd:mt-[30px] mt-10">Connect
                                         your wallet</p>
@@ -894,7 +883,8 @@ export class SwapForm extends Component {
                                     <Image src={bnbLogo} className="w-[88px] h-[88px]" alt={bnbLogo}/>
                                     <p className="text-3xl text-primaryBgColor font-medium leading-[32.64px]">Switch
                                         network</p>
-                                    <p className="text-base text-primaryBgColor font-normal leading-[26px] text-center">Amet minim
+                                    <p className="text-base text-primaryBgColor font-normal leading-[26px] text-center">Amet
+                                        minim
                                         mollit non deserunt
                                         ullamco est sit aliqua dolor do amet sint.</p>
                                 </div>
@@ -905,8 +895,8 @@ export class SwapForm extends Component {
                                     currentError={this.state.currentError}
                                     _changeAddNetwork={this.changeAddNetwork}
                                     _class={"text-textColor rounded-md w-full h-[60px] py-[17px] bg-[#EB5757] font-medium shadow-[0px_12px_18px_0_#E0CACA] sm:text-[18px] text-lg transform-gpu transition-transform duration-200 ease-in-out hover:scale-95 focus:scale-95 active:scale-95 relative mt-auto "
-                                        + (this.state.currentError && this.state.currentError === 'Please connect to another Network' || step === 2 ? "bg-errorColor text-textColor z-10" : "bg-gradient-to-r from-[#29C8A9] via-[#208ED0] to-[#703AAD] text-primaryBgColor text-textColor"
-                                        )
+                                    + (this.state.currentError && this.state.currentError === 'Please connect to another Network' || step === 2 ? "bg-errorColor text-textColor z-10" : "bg-gradient-to-r from-[#29C8A9] via-[#208ED0] to-[#703AAD] text-primaryBgColor text-textColor"
+                                    )
                                     }
                                 />
                             </>

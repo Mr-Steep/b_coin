@@ -10,6 +10,7 @@ module.exports = {
         textColor: '#FFFFFF',
         buttonBgColor: '#BCE5ED',
         buttonHoverBgColor: '#c9eaf1',
+        greyColor: '#414042',
         errorColor: '#EB5757'
       },
       screens: {

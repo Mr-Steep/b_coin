@@ -3,12 +3,12 @@ import Image from "next/image";
 import cross from "../assets/images/cross-black.svg";
 import arrowLight from "../assets/images/arrow-light.svg";
 import Link from "next/link";
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import loader from "../assets/images/loader.svg";
 import alert_circle from "../assets/images/alert-circle.svg";
 
 
-export function Confirmation({setConfirmationComplete, setTransactionComplete, hash, countTokens}) {
+export function Confirmation({getTransactionComplete, setConfirmationComplete, setTransactionComplete, hash, countTokens}) {
 
     const [isLoading, setIsLoading] = useState(false);
     const [emailError, setEmailError] = useState(false)
@@ -16,6 +16,15 @@ export function Confirmation({setConfirmationComplete, setTransactionComplete, h
 
     const [isChecked, setIsChecked] = useState(false);
     const [isCheckedSubmit, setIsCheckedSubmit] = useState(false);
+
+    useEffect(() => {
+        if(getTransactionComplete) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = 'auto';
+        }
+    }, [])
+
     const confirm = async () => {
         setIsLoading(true)
         const emailInput = document.querySelector('input[name="email"]');
@@ -63,6 +72,7 @@ export function Confirmation({setConfirmationComplete, setTransactionComplete, h
     close = () => {
         setConfirmationComplete(true);
         setTransactionComplete(false)
+        document.body.style.overflow = 'auto';
     }
 
     function isValidEmail(email) {
@@ -86,7 +96,7 @@ export function Confirmation({setConfirmationComplete, setTransactionComplete, h
                     + (emailError || checkboxError ? "bg-errorColor" : "bg-gradient-to-r from-[#33EFF1] to-[#198498]")
                     }>
                         <input name="email" type="email"
-                               placeholder="Enter your email" className="w-full outline-0 rounded-[6px] px-[22px] py-4 bg-[#ffffff]" />
+                               placeholder="Enter your email" className="w-full outline-0 rounded-[6px] text-primaryBgColor px-[22px] py-4 bg-textColor" />
                     </div>
 
                     {emailError &&
@@ -97,17 +107,17 @@ export function Confirmation({setConfirmationComplete, setTransactionComplete, h
                     }
 
                     <div className="flex flex-col justify-between items-center gap-[10px] max-w-[320px] w-full">
-                        <div className="flex justify-between items-start  bg-white">
+                        <div className="flex justify-between items-start bg-textColor">
                             <input name="checkbox" onClick={() => setIsChecked(!isChecked)} data-goal="terms" type="checkbox" className="h-[20px] w-[20px] mr-3 opacity-0 h-0 absolute z-[1]"/>
                             <span className={"flex text-sm font-normal leading-[18px] relative z-0 text-[#414042] before:content-[''] before:inline-block before:w-[20px] before:h-[20px] before:border before:border-solid before:border-[#D0D5DD] before:rounded-[6px] before:mr-[12px] before:min-w-[20px] "
-                            + (isChecked ? "before:border-primaryBgColor after:content-[''] after:absolute after:left-[7px] after:top-[3px] after:rotate-45 after:h-[11px] after:w-[6px] after:border-b-[2px] after:border-[#000000] after:border-r-[2px] " : '') }>Read and accept
-                                <span className="font-bold text-primaryBgColor contents"> Terms of Use </span>and <span className="contents font-bold text-[#000000]">Privacy Policy</span></span>
+                            + (isChecked ? "before:border-primaryBgColor after:content-[''] after:absolute after:left-[7px] after:top-[3px] after:rotate-45 after:h-[11px] after:w-[6px] after:border-b-[2px] after:border-primaryBgColor after:border-r-[2px] " : '') }>Read and accept
+                               <Link className="font-bold text-primaryBgColor contents" target="_blank" href="https://bnxt.network/terms-conditions/"> Terms of Use </Link>and <Link className="contents font-bold text-primaryBgColor" target="_blank" href="https://bnxt.network/privacy-policy/">Privacy Policy</Link></span>
                         </div>
-                        <div className="flex justify-between items-start  bg-white">
-                            <input name="checkbox" onClick={() => setIsCheckedSubmit(!isCheckedSubmit)}  data-goal="statement" type="checkbox" className="h-[20px] w-[20px] mr-3 opacity-0 h-0 absolute z-[1]"/>
+                        <div className="flex justify-between items-start bg-textColor">
+                            <input name="checkbox" onClick={() => setIsCheckedSubmit(!isCheckedSubmit)} data-goal="statement" type="checkbox" className="h-[20px] w-[20px] mr-3 opacity-0 h-0 absolute z-[1]"/>
                             <span className={"flex text-sm font-normal leading-[18px] relative z-0 text-[#414042] before:content-[''] before:inline-block before:w-[20px] before:h-[20px] before:border before:border-solid before:border-[#D0D5DD] before:rounded-[6px] before:mr-[12px] before:min-w-[20px] "
-                            + (isCheckedSubmit ? "before:border-primaryBgColor after:content-[''] after:absolute after:left-[7px] after:top-[3px] after:rotate-45 after:h-[11px] after:w-[6px] after:border-b-[2px] after:border-[#000000] after:border-r-[2px] " : '') }>Submit the
-                                <span className="font-bold text-primaryBgColor contents"> Buyer's Statement </span>as my official declaration</span>
+                            + (isCheckedSubmit ? "before:border-primaryBgColor after:content-[''] after:absolute after:left-[7px] after:top-[3px] after:rotate-45 after:h-[11px] after:w-[6px] after:border-b-[2px] after:border-primaryBgColor after:border-r-[2px] " : '') }>Submit the
+                                <Link className="font-bold text-primaryBgColor contents" target="_blank" href=""> Buyer's Statement </Link>as my official declaration</span>
                         </div>
                     </div>
 
