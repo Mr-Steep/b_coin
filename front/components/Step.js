@@ -57,7 +57,7 @@ export function Step({step, setNewStep, closeModal}) {
                        <Image src={arrow2} className="relative z-30" alt={arrow2}/>
                    </div>
 
-                   <Image src={arrow3} className="absolute bottom-[-120px] right-[50px] tablet:block hidden z-30" alt={arrow3}/>
+                   <Image src={arrow3} className="absolute bottom-[-90px] right-[50px] tablet:block hidden z-30" alt={arrow3}/>
 
                </div>
 
