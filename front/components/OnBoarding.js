@@ -111,9 +111,9 @@ export function OnBoarding() {
                                     <Image src={mockVideo} className="mdd:w-[343px] lg:w-[594px] w-[744px] mdd:h-[134px] lg:h-[230px] h-[288px]" alt="mock-video"/>
                                 </div>
 
-                                <div className="flex md:flex-col-reverse justify-between items-center md:pl-[35px]">
+                                <div className="flex md:flex-col-reverse justify-between items-center">
                                     <Image src={mockVideo} className="mdd:w-[343px] lg:w-[594px] w-[744px] mdd:h-[134px] lg:h-[230px] h-[288px]" alt="mock-video"/>
-                                    <div className="max-w-[480px] md:ml-0 ml-[104px] md:mb-10">
+                                    <div className="max-w-[480px] md:ml-0 ml-[104px] md:mb-10 md:ml-[35px]">
                                         <p className="md:text-2xl text-3xl font-bold mb-[14px]">Get Reward!</p>
                                         <p className="text-lg mb-8">Amet minim mollit non deserunt ullamco est sit aliqua dolor do
                                             amet sint. Velit officia consequat duis enim velit mollit. Exercitation <Link href=""

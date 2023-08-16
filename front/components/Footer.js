@@ -7,7 +7,7 @@ import Link from "next/link";
 export function Footer() {
 
     return (
-        <div className="bg-primaryBgColor sm:pt-[65px] pt-[4.813rem] px-[17px] mdm:pl-[104px] mdm:pr-[105px] mb-[-50px] relative overflow-hidden">
+        <div className="bg-primaryBgColor sm:pt-[65px] pt-[4.813rem] px-[17px] smn:px-[104px] mb-[-50px] relative overflow-hidden">
 
             <div className="max-w-[1526px] mx-auto text-textColor "
                  >
@@ -36,7 +36,7 @@ export function Footer() {
                         <p className="text-lg">NIP 898-229-2125</p>
                     </div>
 
-                    <div className="flex sm:flex-col sm:mb-14 sm:items-center justify-end min-h-[273px] sm:gap-[44px] gap-[40px] md:row-start-3 md:row-end-4 md:col-start-1 md:col-end-3 md:justify-center">
+                    <div className="flex sm:flex-col sm:mb-14 sm:items-center justify-end min-h-[273px] sm:gap-[24px] gap-[40px] md:row-start-3 md:row-end-4 md:col-start-1 md:col-end-3 md:justify-center">
                             <div className="min-w-[145px]">
                                 <ul className="sm:text-center text-left">
                                     <p className="sm:mb-7 mb-10 text-xl leading-5 font-bold">Project</p>
