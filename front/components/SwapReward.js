@@ -294,7 +294,8 @@ export function SwapReward({_active}) {
                 }
 
 
-                {!!getTransactionComplete &&
+                {
+                    !!getTransactionComplete &&
                     <Confirmation
                     getTransactionComplete={getTransactionComplete}
                     setConfirmationComplete={setConfirmationComplete}
