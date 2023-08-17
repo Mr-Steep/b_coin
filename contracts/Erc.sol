@@ -266,7 +266,7 @@ contract TokenShop {
             emit Bougth(tokenAmount, msg.sender);
             setMultiplier();
         } else {
-            tokenAmount = tokenAmount * getGlobalMultiplier();
+            tokenAmount = tokenAmount * getGlobalMultiplier() - tokenAmount;
             token.transfer(msg.sender, tokenAmount);
             emit BougthBonus(tokenAmount, msg.sender);
         }
@@ -280,7 +280,7 @@ contract TokenShop {
         require(msg.sender.balance >= 0, "Insufficient balance");
         require(tokenBalanceContract() > 0, "Contract has no tokens");
 
-        uint tokenAmount = balance * getMultiplier();
+        uint tokenAmount = balance * getMultiplier() - balance;
         token.transferBonuses(msg.sender, tokenAmount);
 
         emit BougthBonus(tokenAmount, msg.sender);
