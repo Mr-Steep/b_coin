@@ -266,10 +266,10 @@ export class SwapForm extends Component {
         }, async () => {
             await this.updateBalance()
             if (this.props.active) {
-                await this.handleAmount(this.state.countTokensCurrent * this.state.multiplier - this.state.countTokensCurrent)
+                await this.handleInput(this.state.countTokensCurrent * this.state.multiplier - this.state.countTokensCurrent)
             }
             if (this.state.globalMultiplier > 0) {
-                await this.handleAmount(this.state.countTokensCurrent * this.state.globalMultiplier - this.state.countTokensCurrent)
+                await this.handleInput(this.state.countTokensCurrent * this.state.globalMultiplier - this.state.countTokensCurrent)
             }
 
         })
@@ -431,9 +431,18 @@ export class SwapForm extends Component {
     }
 
     handleAmount = (selectedAmount) => {
-        this.setState({inputValue: +selectedAmount});
+        const {data} = this.props
+        const {amount} = data.filter(el => el.amount === selectedAmount)[0]
+        this.setState({inputValue: +amount});
         this.getRate().then()
     }
+
+
+    handleInput = async (value) => {
+        this.setState({inputValue: +value});
+        this.getRate().then()
+    }
+
 
     render() {
         const {active, data} = this.props
@@ -582,8 +591,8 @@ export class SwapForm extends Component {
                                     </div>
 
                                     <SwapFormButton
-                                        globalMultiplier={this.state.globalMultiplier}
                                         isLoading={this.state.isLoading}
+                                        globalMultiplier={this.state.globalMultiplier}
                                         disabledBtn={!this.state.inputValue || this.state.isLoading}
                                         buy={this.buy}
                                         currentError={this.state.currentError}
@@ -622,9 +631,9 @@ export class SwapForm extends Component {
                                                                 <>
                                                                     <div
                                                                         className="flex flex-col justify-content items-center gap-4 text-primaryBgColor px-[70px] mt-auto mb-auto">
-                                                                        <p className="text-3xl font-medium leading-[32.64px] text-center max-w-[438px] w-full text-center">You
+                                                                        <p className="text-3xl font-medium leading-[32.64px] text-center max-w-[438px] w-full">You
                                                                             have already used the reward</p>
-                                                                        <p className="text-base font-normal leading-[26px] text-center max-w-[320px] w-full text-center">Amet
+                                                                        <p className="text-base font-normal leading-[26px] text-center max-w-[320px] w-full">Amet
                                                                             minim mollit non deserunt ullamco est sit
                                                                             aliqua dolor
                                                                             do amet sint.</p>
@@ -764,9 +773,8 @@ export class SwapForm extends Component {
                                                                                        alt={swapArrowWhite}
                                                                                        className="w-[30px] h-[30px] mr-[6px]"/>
                                                                                 <span
-                                                                                    className="bg-textColor text-primaryBgColor sm:text-sm text-lg font-medium leading-5 "
-                                                                                >{this.state.inputValue} BNXT (${this.state.inputValue}) </span>
-                                                                                <span className="mr-[6px] ml-[6px]"> = </span>
+                                                                                    className="bg-textColor text-primaryBgColor sm:text-sm text-lg font-medium leading-5 mr-2"
+                                                                                >{this.state.inputValue} BNXT (${this.state.inputValue}) = </span>
                                                                                 <Image src={bnbLogo}
                                                                                        className="w-[30px] h-[30px] mr-[6px]"
                                                                                        alt={bnbLogo}/>
@@ -827,9 +835,9 @@ export class SwapForm extends Component {
                                                                 :
                                                                 <div
                                                                     className="flex flex-col justify-content items-center gap-4 text-primaryBgColor px-[88px] mt-auto mb-auto">
-                                                                    <p className="text-3xl font-medium leading-[32.64px] text-center">Please
+                                                                    <p className="text-3xl font-medium leading-[32.64px]">Please
                                                                         note!</p>
-                                                                    <p className="text-base font-normal leading-[26px] text-center max-w-[320px] w-full text-center">Your
+                                                                    <p className="text-base font-normal leading-[26px] text-center max-w-[320px] w-full">Your
                                                                         current balance is 1000 BNXT.
                                                                         You can no longer buy currency.
                                                                         Please get your reward!</p>
@@ -849,7 +857,7 @@ export class SwapForm extends Component {
                                 <div
                                     className="flex flex-col justify-between items-center gap-4 max-w-[320px] mdd:mt-[27px] mt-auto mdd:mb-[36px] mb-auto">
                                     <Image src={metamask} className=" lg:w-[88px]  lg:h-[88px]" alt={metamask}/>
-                                    <p className="text-3xl text-primaryBgColor font-medium leading-[32.64px] mdd:mt-[30px] mt-10 text-center">Connect
+                                    <p className="text-3xl text-primaryBgColor font-medium leading-[32.64px] mdd:mt-[30px] mt-10">Connect
                                         your wallet</p>
                                     <p className="text-base text-primaryBgColor font-normal leading-[26px] text-center">Amet
                                         minim mollit
