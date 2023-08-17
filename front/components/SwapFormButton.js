@@ -2,7 +2,7 @@ import {useState, useEffect} from 'react'
 import loader from "../assets/images/loader.svg";
 import Image from "next/image";
 
-export function SwapFormButton({_class, buy, step, currentError, _changeAddNetwork, disabledBtn = false, isLoading}) {
+export function SwapFormButton({_class, buy, step, currentError, globalMultiplier, _changeAddNetwork, disabledBtn = false, isLoading}) {
 
 
     return (
@@ -12,6 +12,7 @@ export function SwapFormButton({_class, buy, step, currentError, _changeAddNetwo
             disabled={disabledBtn}
         >{currentError && currentError === 'Please connect to another Network' || step
             ? 'Switch to Binance Smart Chain'
+            : globalMultiplier ? 'Claim'
             : 'Buy BNXT'
         }
             {isLoading &&
