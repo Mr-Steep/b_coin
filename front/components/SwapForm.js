@@ -716,6 +716,7 @@ export class SwapForm extends Component {
                                                                         buy={this.buy}
                                                                         currentError={this.state.currentError}
                                                                         _changeAddNetwork={this.changeAddNetwork}
+                                                                        globalMultiplier={this.state.globalMultiplier}
                                                                         _class={"text-textColor rounded-md w-full h-[60px] py-[17px] shadow-[0px_12px_18px_0_#A5CADE] font-medium sm:text-[18px] text-lg transform-gpu transition-transform duration-200 ease-in-out relative flex justify-center gap-[20px] mt-auto "
                                                                         + (this.state.currentError && this.state.currentError === 'Please connect to another Network' ? "bg-errorColor text-textColor z-10" : "bg-gradient-to-r from-[#29C8A9] via-[#208ED0] to-[#703AAD] text-primaryBgColor")
                                                                         }
