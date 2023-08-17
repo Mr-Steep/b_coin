@@ -266,19 +266,15 @@ export class SwapForm extends Component {
         }, async () => {
             await this.updateBalance()
             if (this.props.active) {
-                await this.handleInput(this.state.countTokensCurrent * this.state.multiplier - this.state.countTokensCurrent)
+                await this.handleAmount(this.state.countTokensCurrent * this.state.multiplier - this.state.countTokensCurrent)
             }
             if (this.state.globalMultiplier > 0) {
-                await this.handleInput(this.state.countTokensCurrent * this.state.globalMultiplier - this.state.countTokensCurrent)
+                await this.handleAmount(this.state.countTokensCurrent * this.state.globalMultiplier - this.state.countTokensCurrent)
             }
 
         })
 
 
-    }
-
-    handleInput = async (value) => {
-        this.setState({inputValue: +value});
     }
 
     _clear() {
@@ -435,12 +431,9 @@ export class SwapForm extends Component {
     }
 
     handleAmount = (selectedAmount) => {
-        const {data} = this.props
-        const {amount} = data.filter(el => el.amount === selectedAmount)[0]
-        this.setState({inputValue: +amount});
+        this.setState({inputValue: +selectedAmount});
         this.getRate().then()
     }
-
 
     render() {
         const {active, data} = this.props
@@ -589,6 +582,7 @@ export class SwapForm extends Component {
                                     </div>
 
                                     <SwapFormButton
+                                        globalMultiplier={this.state.globalMultiplier}
                                         isLoading={this.state.isLoading}
                                         disabledBtn={!this.state.inputValue || this.state.isLoading}
                                         buy={this.buy}
@@ -681,7 +675,7 @@ export class SwapForm extends Component {
                                                                                 className="flex justify-between items-center text-[#EB5757] mb-[10px]">
                                                                                 <p className="sm:text-sm text-base font-normal leading-[17.41px]">Discount</p>
                                                                                 <span
-                                                                                    className="sm:text-sm text-base font-normal leading-[17.41px]">90% ( - ${this.state.countTokensCurrent  - this.state.countTokensCurrent / 10})</span>
+                                                                                    className="sm:text-sm text-base font-normal leading-[17.41px]">90% ( - ${this.state.inputValue  - this.state.inputValue / 10})</span>
                                                                             </div>
 
                                                                             <div
