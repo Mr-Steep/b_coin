@@ -630,7 +630,7 @@ export class SwapForm extends Component {
                                                             this.state.isUsedMultiplier ?
                                                                 <>
                                                                     <div
-                                                                        className="flex flex-col justify-content items-center gap-4 text-primaryBgColor px-[70px] mt-auto mb-auto">
+                                                                        className="flex flex-col justify-content items-center gap-4 text-primaryBgColor px-[10px] max-w-[430px] mt-auto mb-auto">
                                                                         <p className="text-3xl font-medium leading-[32.64px] text-center max-w-[438px] w-full">You
                                                                             have already used the reward</p>
                                                                         <p className="text-base font-normal leading-[26px] text-center max-w-[320px] w-full">Amet
@@ -834,8 +834,8 @@ export class SwapForm extends Component {
                                                                 </>
                                                                 :
                                                                 <div
-                                                                    className="flex flex-col justify-content items-center gap-4 text-primaryBgColor px-[88px] mt-auto mb-auto">
-                                                                    <p className="text-3xl font-medium leading-[32.64px]">Please
+                                                                    className="flex flex-col justify-content items-center gap-4 text-primaryBgColor px-[20px] max-w-[275px] mt-auto mb-auto">
+                                                                    <p className="text-3xl font-medium leading-[32.64px] text-center">Please
                                                                         note!</p>
                                                                     <p className="text-base font-normal leading-[26px] text-center max-w-[320px] w-full">Your
                                                                         current balance is 1000 BNXT.
