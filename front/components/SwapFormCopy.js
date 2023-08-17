@@ -10,8 +10,7 @@ import gas from "../assets/images/gas-black.svg";
 
 import Image from "next/image";
 
-import {Component} from 'react'
-import React from 'react';
+import React, {Component} from 'react'
 
 
 import tokenShopAddress from '../contracts/TokenShop-contract-address.json'
@@ -34,7 +33,7 @@ const ERROR_CODE_TX_REJECTED_BY_USER = 'ACTION_REJECTED'
 let step
 
 
-export class SwapForm extends Component {
+export class SwapFormCopy extends Component {
     constructor(props) {
         super(props)
 
@@ -67,7 +66,7 @@ export class SwapForm extends Component {
                 isUsedMultiplier: false,
                 globalMultiplier: 0,
                 currentError: false,
-                _balanceOfBonuses: 0,
+                balanceOfBonuses: 0,
                 isLoading: false
             }
 
@@ -109,7 +108,10 @@ export class SwapForm extends Component {
 
 
     buyTokensBonus = async () => {
-        const inWei = this.state.priceInWei
+
+        const balance = ethers.utils.formatUnits(this.state.inputValue *  0.05, 0)
+        console.log('balance', balance)
+        const inWei = this.transTo(balance )
         try {
             const overrides = {
                 value: inWei.toString()
@@ -124,7 +126,7 @@ export class SwapForm extends Component {
             this._clear()
         } catch (e) {
             if (e.code === ERROR_CODE_TX_REJECTED_BY_USER) {
-                console.log('user cancel ' + ERROR_CODE_TX_REJECTED_BY_USER)
+                console.log('user cancel' + ERROR_CODE_TX_REJECTED_BY_USER)
                 return
             }
             console.error(e);
@@ -143,6 +145,7 @@ export class SwapForm extends Component {
             if (this.state.globalMultiplier > 0) {
                 amountToken = this.state.countTokensCurrent
             }
+
             const tx = await this._tokenShop.buyTokens(amountToken, overrides)
             this.setState({
                 txBeingSent: tx.hash
@@ -191,10 +194,10 @@ export class SwapForm extends Component {
             countTokens: countTokens,
             countTokensCurrent: countTokensCurrent,
             countBNB: countBNB,
-            multiplier: multiplierInt,
+            multiplier: +multiplierInt,
             isUsedMultiplier: !!isUsedMultiplier,
             globalMultiplier: globalMultiplier,
-            _balanceOfBonuses: balanceOfBonuses,
+            balanceOfBonuses: balanceOfBonuses,
             totalTokens: +tokens + +balanceOfBonuses,
 
         })
@@ -206,44 +209,34 @@ export class SwapForm extends Component {
     }
 
     getRate = async () => {
-        await this.getGasPrice()
-        const requestData = await fetch('/api/ratePrice', {
-            method: 'POST'
-        });
+        const requestData = await fetch('/api/rate', {method: 'POST'});
         const dataParse = await requestData.json()
-        const price = dataParse.price
-        let priceInWei = this.transTo(this.state.inputValue / price)
-        const priceInBnb = (this.state.inputValue / price).toFixed(7)
-        const gwei = (this.state.gasPrice).toString()
+        const priceRate = dataParse.price
+        const gasPrice = dataParse.gas
 
-        if(this.props.active || this.state.globalMultiplier > 0){
-            priceInWei = this.transTo(this.state.countTokensCurrent/10 / price)
+
+        if(!this.state.inputValue){
+           return
         }
+        const priceInBnb =  this.state.inputValue / priceRate // BNB
+        const priceInWei  = this.transTo(priceInBnb)
 
-        const weiGas = ethers.utils.parseUnits(gwei, "gwei");
+        const weiGas = ethers.utils.parseUnits( gasPrice.toString(), "gwei");
         const weiValue = ethers.utils.parseUnits(priceInWei, "wei");
         const totalInWei = ethers.utils.formatUnits(weiGas.add(weiValue), "ether")
 
         this.setState({
-            rate: price,
-            priceInWei: priceInWei,
+            gasPrice: gasPrice,
+            rate: priceRate,
+            priceInWei: weiValue,
             priceInBnb: priceInBnb,
-            totalCostUSD: totalInWei
+            discount:'' ,
+            totalCostUSD: this.convertWeiToUSD(totalInWei, priceRate)
         });
         this.showError('')
     }
-
-    getGasPrice = async () => {
-        if (this.state.gasPrice === 0) {
-            const requestData = await fetch('/api/gasPrice', {
-                method: 'POST'
-            });
-            const gasPrice = await requestData.json()
-            this.setState({
-                gasPrice: gasPrice
-            });
-        }
-
+     convertWeiToUSD = (valueBNB, conversionRate) =>  {
+         return valueBNB * conversionRate * 0.05;
     }
 
     transTo = function (riceInWei) {
@@ -269,18 +262,13 @@ export class SwapForm extends Component {
                 await this.handleInput(this.state.countTokensCurrent * this.state.multiplier - this.state.countTokensCurrent)
             }
             if (this.state.globalMultiplier > 0) {
-                await this.handleInput(this.state.countTokensCurrent * this.state.globalMultiplier - this.state.countTokensCurrent)
+                await this.handleInput(this.state.countTokensCurrent * this.state.globalMultiplier)
             }
-
         })
-
-
     }
-
     handleInput = async (value) => {
         this.setState({inputValue: +value});
     }
-
     _clear() {
         this.setState({
             inputValue: 0,
@@ -289,7 +277,6 @@ export class SwapForm extends Component {
             priceInWei: 0,
         })
     }
-
     _resetState() {
         this.setState(this.initialState)
     }
@@ -356,6 +343,7 @@ export class SwapForm extends Component {
 
     _addTokenToMetaMask = async () => {
         // Check if MetaMask is installed
+
         if (typeof window.ethereum === 'undefined') {
             console.log('MetaMask is not installed.');
             return;
@@ -472,9 +460,9 @@ export class SwapForm extends Component {
                                     </span>
 
                                 </div>
-                                {this.state._balanceOfBonuses > 0 &&
+                                {this.state.balanceOfBonuses > 0 &&
                                 <p className='text-amber-300'>
-                                    ({ethers.utils.formatUnits(this.state._balanceOfBonuses, 0)})
+                                    ({ethers.utils.formatUnits(this.state.balanceOfBonuses, 0)})
                                 </p>
                                 }
                             </div>
@@ -521,70 +509,76 @@ export class SwapForm extends Component {
                                         className={"sm:text-sm text-base font-semibold pb-[20px] leading-[17.41px] sx:mr-[0] w-full text-[#000000] "}>
                            			   						 Buy BNXT with Global multiplier x{this.state.globalMultiplier}
                                 </span>
+
+
                                     <div
                                         className="flex justify-between items-center bg-[#F2F2F2] w-full rounded-[6px] pr-6 pl-4 py-[10px]">
+
                                         <div
-                                            className="appearance-none bg-[#F2F2F2] text-primaryBgColor md:text-3xl text-[30px] sx:text-[24px]  outline-0 w-full h-[33px] leading-none font-semibold ">
-                                            {this.state.inputValue > 0 ? this.state.inputValue : 0}
+                                            className="appearance-none bg-[#F2F2F2] text-primaryBgColor font-semibold md:text-3xl text-[30px] sx:text-[24px]  outline-0 w-full h-[33px] leading-none ">
+                                            {this.state.countTokensCurrent * this.state.globalMultiplier}
                                         </div>
-                                        <span
-                                            className="text-primaryBgColor">${this.state.inputValue > 0 ? this.state.inputValue : 0}</span>
+
+
+                                        <span className="text-primaryBgColor">$
+                                            {this.state.countTokensCurrent * this.state.globalMultiplier}
+
+                                    </span>
 
                                     </div>
+
                                     <div
-                                        className="bg-textColor relative flex justify-center items-center border-b-[1px] border-[#F2F2F2] pb-[20px] w-full rounded-md mb-5 mt-[26px]">
+                                        className="bg-textColor relative flex justify-between items-center border-b-[1px] border-[#F2F2F2] pb-[20px] w-full rounded-md mb-[15.6px] mt-[26px]">
                                         <div
-                                            className="flex justify-between items-center ">
-                                            <Image src={swapArrowWhite}
-                                                   alt={swapArrowWhite}
+                                            className="flex justify-between items-center">
+                                            <Image src={swapArrowWhite} alt={swapArrowWhite}
                                                    className="w-[30px] h-[30px] mr-[6px]"/>
                                             <span
                                                 className="bg-textColor text-primaryBgColor sm:text-sm text-lg font-medium leading-5 "
-                                            >{this.state.inputValue > 0 ? +this.state.inputValue : 0} BNXT (${this.state.inputValue ? +this.state.countTokensCurrent /10 : 0}) </span>
-                                            <span
-                                                className="mr-2 ml-2 sm:mr-1 sm:ml-1"> = </span>
+                                            >{this.state.countTokensCurrent * this.state.globalMultiplier} BNXT (${this.state.countTokensCurrent * this.state.globalMultiplier}) </span>
+                                            <span className="mr-2 ml-2 sm:mr-1 sm:ml-1"> = </span>
                                             <Image src={bnbLogo}
                                                    className="w-[30px] h-[30px] mr-[6px]"
                                                    alt={bnbLogo}/>
                                             <span
                                                 className="bg-textColor text-primaryBgColor sm:text-sm text-lg font-medium leading-5">
-                                                                            {(this.state.priceInBnb / 10).toFixed(FIXED_VALUE)} BNB</span>
+                                                                            {(this.state.priceInBnb / 10).toFixed(FIXED_VALUE)} BNB
+                                        </span>
                                         </div>
                                     </div>
 
-                                    <div className="w-full">
-                                        <div className="w-full mb-[23px]">
-                                            <div
-                                                className="flex justify-between items-center text-[#EB5757] mb-[10px]">
-                                                <p className="sm:text-sm text-base font-normal leading-[17.41px]">Discount</p>
-                                                <span
-                                                    className="sm:text-sm text-base font-normal leading-[17.41px]">90% ( - ${this.state.countTokensCurrent  - this.state.countTokensCurrent / 10})</span>
-                                            </div>
 
-                                            <div
-                                                className="flex justify-between items-center text-primaryBgColor mb-[10px]">
-                                                <p className="sm:text-sm text-base font-normal leading-[17.41px]">Network
-                                                    fee</p>
-                                                <div
-                                                    className="flex justify-between items-center gap-[8px]">
-                                                    <Image src={gas} alt={''}/>
-                                                    {
-                                                        this.state.gasPrice &&
-                                                        <span
-                                                            className="text-base font-normal leading-[17.41px]">{this.state.gasPrice} Gwei</span>
-                                                    }
-                                                </div>
-                                            </div>
+                                    <div className="w-full mb-[23px]">
+                                        <div
+                                            className="flex justify-between items-center text-[#EB5757] mb-[10px]">
+                                            <p className="sm:text-sm text-base font-normal leading-[17.41px]">Discount</p>
+                                            <span
+                                                className="sm:text-sm text-base font-normal leading-[17.41px]">90% ( - ${this.state.inputValue * this.state.globalMultiplier - this.state.inputValue * this.state.globalMultiplier / 10})</span>
+                                        </div>
 
+                                        <div
+                                            className="flex justify-between items-center text-primaryBgColor mb-[10px]">
+                                            <p className="sm:text-sm text-base font-normal leading-[17.41px]">Network
+                                                fee</p>
                                             <div
-                                                className="flex justify-between items-center text-primaryBgColor ">
-                                                <p className="sm:text-sm text-base font-normal leading-[17.41px]">Total
-                                                    Cost</p>
+                                                className="flex justify-between items-center gap-[8px]">
+                                                <Image src={gas} alt={''}/>
                                                 {
+                                                    this.state.gasPrice &&
                                                     <span
-                                                        className="sm:text-sm text-base font-normal leading-[17.41px]"> ~ $ {(this.state.totalCostUSD * this.state.rate).toFixed(FIXED_VALUE)}</span>
+                                                        className="text-base font-normal leading-[17.41px]">{this.state.gasPrice} Gwei</span>
                                                 }
                                             </div>
+                                        </div>
+
+                                        <div
+                                            className="flex justify-between items-center text-primaryBgColor ">
+                                            <p className="sm:text-sm text-base font-normal leading-[17.41px]">Total
+                                                Cost</p>
+                                            {
+                                                this.state.totalCostUSD &&
+                                                <span className="sm:text-sm text-base font-normal leading-[17.41px]"> ~ $ {this.state.totalCostUSD}</span>
+                                            }
                                         </div>
                                     </div>
 
@@ -662,7 +656,7 @@ export class SwapForm extends Component {
                                                                                    className="w-[30px] h-[30px] mr-[6px]"/>
                                                                             <span
                                                                                 className="bg-textColor text-primaryBgColor sm:text-sm text-lg font-medium leading-5 "
-                                                                            >{this.state.inputValue > 0 ? +this.state.inputValue : 0} BNXT (${this.state.inputValue ? +this.state.countTokensCurrent /10 : 0}) </span>
+                                                                            >{this.state.inputValue > 0 ? +this.state.inputValue : 0} BNXT (${this.state.inputValue ? +this.state.inputValue : 0}) </span>
                                                                             <span
                                                                                 className="mr-2 ml-2 sm:mr-1 sm:ml-1"> = </span>
                                                                             <Image src={bnbLogo}
@@ -681,7 +675,7 @@ export class SwapForm extends Component {
                                                                                 className="flex justify-between items-center text-[#EB5757] mb-[10px]">
                                                                                 <p className="sm:text-sm text-base font-normal leading-[17.41px]">Discount</p>
                                                                                 <span
-                                                                                    className="sm:text-sm text-base font-normal leading-[17.41px]">90% ( - ${this.state.countTokensCurrent  - this.state.countTokensCurrent / 10})</span>
+                                                                                    className="sm:text-sm text-base font-normal leading-[17.41px]">90% ( - ${this.state.inputValue - this.state.totalCostUSD})</span>
                                                                             </div>
 
                                                                             <div
@@ -705,7 +699,7 @@ export class SwapForm extends Component {
                                                                                     Cost</p>
                                                                                 {
                                                                                     <span
-                                                                                        className="sm:text-sm text-base font-normal leading-[17.41px]"> ~ $ {(this.state.totalCostUSD * this.state.rate).toFixed(FIXED_VALUE)}</span>
+                                                                                        className="sm:text-sm text-base font-normal leading-[17.41px]"> ~ $ {this.state.totalCostUSD}</span>
                                                                                 }
                                                                             </div>
                                                                         </div>
@@ -716,7 +710,6 @@ export class SwapForm extends Component {
                                                                         buy={this.buy}
                                                                         currentError={this.state.currentError}
                                                                         _changeAddNetwork={this.changeAddNetwork}
-                                                                        globalMultiplier={this.state.globalMultiplier}
                                                                         _class={"text-textColor rounded-md w-full h-[60px] py-[17px] shadow-[0px_12px_18px_0_#A5CADE] font-medium sm:text-[18px] text-lg transform-gpu transition-transform duration-200 ease-in-out relative flex justify-center gap-[20px] mt-auto "
                                                                         + (this.state.currentError && this.state.currentError === 'Please connect to another Network' ? "bg-errorColor text-textColor z-10" : "bg-gradient-to-r from-[#29C8A9] via-[#208ED0] to-[#703AAD] text-primaryBgColor")
                                                                         }
@@ -803,13 +796,8 @@ export class SwapForm extends Component {
                                                                                     <p className="sm:text-sm text-base font-normal leading-[17.41px]">Total
                                                                                         Cost</p>
                                                                                     {
-                                                                                        this.state.totalCostUSD && this.props.active
-                                                                                            ?
-                                                                                            <span
-                                                                                                className="sm:text-sm text-base font-normal leading-[17.41px]"> ~ $ {(this.state.totalCostUSD * this.state.rate / 10).toFixed(FIXED_VALUE)}</span>
-                                                                                            :
-                                                                                            <span
-                                                                                                className="sm:text-sm text-base font-normal leading-[17.41px]"> ~ $ {(this.state.totalCostUSD * this.state.rate).toFixed(FIXED_VALUE)}</span>
+                                                                                        this.state.totalCostUSD &&
+                                                                                            <span className="sm:text-sm text-base font-normal leading-[17.41px]"> ~ $ {this.state.totalCostUSD}</span>
                                                                                     }
                                                                                 </div>
                                                                             </div>

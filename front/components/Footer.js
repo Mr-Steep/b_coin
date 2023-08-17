@@ -12,7 +12,7 @@ export function Footer() {
             <div className="max-w-[1526px] mx-auto text-textColor "
                  >
 
-                <div className="grid sm:grid-cols-1 grid-cols-2 justify-between items-center sm:gap-0 gap-[67px] sm:border-b-0 border-b-[1px] border-solid border-[#0B2D44] sm:pb-[27px] pb-[42px] relative"
+                <div className="grid sm:grid-cols-1 grid-cols-2 justify-between items-center sm:gap-0 gap-[67px] border-b-[1px] border-solid border-secondaryBgColor sm:pb-[27px] pb-[42px] relative"
                      >
                         <Image src={logo} className="sm:max-w-[230px] sm:mx-auto sm:mb-9 mdd:row-start-1 mdd:row-end-2 mdd:col-start-1 mdd:col-end-3 mdd:mx-auto" alt={''}/>
                         <div className="flex sm:flex-col items-center justify-end md:row-start-4 mdd:row-end-5 mdd:col-start-1 mdd:col-end-3 mdd:justify-center"
