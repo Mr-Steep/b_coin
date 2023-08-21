@@ -1,8 +1,6 @@
 import {useState, useEffect} from "react";
 
-export const CoinsAmount = ({amount, step, tips, activeAmount, handleAmount}) => {
-    console.log(activeAmount)
-
+export const CoinsAmount = ({amount, step, activeAmount, handleAmount}) => {
     const classStyles = {
         base: "inline-block text-base cursor-pointer rounded-[5px] border border-[#E0E0E0] w-full sm:w-[50px] w-[80px] h-[25px] rounded-[237px]",
         px: amount === 1000 ? "sm:px-[7.3px] px-[21px]" : "sm:px-[11.3px] px-[26px]",
