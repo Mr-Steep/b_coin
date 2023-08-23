@@ -4,33 +4,18 @@ import bnbLogo from "../assets/images/bnb-logo.svg";
 import metamask from "../assets/images/metamask.png";
 import walletPic from "../assets/images/wallet-pic.png";
 import walletPicMob from "../assets/images/wallet-pic-mob.png";
-import arrowDown from "../assets/images/arrow-narrow-down.svg";
-import wallet from "../assets/images/wallet.svg";
 import lightningBlue from "../assets/images/lightning-blue.svg";
 import gas from "../assets/images/gas-black.svg";
-import alert_circle from "../assets/images/alert-circle.svg";
-import Link from "next/link";
 import Image from "next/image";
 
 import {Component} from 'react'
 import React from 'react';
 
-
-import tokenShopAddress from '../contracts/TokenShop-contract-address.json'
-import tokenShopArtifact from '../contracts/TokenShop.json'
 import {ConnectWallet} from "@/components/ConnectWallet";
 import {CoinsAmount} from "@/components/CoinsAmount";
 
-import {ethers, utils} from "ethers";
-import http from "http";
-import {Withdrawal} from "@/components/Withdrawal";
-import {ChangeOwner} from "@/components/ChangeOwner";
-import {WaitingForTransactionMessage} from "@/components/WaitingForTransactionMessage";
-import {TransactionErrorMessage} from "@/components/TransactionErrorMessage";
 import {Step} from "@/components/Step";
 import {SwapFormButton} from "./SwapFormButton";
-import {Modal} from "./Modal";
-import data from "../assets/bNXTdata";
 
 const FIXED_VALUE = 7
 export const HARDHAT_NETWORK_ID = '31337'
