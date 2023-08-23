@@ -59,7 +59,6 @@ export class SwapForm extends Component {
                 rate: 0,
                 gasPrice: 0,
                 totalCostUSD: 0,
-                totalTokens: 0,
                 priceInBnb: 0,
                 priceInWei: 0,
                 inputValue: 0,
@@ -68,6 +67,7 @@ export class SwapForm extends Component {
                 globalMultiplier: 0,
                 currentError: false,
                 _balanceOfBonuses: 0,
+                _balanceTokens: 0,
                 isLoading: false
             }
 
@@ -186,6 +186,7 @@ export class SwapForm extends Component {
         const tokens = ethers.utils.formatUnits(countTokensCurrent, 0);
         const balanceOfBonuses = ethers.utils.formatUnits(_balanceOfBonuses, 0);
         const globalMultiplier = ethers.utils.formatUnits(_globalMultiplier, 0);
+        const balanceTokens = ethers.utils.formatUnits(countTokensCurrent, 0)
         this.setState({
             balance: newBalance,
             countTokens: countTokens,
@@ -195,7 +196,7 @@ export class SwapForm extends Component {
             isUsedMultiplier: !!isUsedMultiplier,
             globalMultiplier: globalMultiplier,
             _balanceOfBonuses: balanceOfBonuses,
-            totalTokens: +tokens + +balanceOfBonuses,
+            _balanceTokens: balanceTokens,
 
         })
         this.fsetBalance(tokens)
@@ -213,12 +214,11 @@ export class SwapForm extends Component {
         const dataParse = await requestData.json()
         const price = dataParse.price
         let priceInWei = this.transTo(this.state.inputValue / price)
-        const priceInBnb = (this.state.inputValue / price).toFixed(7)
         const gwei = (this.state.gasPrice).toString()
-
         if(this.props.active || this.state.globalMultiplier > 0){
             priceInWei = this.transTo(this.state.countTokensCurrent/10 / price)
         }
+        const priceInBnb = ethers.utils.formatEther(ethers.BigNumber.from(priceInWei));
 
         const weiGas = ethers.utils.parseUnits(gwei, "gwei");
         const weiValue = ethers.utils.parseUnits(priceInWei, "wei");
@@ -230,6 +230,7 @@ export class SwapForm extends Component {
             priceInBnb: priceInBnb,
             totalCostUSD: totalInWei
         });
+        console.log('state', this.state)
         this.showError('')
     }
 
@@ -541,8 +542,8 @@ export class SwapForm extends Component {
                                                    alt={swapArrowWhite}
                                                    className="w-[30px] h-[30px] mr-[6px]"/>
                                             <span
-                                                className="bg-textColor text-primaryBgColor sm:text-sm text-lg font-medium leading-5 "
-                                            >{this.state.inputValue > 0 ? +this.state.inputValue : 0} BNXT (${this.state.inputValue ? +this.state.countTokensCurrent /10 : 0}) </span>
+                                                className="bg-textColor text-primaryBgColor sm:text-sm text-lg font-medium leading-5 ">{this.state.inputValue > 0 ? +this.state.inputValue : 0} BNXT (${this.state.inputValue ? +this.state.countTokensCurrent /10 : 0}) </span>
+
                                             <span
                                                 className="mr-2 ml-2 sm:mr-1 sm:ml-1"> = </span>
                                             <Image src={bnbLogo}
@@ -684,7 +685,7 @@ export class SwapForm extends Component {
                                                                                 className="flex justify-between items-center text-[#EB5757] mb-[10px]">
                                                                                 <p className="sm:text-sm text-base font-normal leading-[17.41px]">Discount</p>
                                                                                 <span
-                                                                                    className="sm:text-sm text-base font-normal leading-[17.41px]">90% ( - ${this.state.inputValue  - this.state.inputValue / 10})</span>
+                                                                                    className="sm:text-sm text-base font-normal leading-[17.41px]">{(this.state.inputValue  - this.state.countTokensCurrent / 10)/this.state.inputValue * 100}% ( - ${this.state.inputValue  - this.state.countTokensCurrent / 10})</span>
                                                                             </div>
 
                                                                             <div
@@ -731,8 +732,7 @@ export class SwapForm extends Component {
                                                     :
                                                     <>
                                                         {
-                                                            this.state.totalTokens < 1000
-                                                                ?
+                                                            this.state._balanceTokens< 1000 ?
                                                                 <>
                                                      <span
                                                          className={"sm:text-sm text-base font-semibold pb-[20px] leading-[17.41px] sx:mr-[0] sm:mr-[120px] mr-[140px] sx:w-full text-[#000000] "}>
@@ -835,8 +835,7 @@ export class SwapForm extends Component {
                                                                 :
                                                                 <div
                                                                     className="flex flex-col justify-content items-center gap-4 text-primaryBgColor px-[20px] max-w-[275px] mt-auto mb-auto">
-                                                                    <p className="text-3xl font-medium leading-[32.64px] text-center">Please
-                                                                        note!</p>
+                                                                    <p className="text-3xl font-medium leading-[32.64px] text-center">Please note!</p>
                                                                     <p className="text-base font-normal leading-[26px] text-center max-w-[320px] w-full">Your
                                                                         current balance is 1000 BNXT.
                                                                         You can no longer buy currency.

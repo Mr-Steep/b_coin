@@ -253,14 +253,11 @@ contract TokenShop {
         require(tokenBalanceContract() > 0, "Contract has no tokens");
 
         uint balance = tokenBalanceCurrent();
-        uint balanceBonus = tokenBalanceCurrentBonuses();
-
-
         if (getGlobalMultiplier() == 0) {
             require(tokenAmount >= MIN_TOKEN_AMOUNT, "Token amount below minimum 100");
             require(tokenAmount <= MAX_TOKEN_AMOUNT, "Token amount above maximum 1000");
             require(tokenAmount % TOKEN_AMOUNT_MULTIPLIER == 0, "Token amount must be a multiple of the 100");
-            require(tokenAmount + balance + balanceBonus <= MAX_TOKEN_AMOUNT, "Token amount can be maximum 1000");
+            require(tokenAmount + balance <= MAX_TOKEN_AMOUNT, "Token amount can be maximum 1000");
 
             token.transfer(msg.sender, tokenAmount);
             emit Bougth(tokenAmount, msg.sender);
