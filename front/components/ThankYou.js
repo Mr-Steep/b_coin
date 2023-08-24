@@ -27,14 +27,14 @@ export function ThankYou({getMultiplier, handleSetActive, getConfirmationComplet
         <Modal>
                 <div className="fixed top-[50%] rounded-md left-[50%] translate-x-[-50%] translate-y-[-50%] flex flex-col justify-between items-center bg-textColor sm:max-w-[350px] max-w-[544px] px-[70px] py-[50px] z-10">
                     <Image src={cross} className="absolute z-10 top-[22px] sx:right-[30px] right-[22px] cursor-pointer"
-                           onClick={()=>close()}
+                           onClick={() => close()}
                            alt={cross} />
                     <div className="flex flex-col justify-between items-center gap-[30px] text-primaryBgColor">
                         <p className="text-3xl font-medium text-center">Thank you!</p>
                         <p className="text-base font-normal text-center">Amet minim mollit non deserunt ullamco est sit aliqua.
                         { !getIsUserUseMultiplayer  &&
-                            <span className="block">
-                               Get your 90% discount with x{getMultiplier>0 && getMultiplier} multiplier!
+                            <span className="block text-primaryBgColor">
+                               Get your 90% discount with x{getMultiplier > 0 && getMultiplier} multiplier!
                            </span>
                         }
                         </p>

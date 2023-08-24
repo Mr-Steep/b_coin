@@ -87,7 +87,7 @@ export function Confirmation({getTransactionComplete, setConfirmationComplete, s
         <Modal>
             <div className="fixed top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] flex flex-col justify-between items-center bg-textColor sx:max-w-[360px] sm:max-w-[400px] max-w-[485px] w-full rounded-md py-[50px] z-10">
                 <Image src={cross} className="absolute z-10 top-[22px] sx:right-[30px] right-[22px] cursor-pointer"
-                       onClick={()=>close()}
+                       onClick={() => close()}
                        alt={cross} />
                 <div className="flex flex-col justify-between items-center gap-[30px]">
                     <p className="text-primaryBgColor text-3xl font-medium text-center">Confirm your email</p>

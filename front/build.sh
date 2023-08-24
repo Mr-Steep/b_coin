@@ -14,4 +14,6 @@ npm i
 sleep 1
 npm run build
 sleep 1
+kill -9 $(lsof -t -i:3000)
+sleep 1
 pm2 start 0

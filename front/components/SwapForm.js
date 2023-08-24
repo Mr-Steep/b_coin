@@ -1,13 +1,5 @@
-import swapArrowBlack from "../assets/images/swapArrow.svg";
 import swapArrowWhite from "../assets/images/swap-arrow.svg";
 import bnbLogo from "../assets/images/bnb-logo.svg";
-import metamask from "../assets/images/metamask.png";
-import walletPic from "../assets/images/wallet-pic.png";
-import walletPicMob from "../assets/images/wallet-pic-mob.png";
-
-import lightningBlue from "../assets/images/lightning-blue.svg";
-import gas from "../assets/images/gas-black.svg";
-
 import Image from "next/image";
 
 import {Component} from 'react'
@@ -81,7 +73,6 @@ export class SwapForm extends Component {
                 rate: 0,
                 gasPrice: 0,
                 totalCostUSD: 0,
-                totalTokens: 0,
                 priceInBnb: 0,
                 priceInWei: 0,
                 inputValue: 0,
@@ -90,6 +81,7 @@ export class SwapForm extends Component {
                 globalMultiplier: 0,
                 currentError: false,
                 _balanceOfBonuses: 0,
+                _balanceTokens: 0,
                 isLoading: false
             }
 
@@ -503,6 +495,26 @@ export class SwapForm extends Component {
                                     <MultiplierField inputValue={this.state.inputValue}/>
 
                                     <BNXTtoBNBamount inputValue={this.state.inputValue} countTokensCurrent={this.state.countTokensCurrent} priceInBnb={this.state.priceInBnb} fixedValue={FIXED_VALUE}/>
+                                    <div
+                                        className="bg-textColor relative flex justify-center items-center border-b-[1px] border-[#F2F2F2] pb-[20px] w-full rounded-md mb-5 mt-[26px]">
+                                        <div
+                                            className="flex justify-between items-center ">
+                                            <Image src={swapArrowWhite}
+                                                   alt={swapArrowWhite}
+                                                   className="w-[30px] h-[30px] mr-[6px]"/>
+                                            <span
+                                                className="bg-textColor text-primaryBgColor sm:text-sm text-lg font-medium leading-5 ">{this.state.inputValue > 0 ? +this.state.inputValue : 0} BNXT (${this.state.inputValue ? +this.state.countTokensCurrent /10 : 0}) </span>
+
+                                            <span
+                                                className="mr-2 ml-2 sm:mr-1 sm:ml-1"> = </span>
+                                            <Image src={bnbLogo}
+                                                   className="w-[30px] h-[30px] mr-[6px]"
+                                                   alt={bnbLogo}/>
+                                            <span
+                                                className="bg-textColor text-primaryBgColor sm:text-sm text-lg font-medium leading-5">
+                                                                            {(this.state.priceInBnb / 10).toFixed(FIXED_VALUE)} BNB</span>
+                                        </div>
+                                    </div>
 
                                     <div className="w-full">
                                         <div className="w-full mb-[23px]">
@@ -555,8 +567,10 @@ export class SwapForm extends Component {
 
                                                                     <div className="w-full">
                                                                         <div className="w-full mb-[23px]">
-                                                                            <Discount countTokensCurrent={this.state.countTokensCurrent}/>
-
+                                                                            <Discount
+                                                                                countTokensCurrent={this.state.countTokensCurrent}
+                                                                                inputValue={this.state.inputValue}
+                                                                            />
                                                                             <TotalCost gasPrice={this.state.gasPrice} totalCostUSD={this.state.totalCostUSD} rate={this.state.rate} fixedValue={FIXED_VALUE}/>
                                                                         </div>
                                                                     </div>
@@ -578,8 +592,7 @@ export class SwapForm extends Component {
                                                     :
                                                     <>
                                                         {
-                                                            this.state.totalTokens < 1000
-                                                                ?
+                                                            this.state._balanceTokens< 1000 ?
                                                                 <>
                                                                     <span
                                                                         className={"sm:text-sm text-base font-semibold pb-[20px] leading-[17.41px] sx:mr-[0] sm:mr-[120px] mr-[140px] sx:w-full text-[#000000] "}>
