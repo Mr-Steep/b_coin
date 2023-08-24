@@ -31,13 +31,12 @@ export function ConnectWallet({_class, connectWallet, setNetworkError}) {
         const provider = getCurrentProvider()
 
         if (provider === 'metamask') {
-            console.log('MetaMask поддерживается');
+            console.log('MetaMask installed');
             if (typeof window.ethereum !== 'undefined') {
                 ethereum
                     .request({method: 'net_version'})
                     .then((networkId) => {
                         console.log('Current network ID:', networkId);
-                        console.log('NETWORK_ID', NETWORK_ID);
                         if (NETWORK_ID !== networkId) {
                             setNetworkError("Please connect to another Network")
                             setOpen(false)
