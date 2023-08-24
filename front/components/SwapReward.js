@@ -241,7 +241,7 @@ export function SwapReward({_active}) {
                                             active ?
                                                 <span> Back to Swap page</span>
                                                 :
-                                            <span> Get Reward {getMultiplier}</span>
+                                            <span> Get Reward x{getMultiplier}</span>
 
 
 

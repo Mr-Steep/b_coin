@@ -33,7 +33,7 @@ export function ThankYou({getMultiplier, handleSetActive, getConfirmationComplet
                         <p className="text-3xl font-medium text-center">Thank you!</p>
                         <p className="text-base font-normal text-center">Amet minim mollit non deserunt ullamco est sit aliqua.
                         { !getIsUserUseMultiplayer  &&
-                            <span className="block">
+                            <span className="block text-primaryBgColor">
                                Get your 90% discount with x{getMultiplier>0 && getMultiplier} multiplier!
                            </span>
                         }
@@ -47,7 +47,7 @@ export function ThankYou({getMultiplier, handleSetActive, getConfirmationComplet
                                 <Image src={arrowLight} className="w-[23px] h-[23px] ml-[90px] group-hover:rotate-45 transition duration-300 ease-in" alt={''}/>
                             </Link>
                             :
-                            <Link href="/"
+                            <Link href="/" target="_top"
                                   className="group mx-auto flex gap-[13px] bg-primaryBgColor items-center justify-between rounded-md md:min-w-[293px] max-w-[293px] max-h-[60px] w-full px-[17px] py-[17px]">
                         <span className="text-lg text-textColor">
                             Back to Home page
