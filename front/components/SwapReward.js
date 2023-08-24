@@ -152,7 +152,7 @@ export function SwapReward({_active}) {
                                 && !getIsUserUseMultiplayer
                                     ?
                                     'Get your 90% discount with x' + getMultiplier + ' multiplier'
-                                    : 'Join the bNXT Network'}
+                                    : 'Join the BNXT Network'}
                             </>
                             }
                         </p>
@@ -241,7 +241,7 @@ export function SwapReward({_active}) {
                                             active ?
                                                 <span> Back to Swap page</span>
                                                 :
-                                            <span> Get Reward {getMultiplier}</span>
+                                            <span> Get Reward x{getMultiplier}</span>
 
 
 
