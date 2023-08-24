@@ -86,9 +86,9 @@ export class Admin extends Component {
 
         }
 
-        if(this.props.step === 4 && prevProps.step !== 4) {
-            this.handleAmount(400)
-        }
+        // if(this.props.step === 4 && prevProps.step !== 4) {
+        //     this.handleAmount(400)
+        // }
 
     }
 

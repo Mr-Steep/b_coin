@@ -105,7 +105,7 @@ export function SwapReward({_active}) {
     return (
         <Layout modalVisible={modalVisible} closeModal={closeModal}>
             <div className="flex flex-col justify-between min-h-screen">
-                <div className={"lg:max-h-[380px] sm:px-4 smn:px-[50px] mdm:px-[102px] lgm:px-[111px] px-[16px] "
+                <div className={"lg:max-h-[380px] smn:px-[50px] mdm:px-[102px] lgm:px-[111px] px-4 "
                 +(modalVisible && step!== 4 ? 'tablet:h-[100px] h-[200px] ' : modalVisible && step === 4 ? 'tablet:h-[482px] h-[200px]' : 'h-[482px] '
                 )}
                      style={{
@@ -205,12 +205,12 @@ export function SwapReward({_active}) {
 
                                         <ul className="sx:text-[16px] lg:text-[18px] text-[22px] list-disc pl-4">
 
-                                            <li className="mdd:mb-[8px] mb-4 ml-5"
+                                            <li className="mdd:mb-2 mb-4 ml-5"
                                             >Amet minim mollit non deserunt ullamco est sit aliqua dolor do
                                                 amet sint. Velit officia consequat duis enim velit mollit.
                                             </li>
                                             <li className={"ml-5 "
-                                            + (active ? 'mdd:mb-[8px] mb-0' :
+                                            + (active ? 'mdd:mb-2 mb-0' :
                                                 'mdd:mb-[8px] mb-4')}>
                                                 Amet minim mollit non deserunt ullamco est sit aliqua.
                                             </li>
@@ -239,7 +239,7 @@ export function SwapReward({_active}) {
                                 {/*{!!getCurrentAddress && getBalance > 0 &&*/}
 
                                 <Link
-                                    href={active?'/':'/reward'}
+                                    href={active ? '/' : '/reward'}
                                     className="group tabletLand:mx-0 mx-auto flex gap-[13px] bg-primaryBgColor items-center border justify-between rounded-md min-w-[209px]  w-max px-[17px] py-[17px] tablet:w-full">
                                     <span className="text-textColor text-lg font-medium">
                                         {
