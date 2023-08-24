@@ -25,13 +25,24 @@ import {BNXTtoBNB} from "./BNXTtoBNB";
 import {BNXTtoBNBamount} from "./BNXTtoBNBamount";
 import {TotalCost} from "./TotalCost";
 import {Discount} from "./Discount";
-import {SwitchNetwork, SwitchNetworkText} from "./SwitchNetwork";
+import {SwitchNetworkText} from "./SwitchNetwork";
 import {ConnectWalletText} from "./ConnectWalletText";
 import {GetRewardText} from "./GetRewardText";
 import {UsedRewardText} from "./UsedRewardText";
 import {SwapFormHeader} from "./SwapFormHeader";
 import {MultiplierField} from "./MultiplierField";
-import {buy} from "./SwapFormFunctions";
+import {
+    _clear,
+    _initialize, _resetState,
+    buy,
+    buyTokens,
+    buyTokensBonus,
+    getGasPrice,
+    getRate,
+    showError,
+    transTo,
+    updateBalance
+} from "./SwapFormFunctions";
 
 const FIXED_VALUE = 7
 
@@ -99,12 +110,12 @@ export class SwapForm extends Component {
         })
         try {
             if (this.state.globalMultiplier > 0) {
-                await this.buyTokens()
+                await buyTokens(this.state, this._tokenShop, this.fsetTransactionComplete, this.fsetHash, _clear, this.checkError, updateBalance, ERROR_CODE_TX_REJECTED_BY_USER)
             } else {
                 if (this.props.active) {
-                    await this.buyTokensBonus()
+                    await buyTokensBonus(this.state, this._tokenShop, this.fsetTransactionComplete, this.fsetHash, _clear, this.checkError, updateBalance, ERROR_CODE_TX_REJECTED_BY_USER)
                 } else {
-                    await this.buyTokens()
+                    await buyTokens(this.state, this._tokenShop, this.fsetTransactionComplete, this.fsetHash, _clear, this.checkError, updateBalance, ERROR_CODE_TX_REJECTED_BY_USER)
                 }
             }
             this.setState({
@@ -119,187 +130,187 @@ export class SwapForm extends Component {
     }
 
 
-    buyTokensBonus = async () => {
-        const inWei = this.state.priceInWei
-        try {
-            const overrides = {
-                value: inWei.toString()
-            };
-            const tx = await this._tokenShop.buyTokensBonus(overrides)
-            this.setState({
-                txBeingSent: tx.hash
-            })
-            await tx.wait()
-            this.fsetTransactionComplete(true)
-            this.fsetHash(tx.hash)
-            this._clear()
-        } catch (e) {
-            if (e.code === ERROR_CODE_TX_REJECTED_BY_USER) {
-                console.log('user cancel ' + ERROR_CODE_TX_REJECTED_BY_USER)
-                return
-            }
-            console.error(e);
-            this.checkError(e.message)
-        }
-        await this.updateBalance()
-    }
+    // buyTokensBonus = async () => {
+    //     const inWei = this.state.priceInWei
+    //     try {
+    //         const overrides = {
+    //             value: inWei.toString()
+    //         };
+    //         const tx = await this._tokenShop.buyTokensBonus(overrides)
+    //         this.setState({
+    //             txBeingSent: tx.hash
+    //         })
+    //         await tx.wait()
+    //         this.fsetTransactionComplete(true)
+    //         this.fsetHash(tx.hash)
+    //         this._clear()
+    //     } catch (e) {
+    //         if (e.code === ERROR_CODE_TX_REJECTED_BY_USER) {
+    //             console.log('user cancel ' + ERROR_CODE_TX_REJECTED_BY_USER)
+    //             return
+    //         }
+    //         console.error(e);
+    //         this.checkError(e.message)
+    //     }
+    //     await this.updateBalance()
+    // }
+    //
+    // buyTokens = async () => {
+    //     // const signer = this._provider.getSigner(0)
+    //     try {
+    //         let amountToken = this.state.inputValue
+    //         const overrides = {
+    //             value: this.state.priceInWei.toString()
+    //         };
+    //         if (this.state.globalMultiplier > 0) {
+    //             amountToken = this.state.countTokensCurrent
+    //         }
+    //         const tx = await this._tokenShop.buyTokens(amountToken, overrides)
+    //         this.setState({
+    //             txBeingSent: tx.hash
+    //         })
+    //         await tx.wait()
+    //         this.fsetTransactionComplete(true)
+    //         this.fsetHash(tx.hash)
+    //         this._clear()
+    //     } catch (e) {
+    //         console.error(e);
+    //         if (e.code === ERROR_CODE_TX_REJECTED_BY_USER) {
+    //             console.log('user cancel' + ERROR_CODE_TX_REJECTED_BY_USER)
+    //             if (this.state.globalMultiplier === 0) {
+    //                 this._clear()
+    //             }
+    //             return
+    //         }
+    //         this.checkError(e.message)
+    //     }
+    //     await this.updateBalance()
+    // }
 
-    buyTokens = async () => {
-        // const signer = this._provider.getSigner(0)
-        try {
-            let amountToken = this.state.inputValue
-            const overrides = {
-                value: this.state.priceInWei.toString()
-            };
-            if (this.state.globalMultiplier > 0) {
-                amountToken = this.state.countTokensCurrent
-            }
-            const tx = await this._tokenShop.buyTokens(amountToken, overrides)
-            this.setState({
-                txBeingSent: tx.hash
-            })
-            await tx.wait()
-            this.fsetTransactionComplete(true)
-            this.fsetHash(tx.hash)
-            this._clear()
-        } catch (e) {
-            console.error(e);
-            if (e.code === ERROR_CODE_TX_REJECTED_BY_USER) {
-                console.log('user cancel' + ERROR_CODE_TX_REJECTED_BY_USER)
-                if (this.state.globalMultiplier === 0) {
-                    this._clear()
-                }
-                return
-            }
-            this.checkError(e.message)
-        }
-        await this.updateBalance()
-    }
-
-    showError = (error) => {
-        this.setState({
-            currentError: error
-        })
-    }
-
-
-    async updateBalance() {
-        const newBalance = (await this._provider.getBalance(this.state.selectAccount))?.toString()
-        const countTokens = (await this._tokenShop.tokenBalanceContract())
-        const countBNB = await this._tokenShop.provider.getBalance(this._tokenShop.address)
-        const multiplier = await this._tokenShop.getMultiplier()
-        const countTokensCurrent = await this._tokenShop.tokenBalanceCurrent()
-        const isUsedMultiplier = await this._tokenShop.getIsUsed()
-        const _globalMultiplier = await this._tokenShop.getGlobalMultiplier()
-        const _balanceOfBonuses = await this._tokenShop.tokenBalanceCurrentBonuses()
-
-        const multiplierInt = ethers.utils.formatUnits(multiplier, 0)
-        const tokens = ethers.utils.formatUnits(countTokensCurrent, 0);
-        const balanceOfBonuses = ethers.utils.formatUnits(_balanceOfBonuses, 0);
-        const globalMultiplier = ethers.utils.formatUnits(_globalMultiplier, 0);
-        this.setState({
-            balance: newBalance,
-            countTokens: countTokens,
-            countTokensCurrent: countTokensCurrent,
-            countBNB: countBNB,
-            multiplier: multiplierInt,
-            isUsedMultiplier: !!isUsedMultiplier,
-            globalMultiplier: globalMultiplier,
-            _balanceOfBonuses: balanceOfBonuses,
-            totalTokens: +tokens + +balanceOfBonuses,
-
-        })
-        this.fsetBalance(tokens)
-        this.fMultiplier(multiplierInt)
-        this.fsetIsUserUseMultiplayer(isUsedMultiplier)
-        this.fsetGlobalMultiplayer(globalMultiplier)
-        await this.getRate()
-    }
-
-    getRate = async () => {
-        await this.getGasPrice()
-        const requestData = await fetch('/api/ratePrice', {
-            method: 'POST'
-        });
-        const dataParse = await requestData.json()
-        const price = dataParse.price
-        let priceInWei = this.transTo(this.state.inputValue / price)
-        const priceInBnb = (this.state.inputValue / price).toFixed(7)
-        const gwei = (this.state.gasPrice).toString()
-
-        if(this.props.active || this.state.globalMultiplier > 0){
-            priceInWei = this.transTo(this.state.countTokensCurrent/10 / price)
-        }
-
-        const weiGas = ethers.utils.parseUnits(gwei, "gwei");
-        const weiValue = ethers.utils.parseUnits(priceInWei, "wei");
-        const totalInWei = ethers.utils.formatUnits(weiGas.add(weiValue), "ether")
-
-        this.setState({
-            rate: price,
-            priceInWei: priceInWei,
-            priceInBnb: priceInBnb,
-            totalCostUSD: totalInWei
-        });
-        this.showError('')
-    }
-
-    getGasPrice = async () => {
-        if (this.state.gasPrice === 0) {
-            const requestData = await fetch('/api/gasPrice', {
-                method: 'POST'
-            });
-            const gasPrice = await requestData.json()
-            this.setState({
-                gasPrice: gasPrice
-            });
-        }
-
-    }
-
-    transTo = function (riceInWei) {
-        const strRiceInWei = (parseFloat(riceInWei)).toFixed(18).toString()
-        const wei = ethers.utils.parseEther(strRiceInWei);
-        return wei.toString()
-    }
-
-    async _initialize(selectedAddress) {
-        this.fsetCurrentAddress(selectedAddress)
-        this._provider = new ethers.providers.Web3Provider(window.ethereum)
-        this._tokenShop = new ethers.Contract(
-            tokenShopAddress.TokenShop,
-            tokenShopArtifact.abi,
-            this._provider.getSigner(0)
-        )
-        this.fsetSelectAccount(selectedAddress)
-        this.setState({
-            selectAccount: selectedAddress,
-        }, async () => {
-            await this.updateBalance()
-            if (this.props.active) {
-                await this.handleInput(this.state.countTokensCurrent * this.state.multiplier - this.state.countTokensCurrent)
-            }
-            if (this.state.globalMultiplier > 0) {
-                await this.handleInput(this.state.countTokensCurrent * this.state.globalMultiplier - this.state.countTokensCurrent)
-            }
-
-        })
+    // showError = (error) => {
+    //     this.setState({
+    //         currentError: error
+    //     })
+    // }
 
 
-    }
+    // async updateBalance() {
+    //     const newBalance = (await this._provider.getBalance(this.state.selectAccount))?.toString()
+    //     const countTokens = (await this._tokenShop.tokenBalanceContract())
+    //     const countBNB = await this._tokenShop.provider.getBalance(this._tokenShop.address)
+    //     const multiplier = await this._tokenShop.getMultiplier()
+    //     const countTokensCurrent = await this._tokenShop.tokenBalanceCurrent()
+    //     const isUsedMultiplier = await this._tokenShop.getIsUsed()
+    //     const _globalMultiplier = await this._tokenShop.getGlobalMultiplier()
+    //     const _balanceOfBonuses = await this._tokenShop.tokenBalanceCurrentBonuses()
+    //
+    //     const multiplierInt = ethers.utils.formatUnits(multiplier, 0)
+    //     const tokens = ethers.utils.formatUnits(countTokensCurrent, 0);
+    //     const balanceOfBonuses = ethers.utils.formatUnits(_balanceOfBonuses, 0);
+    //     const globalMultiplier = ethers.utils.formatUnits(_globalMultiplier, 0);
+    //     this.setState({
+    //         balance: newBalance,
+    //         countTokens: countTokens,
+    //         countTokensCurrent: countTokensCurrent,
+    //         countBNB: countBNB,
+    //         multiplier: multiplierInt,
+    //         isUsedMultiplier: !!isUsedMultiplier,
+    //         globalMultiplier: globalMultiplier,
+    //         _balanceOfBonuses: balanceOfBonuses,
+    //         totalTokens: +tokens + +balanceOfBonuses,
+    //
+    //     })
+    //     this.fsetBalance(tokens)
+    //     this.fMultiplier(multiplierInt)
+    //     this.fsetIsUserUseMultiplayer(isUsedMultiplier)
+    //     this.fsetGlobalMultiplayer(globalMultiplier)
+    //     await this.getRate()
+    // }
 
-    _clear() {
-        this.setState({
-            inputValue: 0,
-            priceInBnb: 0,
-            totalCostUSD: 0,
-            priceInWei: 0,
-        })
-    }
+    // getRate = async () => {
+    //     await this.getGasPrice()
+    //     const requestData = await fetch('/api/ratePrice', {
+    //         method: 'POST'
+    //     });
+    //     const dataParse = await requestData.json()
+    //     const price = dataParse.price
+    //     let priceInWei = this.transTo(this.state.inputValue / price)
+    //     const priceInBnb = (this.state.inputValue / price).toFixed(7)
+    //     const gwei = (this.state.gasPrice).toString()
+    //
+    //     if(this.props.active || this.state.globalMultiplier > 0){
+    //         priceInWei = this.transTo(this.state.countTokensCurrent/10 / price)
+    //     }
+    //
+    //     const weiGas = ethers.utils.parseUnits(gwei, "gwei");
+    //     const weiValue = ethers.utils.parseUnits(priceInWei, "wei");
+    //     const totalInWei = ethers.utils.formatUnits(weiGas.add(weiValue), "ether")
+    //
+    //     this.setState({
+    //         rate: price,
+    //         priceInWei: priceInWei,
+    //         priceInBnb: priceInBnb,
+    //         totalCostUSD: totalInWei
+    //     });
+    //     showError(this.state,'')
+    // }
 
-    _resetState() {
-        this.setState(this.initialState)
-    }
+    // getGasPrice = async () => {
+    //     if (this.state.gasPrice === 0) {
+    //         const requestData = await fetch('/api/gasPrice', {
+    //             method: 'POST'
+    //         });
+    //         const gasPrice = await requestData.json()
+    //         this.setState({
+    //             gasPrice: gasPrice
+    //         });
+    //     }
+    //
+    // }
+
+    // transTo = function (riceInWei) {
+    //     const strRiceInWei = (parseFloat(riceInWei)).toFixed(18).toString()
+    //     const wei = ethers.utils.parseEther(strRiceInWei);
+    //     return wei.toString()
+    // }
+
+    // async _initialize(selectedAddress) {
+    //     this.fsetCurrentAddress(selectedAddress)
+    //     this._provider = new ethers.providers.Web3Provider(window.ethereum)
+    //     this._tokenShop = new ethers.Contract(
+    //         tokenShopAddress.TokenShop,
+    //         tokenShopArtifact.abi,
+    //         this._provider.getSigner(0)
+    //     )
+    //     this.fsetSelectAccount(selectedAddress)
+    //     this.setState({
+    //         selectAccount: selectedAddress,
+    //     }, async () => {
+    //         await updateBalance(this.state, this._provider, this._tokenShop, this.fsetBalance, this.fMultiplier, this.fsetIsUserUseMultiplayer, this.fsetGlobalMultiplayer, getRate)
+    //         if (this.props.active) {
+    //             await this.handleInput(this.state.countTokensCurrent * this.state.multiplier - this.state.countTokensCurrent)
+    //         }
+    //         if (this.state.globalMultiplier > 0) {
+    //             await this.handleInput(this.state.countTokensCurrent * this.state.globalMultiplier - this.state.countTokensCurrent)
+    //         }
+    //
+    //     })
+    //
+    //
+    // }
+
+    // _clear() {
+    //     this.setState({
+    //         inputValue: 0,
+    //         priceInBnb: 0,
+    //         totalCostUSD: 0,
+    //         priceInWei: 0,
+    //     })
+    // }
+
+    // _resetState() {
+    //     this.setState(this.initialState)
+    // }
 
     _checkNetwork() {
         if (window.ethereum.networkVersion === HARDHAT_NETWORK_ID) {
@@ -312,7 +323,7 @@ export class SwapForm extends Component {
             this.setState({
                 networkError: "Please install Metamask"
             })
-            this.showError("Please install Metamask")
+            showError(this.state,"Please install Metamask")
             return
         }
 
@@ -324,15 +335,15 @@ export class SwapForm extends Component {
             return
         }
 
-        await this._initialize(selectedAddress)
+        await _initialize(selectedAddress, this.state, this.props.active, this.fsetCurrentAddress, this._provider, this._tokenShop, updateBalance, this.handleInput)
 
         window.ethereum.on('accountsChanged', async ([newAddress]) => {
-            this._resetState()
-            await this._initialize(newAddress)
+            _resetState(this.state, this.initialState)
+            await _initialize(newAddress, this.state, this.props.active, this.fsetCurrentAddress, this._provider, this._tokenShop, updateBalance, this.handleInput)
         })
 
         window.ethereum.on('chainChanged', async ([networkId]) => {
-            return this._resetState()
+            return _resetState(this.state, this.initialState)
         })
 
         localStorage.setItem(FIRSTLY_CONNECTION, true)
@@ -423,7 +434,7 @@ export class SwapForm extends Component {
                 }
             }
         } finally {
-            this._resetState()
+            _resetState(this.state, this.initialState)
         }
     };
 
@@ -446,13 +457,13 @@ export class SwapForm extends Component {
         const {data} = this.props
         const {amount} = data.filter(el => el.amount === selectedAmount)[0]
         this.setState({inputValue: +amount});
-        this.getRate().then()
+        getRate(this.state, this.props.active, getGasPrice, transTo, this.showError).then()
     }
 
 
     handleInput = async (value) => {
         this.setState({inputValue: +value});
-        this.getRate().then()
+        getRate(this.state, this.props.active, getGasPrice, transTo, this.showError).then()
     }
 
 
