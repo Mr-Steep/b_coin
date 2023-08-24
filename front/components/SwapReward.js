@@ -8,8 +8,6 @@ import Link from "next/link";
 import {SwapForm} from "./SwapForm";
 import {Modal} from "./Modal";
 import {useState, useEffect, useRef} from "react";
-import headerSwap from "../assets/images/swap-header.png";
-import headerReward from "../assets/images/reward-header.png";
 import headerProject from "../assets/images/project-header.png";
 import {Layout} from "./Layout";
 import Cookies from 'js-cookie';
@@ -17,7 +15,6 @@ import {ThankYou} from "@/components/ThankYou";
 import {Footer} from "@/components/Footer";
 import data from "../assets/bNXTdata"
 import {Confirmation} from "./Confirmation";
-import {ConnectWallet} from "./ConnectWallet";
 import styles from '../styles/custom-styles.module.css';
 import {SwapFormTips} from "./SwapFormTips";
 
@@ -235,28 +232,37 @@ export function SwapReward({_active}) {
                                            alt={""}/>
                                 </Link>
 
-
-                                {/*{!!getCurrentAddress && getBalance > 0 &&*/}
-
-                                <Link
-                                    href={active ? '/' : '/reward'}
-                                    className="group tabletLand:mx-0 mx-auto flex gap-[13px] bg-primaryBgColor items-center border justify-between rounded-md min-w-[209px]  w-max px-[17px] py-[17px] tablet:w-full">
+                                {(getBalance > 0 && !getIsUserUseMultiplayer) &&
+                                    <Link
+                                        href={active ? '/' : '/reward'}
+                                        className="group tabletLand:mx-0 mx-auto flex gap-[13px] bg-primaryBgColor items-center border justify-between rounded-md min-w-[209px]  w-max px-[17px] py-[17px] tablet:w-full">
                                     <span className="text-textColor text-lg font-medium">
                                         {
-                                            !getIsUserUseMultiplayer && active && getMultiplier > 0 ? 'Back to Swap page' : 'Buy'
-                                        }
-                                        {
-                                            !getIsUserUseMultiplayer && !active && getMultiplier > 0 &&
+                                            active ?
+                                                <span> Back to Swap page</span>
+                                                :
                                             <span> Get Reward {getMultiplier}</span>
+
+
+
                                         }
+                                        {/*{*/}
+                                        {/*    !getIsUserUseMultiplayer && active && getMultiplier > 0 ? 'Back to Swap page' : 'Buy'*/}
+                                        {/*}*/}
+                                        {/*{*/}
+                                        {/*    !getIsUserUseMultiplayer && !active && getMultiplier > 0 &&*/}
+                                        {/*    */}
+                                        {/*}*/}
                                     </span>
-                                    <Image src={arrowLight}
-                                           className="w-[23px] h-[23px] group-hover:rotate-45 transition duration-300 ease-in ml-[70px]"
-                                           alt={""}/>
-                                </Link>
+                                        <Image src={arrowLight}
+                                               className="w-[23px] h-[23px] group-hover:rotate-45 transition duration-300 ease-in ml-[70px]"
+                                               alt={""}/>
+                                    </Link>
+
+                                }
 
 
-                                 {/*}*/}
+
 
                             </div>
                         </div>
