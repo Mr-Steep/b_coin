@@ -247,7 +247,7 @@ export function SwapReward({_active}) {
                                         }
                                         {
                                             !getIsUserUseMultiplayer && !active && getMultiplier > 0 &&
-                                            <span> Get Reward {getMultiplier}</span>
+                                            <span> Get Reward x{getMultiplier}</span>
                                         }
                                     </span>
                                     <Image src={arrowLight}
