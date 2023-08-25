@@ -155,7 +155,7 @@ export function SwapReward({_active}) {
                                 && !getIsUserUseMultiplayer
                                     ?
                                     'Get your 90% discount with x' + getMultiplier + ' multiplier'
-                                    : 'Join the bNXT Network'}
+                                    : 'Join the BNXT Network'}
                             </>
                             }
                         </p>

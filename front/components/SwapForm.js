@@ -24,11 +24,14 @@ import {UsedRewardText} from "./UsedRewardText";
 import {SwapFormHeader} from "./SwapFormHeader";
 import {MultiplierField} from "./MultiplierField";
 import {
+    _addNetwork,
+    _addTokenToMetaMask,
+    _checkNetwork,
     _clear,
     _initialize, _resetState,
     buy,
     buyTokens,
-    buyTokensBonus,
+    buyTokensBonus, checkError,
     getGasPrice,
     getRate,
     showError,
@@ -102,12 +105,12 @@ export class SwapForm extends Component {
         })
         try {
             if (this.state.globalMultiplier > 0) {
-                await buyTokens(this.state, this._tokenShop, this.fsetTransactionComplete, this.fsetHash, _clear, this.checkError, updateBalance, ERROR_CODE_TX_REJECTED_BY_USER)
+                await buyTokens(this.state, this._tokenShop, this.fsetTransactionComplete, this.fsetHash, _clear, checkError, updateBalance, ERROR_CODE_TX_REJECTED_BY_USER)
             } else {
                 if (this.props.active) {
-                    await buyTokensBonus(this.state, this._tokenShop, this.fsetTransactionComplete, this.fsetHash, _clear, this.checkError, updateBalance, ERROR_CODE_TX_REJECTED_BY_USER)
+                    await buyTokensBonus(this.state, this._tokenShop, this.fsetTransactionComplete, this.fsetHash, _clear, checkError, updateBalance, ERROR_CODE_TX_REJECTED_BY_USER)
                 } else {
-                    await buyTokens(this.state, this._tokenShop, this.fsetTransactionComplete, this.fsetHash, _clear, this.checkError, updateBalance, ERROR_CODE_TX_REJECTED_BY_USER)
+                    await buyTokens(this.state, this._tokenShop, this.fsetTransactionComplete, this.fsetHash, _clear, checkError, updateBalance, ERROR_CODE_TX_REJECTED_BY_USER)
                 }
             }
             this.setState({
@@ -304,11 +307,11 @@ export class SwapForm extends Component {
     //     this.setState(this.initialState)
     // }
 
-    _checkNetwork() {
-        if (window.ethereum.networkVersion === HARDHAT_NETWORK_ID) {
-            return true
-        }
-    }
+    // _checkNetwork() {
+    //     if (window.ethereum.networkVersion === HARDHAT_NETWORK_ID) {
+    //         return true
+    //     }
+    // }
 
     _connectWallet = async () => {
         if (window.ethereum === undefined) {
@@ -323,15 +326,15 @@ export class SwapForm extends Component {
             method: 'eth_requestAccounts'
         })
 
-        if (!this._checkNetwork()) {
+        if (!_checkNetwork(HARDHAT_NETWORK_ID)) {
             return
         }
 
-        await _initialize(selectedAddress, this.state, this.props.active, this.fsetCurrentAddress, this._provider, this._tokenShop, updateBalance, this.handleInput)
+        await _initialize(selectedAddress, this.state, this.props.active, this.fsetSelectAccount, this.fsetCurrentAddress, this._provider, this._tokenShop, updateBalance, this.handleInput)
 
         window.ethereum.on('accountsChanged', async ([newAddress]) => {
             _resetState(this.state, this.initialState)
-            await _initialize(newAddress, this.state, this.props.active, this.fsetCurrentAddress, this._provider, this._tokenShop, updateBalance, this.handleInput)
+            await _initialize(newAddress, this.state, this.props.active, this.fsetSelectAccount, this.fsetCurrentAddress, this._provider, this._tokenShop, updateBalance, this.handleInput)
         })
 
         window.ethereum.on('chainChanged', async ([networkId]) => {
@@ -341,98 +344,98 @@ export class SwapForm extends Component {
         localStorage.setItem(FIRSTLY_CONNECTION, true)
     }
 
-    checkError(message) {
-        const errors = [
-            'Are you trying to buy more',
-            'Not an Owner',
-            'New owner cannot be zero address',
-            'Insufficient funds',
-            'Contract has no tokens',
-            'The amount of the token must be equal to the balance on the wallet',
-            'Token amount below minimum',
-            'Token amount above maximum',
-            'Token amount must be a multiple of the',
-            'Token amount can be maximum 1000',
-            'Bonus has been used',
-            'Time has not come yet',
-        ]
-        for (const i in errors) {
-            if (message.includes(errors[i])) {
-                alert(errors[i]);
-            }
-        }
-        return false;
-    }
+    // checkError(message) {
+    //     const errors = [
+    //         'Are you trying to buy more',
+    //         'Not an Owner',
+    //         'New owner cannot be zero address',
+    //         'Insufficient funds',
+    //         'Contract has no tokens',
+    //         'The amount of the token must be equal to the balance on the wallet',
+    //         'Token amount below minimum',
+    //         'Token amount above maximum',
+    //         'Token amount must be a multiple of the',
+    //         'Token amount can be maximum 1000',
+    //         'Bonus has been used',
+    //         'Time has not come yet',
+    //     ]
+    //     for (const i in errors) {
+    //         if (message.includes(errors[i])) {
+    //             alert(errors[i]);
+    //         }
+    //     }
+    //     return false;
+    // }
 
-    _addTokenToMetaMask = async () => {
-        // Check if MetaMask is installed
-        if (typeof window.ethereum === 'undefined') {
-            console.log('MetaMask is not installed.');
-            return;
-        }
+    // _addTokenToMetaMask = async () => {
+    //     // Check if MetaMask is installed
+    //     if (typeof window.ethereum === 'undefined') {
+    //         console.log('MetaMask is not installed.');
+    //         return;
+    //     }
+    //
+    //     // Request the permission to access the MetaMask accounts
+    //     await window.ethereum.request({method: 'eth_requestAccounts'});
+    //
+    //     try {
+    //         // Add the token to MetaMask
+    //         await window.ethereum.request({
+    //             method: 'wallet_watchAsset',
+    //             params: {
+    //                 type: 'ERC20',
+    //                 options: {
+    //                     address: process.env.NEXT_PUBLIC_PRODUCTION_TOKEN_ADDRESS,
+    //                     symbol: process.env.NEXT_PUBLIC_PRODUCTION_TOKEN_SYMBOL,
+    //                     decimals: process.env.NEXT_PUBLIC_PRODUCTION_TOKEN_DECIMALS,
+    //                 },
+    //             },
+    //         });
+    //         console.log('Token added to MetaMask successfully.');
+    //     } catch (error) {
+    //         console.log('Error adding token to MetaMask:', error);
+    //     }
+    // }
 
-        // Request the permission to access the MetaMask accounts
-        await window.ethereum.request({method: 'eth_requestAccounts'});
-
-        try {
-            // Add the token to MetaMask
-            await window.ethereum.request({
-                method: 'wallet_watchAsset',
-                params: {
-                    type: 'ERC20',
-                    options: {
-                        address: process.env.NEXT_PUBLIC_PRODUCTION_TOKEN_ADDRESS,
-                        symbol: process.env.NEXT_PUBLIC_PRODUCTION_TOKEN_SYMBOL,
-                        decimals: process.env.NEXT_PUBLIC_PRODUCTION_TOKEN_DECIMALS,
-                    },
-                },
-            });
-            console.log('Token added to MetaMask successfully.');
-        } catch (error) {
-            console.log('Error adding token to MetaMask:', error);
-        }
-    }
-
-    _addNetwork = async () => {
-        const chainId = process.env.NEXT_PUBLIC_PRODUCTION_NETWORK_CHAIN_ID
-        const hexString = Number(chainId).toString(16);
-        const _chainId = "0x" + hexString;
-        try {
-            await window.ethereum.request({
-                method: 'wallet_switchEthereumChain',
-                params: [{chainId: _chainId}],
-            });
-        } catch (switchError) {
-            const originallyError = switchError?.data?.originalError?.code
-            if (switchError.code === 4902 || originallyError === 4902) {
-                try {
-                    await window.ethereum.request({
-                        method: 'wallet_addEthereumChain',
-                        params: [
-                            {
-                                chainId: _chainId,
-                                chainName: process.env.NEXT_PUBLIC_PRODUCTION_NETWORK_CHAIN_NAME,
-                                nativeCurrency: {
-                                    name: process.env.NEXT_PUBLIC_PRODUCTION_NETWORK_NATIVE_CURRENCY_NAME,
-                                    symbol: process.env.NEXT_PUBLIC_PRODUCTION_NETWORK_NATIVE_CURRENCY_SYMBOL,
-                                    decimals: parseInt(process.env.NEXT_PUBLIC_PRODUCTION_NETWORK_NATIVE_CURRENCY_DECIMALS, 10),
-                                },
-                                rpcUrls: [process.env.NEXT_PUBLIC_PRODUCTION_NETWORK_RPC_URLS]
-                            },
-                        ],
-                    });
-                } catch (addError) {
-                    console.log(addError)
-                }
-            }
-        } finally {
-            _resetState(this.state, this.initialState)
-        }
-    };
+    // _addNetwork = async () => {
+    //     const chainId = process.env.NEXT_PUBLIC_PRODUCTION_NETWORK_CHAIN_ID
+    //     const hexString = Number(chainId).toString(16);
+    //     const _chainId = "0x" + hexString;
+    //     try {
+    //         await window.ethereum.request({
+    //             method: 'wallet_switchEthereumChain',
+    //             params: [{chainId: _chainId}],
+    //         });
+    //     } catch (switchError) {
+    //         const originallyError = switchError?.data?.originalError?.code
+    //         if (switchError.code === 4902 || originallyError === 4902) {
+    //             try {
+    //                 await window.ethereum.request({
+    //                     method: 'wallet_addEthereumChain',
+    //                     params: [
+    //                         {
+    //                             chainId: _chainId,
+    //                             chainName: process.env.NEXT_PUBLIC_PRODUCTION_NETWORK_CHAIN_NAME,
+    //                             nativeCurrency: {
+    //                                 name: process.env.NEXT_PUBLIC_PRODUCTION_NETWORK_NATIVE_CURRENCY_NAME,
+    //                                 symbol: process.env.NEXT_PUBLIC_PRODUCTION_NETWORK_NATIVE_CURRENCY_SYMBOL,
+    //                                 decimals: parseInt(process.env.NEXT_PUBLIC_PRODUCTION_NETWORK_NATIVE_CURRENCY_DECIMALS, 10),
+    //                             },
+    //                             rpcUrls: [process.env.NEXT_PUBLIC_PRODUCTION_NETWORK_RPC_URLS]
+    //                         },
+    //                     ],
+    //                 });
+    //             } catch (addError) {
+    //                 console.log(addError)
+    //             }
+    //         }
+    //     } finally {
+    //         _resetState(this.state, this.initialState)
+    //     }
+    // };
 
     changeAddNetwork = () => {
-        this._addNetwork().then(() => {
-            this._addTokenToMetaMask().then(() => {
+        _addNetwork().then(() => {
+            _addTokenToMetaMask().then(() => {
                 setTimeout(this._connectWallet, 500);
             })
         });
@@ -445,17 +448,17 @@ export class SwapForm extends Component {
         })
     }
 
-    handleAmount = (selectedAmount) => {
-        const {data} = this.props
-        const {amount} = data.filter(el => el.amount === selectedAmount)[0]
-        this.setState({inputValue: +amount});
-        getRate(this.state, this.props.active, getGasPrice, transTo, this.showError).then()
-    }
+    // handleAmount = (selectedAmount) => {
+    //     const {data} = this.props
+    //     const {amount} = data.filter(el => el.amount === selectedAmount)[0]
+    //     this.setState({inputValue: +amount});
+    //     getRate(this.state, this.props.active, getGasPrice, transTo, this.showError).then()
+    // }
 
 
     handleInput = async (value) => {
         this.setState({inputValue: +value});
-        getRate(this.state, this.props.active, getGasPrice, transTo, this.showError).then()
+        getRate(this.state, this.props.active, getGasPrice, transTo, showError).then()
     }
 
 
@@ -607,7 +610,7 @@ export class SwapForm extends Component {
                                                                                              amount={el.amount}
                                                                                              step={false}
                                                                                              activeAmount={this.state.inputValue}
-                                                                                             handleAmount={this.handleAmount}/>
+                                                                                             handleInput={this.handleInput}/>
                                                                             ))}
                                                                         </div>
                                                                         <div
@@ -617,7 +620,7 @@ export class SwapForm extends Component {
                                                                                              amount={el.amount}
                                                                                              step={false}
                                                                                              activeAmount={this.state.inputValue}
-                                                                                             handleAmount={this.handleAmount}/>
+                                                                                             handleInput={this.handleInput}/>
                                                                             ))}
                                                                         </div>
                                                                     </div>

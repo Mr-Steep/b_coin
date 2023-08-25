@@ -156,7 +156,7 @@ export const transTo = (riceInWei) => {
     return wei.toString()
 }
 
-export const _initialize = async (selectedAddress, state, active, fsetCurrentAddress, _provider, _tokenShop, updateBalance, handleInput) => {
+export const _initialize = async (selectedAddress, state, active, fsetCurrentAddress, fsetSelectAccount, _provider, _tokenShop, updateBalance, handleInput) => {
     fsetCurrentAddress(selectedAddress)
     _provider = new ethers.providers.Web3Provider(window.ethereum)
     _tokenShop = new ethers.Contract(
@@ -333,7 +333,7 @@ export const handleAmount = (state, selectedAmount, getRate) => {
     getRate().then()
 }
 
-export const handleInput = async (state, value, getRate) => {
+export const handleInput = async (state, value) => {
     state.inputValue = +value
     getRate().then()
 }
