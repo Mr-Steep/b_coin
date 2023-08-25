@@ -191,6 +191,7 @@ export class SwapForm extends Component {
         const tokens = ethers.utils.formatUnits(countTokensCurrent, 0);
         const balanceOfBonuses = ethers.utils.formatUnits(_balanceOfBonuses, 0);
         const globalMultiplier = ethers.utils.formatUnits(_globalMultiplier, 0);
+        const balanceTokens = ethers.utils.formatUnits(countTokensCurrent, 0)
         this.setState({
             balance: newBalance,
             countTokens: countTokens,
@@ -200,7 +201,7 @@ export class SwapForm extends Component {
             isUsedMultiplier: !!isUsedMultiplier,
             globalMultiplier: globalMultiplier,
             _balanceOfBonuses: balanceOfBonuses,
-            totalTokens: +tokens + +balanceOfBonuses,
+            _balanceTokens: balanceTokens,
 
         })
         this.fsetBalance(tokens)
@@ -361,28 +362,11 @@ export class SwapForm extends Component {
 
                                     <MultiplierField inputValue={this.state.inputValue}/>
 
-                                    <BNXTtoBNBamount inputValue={this.state.inputValue} countTokensCurrent={this.state.countTokensCurrent} priceInBnb={this.state.priceInBnb} fixedValue={FIXED_VALUE}/>
-                                    <div
-                                        className="bg-textColor relative flex justify-center items-center border-b-[1px] border-[#F2F2F2] pb-[20px] w-full rounded-md mb-5 mt-[26px]">
-                                        <div
-                                            className="flex justify-between items-center ">
-                                            <Image src={swapArrowWhite}
-                                                   alt={swapArrowWhite}
-                                                   className="w-[30px] h-[30px] mr-[6px]"/>
-                                            <span
-                                                className="bg-textColor text-primaryBgColor sm:text-sm text-lg font-medium leading-5 ">{this.state.inputValue > 0 ? +this.state.inputValue : 0} BNXT (${this.state.inputValue ? +this.state.countTokensCurrent /10 : 0}) </span>
-
-                                            <span
-                                                className="mr-2 ml-2 sm:mr-1 sm:ml-1"> = </span>
-                                            <Image src={bnbLogo}
-                                                   className="w-[30px] h-[30px] mr-[6px]"
-                                                   alt={bnbLogo}/>
-                                            <span
-                                                className="bg-textColor text-primaryBgColor sm:text-sm text-lg font-medium leading-5">
-                                                                            {(this.state.priceInBnb / 10).toFixed(FIXED_VALUE)} BNB</span>
-                                        </div>
-                                    </div>
-
+                                    <BNXTtoBNBamount
+                                        valueBnxt = {this.state.inputValue > 0 ? +this.state.inputValue : 0}
+                                        valueUsd = {this.state.inputValue ? +this.state.countTokensCurrent /10 : 0}
+                                        priceInBnb = {(this.state.priceInBnb / 10).toFixed(FIXED_VALUE)}
+                                    />
                                     <div className="w-full">
                                         <div className="w-full mb-[23px]">
                                             <Discount countTokensCurrent={this.state.countTokensCurrent}/>
@@ -393,8 +377,7 @@ export class SwapForm extends Component {
 
                                     <SwapFormButton
                                         isLoading={this.state.isLoading}
-                                        globalMultiplier={this.state.globalMultiplier}
-                                        disabledBtn={!this.state.inputValue || this.state.isLoading}
+                                        active={this.props.active}                                        disabledBtn={!this.state.inputValue || this.state.isLoading}
                                         buy={this.buy}
                                         currentError={this.state.currentError}
                                         _changeAddNetwork={this.changeAddNetwork}
@@ -430,8 +413,11 @@ export class SwapForm extends Component {
 
                                                                     <MultiplierField inputValue={this.state.inputValue}/>
 
-                                                                    <BNXTtoBNBamount inputValue={this.state.inputValue} countTokensCurrent={this.state.countTokensCurrent} priceInBnb={this.state.priceInBnb} fixedValue={FIXED_VALUE}/>
-
+                                                                    <BNXTtoBNBamount
+                                                                        valueBnxt = {this.state.inputValue > 0 ? +this.state.inputValue : 0}
+                                                                        valueUsd = {this.state.inputValue ? +this.state.countTokensCurrent /10 : 0}
+                                                                        priceInBnb = {(this.state.priceInBnb / 10).toFixed(FIXED_VALUE)}
+                                                                    />
                                                                     <div className="w-full">
                                                                         <div className="w-full mb-[23px]">
                                                                             <Discount
@@ -447,7 +433,7 @@ export class SwapForm extends Component {
                                                                         buy={this.buy}
                                                                         currentError={this.state.currentError}
                                                                         _changeAddNetwork={this.changeAddNetwork}
-                                                                        globalMultiplier={this.state.globalMultiplier}
+                                                                        active={this.props.active}
                                                                         _class={"text-textColor rounded-md w-full h-[60px] py-[17px] shadow-[0px_12px_18px_0_#A5CADE] font-medium sm:text-[18px] text-lg transform-gpu transition-transform duration-200 ease-in-out relative flex justify-center gap-[20px] mt-auto "
                                                                         + (this.state.currentError && this.state.currentError === 'Please connect to another Network' ? "bg-errorColor text-textColor z-10" : "bg-gradient-to-r from-[#29C8A9] via-[#208ED0] to-[#703AAD] text-primaryBgColor")
                                                                         }
@@ -492,8 +478,11 @@ export class SwapForm extends Component {
                                                                     <>
                                                                         <p className="pt-[16px] w-full text-start">${this.state.inputValue}</p>
 
-                                                                        <BNXTtoBNBamount inputValue={this.state.inputValue} countTokensCurrent={this.state.countTokensCurrent} priceInBnb={this.state.priceInBnb} fixedValue={FIXED_VALUE}/>
-
+                                                                        <BNXTtoBNBamount
+                                                                            valueBnxt = {this.state.inputValue}
+                                                                            valueUsd = {this.state.inputValue}
+                                                                            priceInBnb = {(+this.state.priceInBnb).toFixed(FIXED_VALUE)}
+                                                                        />
                                                                         <div className="w-full">
                                                                             <div className="w-full mb-[23px]">
                                                                                 <TotalCost gasPrice={this.state.gasPrice} totalCostUSD={this.state.totalCostUSD} rate={this.state.rate} fixedValue={FIXED_VALUE}/>
@@ -502,6 +491,7 @@ export class SwapForm extends Component {
                                                                     </>
                                                                     }
                                                                     <SwapFormButton
+                                                                        active={this.props.active}
                                                                         isLoading={this.state.isLoading}
                                                                         disabledBtn={!this.state.inputValue || this.state.isLoading}
                                                                         buy={this.buy}
@@ -541,6 +531,7 @@ export class SwapForm extends Component {
                             <>
                                 <SwitchNetworkText/>
                                 <SwapFormButton
+                                    active={this.props.active}
                                     isLoading={this.state.isLoading}
                                     step={step}
                                     buy={this.buy}
