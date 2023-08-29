@@ -1,5 +1,3 @@
-
-
 export function Modal({children, tokenModal, modalVisible, setPopupVisible}) {
 
     const closePopup = () => {

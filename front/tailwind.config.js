@@ -5,13 +5,16 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primaryBgColor: '#000000',
-        secondaryBgColor: '#0B2D44',
-        textColor: '#FFFFFF',
-        buttonBgColor: '#BCE5ED',
-        buttonHoverBgColor: '#c9eaf1',
+        blackColor: '#000000',
+        darkBlueColor: '#0B2D44',
+        whiteColor: '#FFFFFF',
+        blueColor: '#BCE5ED',
+        blueHoverColor: '#c9eaf1',
         greyColor: '#414042',
-        errorColor: '#EB5757'
+        errorColor: '#EB5757',
+        gradientFrom: '#29C8A9',
+        gradientVia: '#208ED0',
+        gradientTo: '#703AAD'
       },
       screens: {
         sx: {
