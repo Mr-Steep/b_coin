@@ -1,6 +1,3 @@
-import React from "react";
-
-
 export function Discount({countTokensCurrent, inputValue = 0}) {
 
     return (

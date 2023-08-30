@@ -1,5 +1,6 @@
-import loader from "../../assets/images/loader.svg";
 import Image from "next/image";
+import loader from "../../assets/images/loader.svg";
+
 
 export function SwapFormButton({_class, buy, step, currentError, active, _changeAddNetwork, disabledBtn = false, isLoading}) {
 

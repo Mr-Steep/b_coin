@@ -1,11 +1,9 @@
-import {Modal} from "../Modal";
-import award from "../../assets/images/award.png";
-import Image from "next/image";
-import arrowLight from "../../assets/images/arrow-light.svg";
-import thanksArrow from "../../assets/images/thanks-arrow.svg";
-import cross from "../../assets/images/cross-black.svg";
-import Link from "next/link";
 import {useEffect} from "react";
+import Image from "next/image";
+import Link from "next/link";
+import arrowLight from "../../assets/images/arrow-light.svg";
+import cross from "../../assets/images/cross-black.svg";
+import {Modal} from "../Modal";
 
 
 export function ThankYou({getMultiplier, handleSetActive, getConfirmationComplete, setConfirmationComplete, getIsUserUseMultiplayer, getGlobalMultiplayer}) {

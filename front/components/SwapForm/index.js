@@ -1,12 +1,9 @@
 import {Component} from 'react'
-import React from 'react';
-
-
+import {ethers} from "ethers";
 import tokenShopAddress from '../../contracts/TokenShop-contract-address.json'
 import tokenShopArtifact from '../../contracts/TokenShop.json'
 import {ConnectWallet} from "../ConnectWallet";
 import {CoinsAmount} from "../CoinsAmount";
-import {ethers} from "ethers";
 import {SwapFormButton} from "../SwapFormButton";
 import {BNXTtoBNB} from "../BNXTtoBNB";
 import {BNXTtoBNBamount} from "../BNXTtoBNBamount";

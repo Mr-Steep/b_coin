@@ -1,6 +1,5 @@
 import Image from "next/image";
 import lightningBlue from "../../assets/images/lightning-blue.svg";
-import React from "react";
 
 
 export function BNXTtoBNB({rate}) {

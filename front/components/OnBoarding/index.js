@@ -1,14 +1,13 @@
- import logo from "../../assets/images/logo-white.svg";
-import burger from "../../assets/images/burger.svg";
-import mockVideo from "../../assets/images/mock-video.png";
-import award from "../../assets/images/award.png";
-import arrowLight from "../../assets/images/arrow-light.svg";
 import Image from "next/image";
 import Link from "next/link";
+import logo from "../../assets/images/logo-white.svg";
+import mockVideo from "../../assets/images/mock-video.png";
+import arrowLight from "../../assets/images/arrow-light.svg";
+import headerProject from "../../assets/images/project-header.png";
 import {Layout} from "../Layout";
 import {Footer} from "../Footer";
 import { useRouter } from 'next/router';
- import headerProject from "../../assets/images/project-header.png";
+
 
 export function OnBoarding() {
 

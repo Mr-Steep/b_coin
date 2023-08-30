@@ -1,22 +1,23 @@
-import logo from "../../assets/images/logo-white.svg"
+import {useState, useEffect} from "react";
 import Image from "next/image";
+import Link from "next/link";
+import Cookies from 'js-cookie';
+import data from "../../assets/bNXTdata"
+import logo from "../../assets/images/logo-white.svg"
 import arrowDark from "../../assets/images/arrow-dark.svg";
 import arrowLight from "../../assets/images/arrow-light.svg";
 import arrowBack from "../../assets/images/backArrow.svg";
 import logout from "../../assets/images/logout.svg";
-import Link from "next/link";
+import headerProject from "../../assets/images/project-header.png";
 import {SwapForm} from "../SwapForm";
 import {Modal} from "../Modal";
-import {useState, useEffect, useRef} from "react";
-import headerProject from "../../assets/images/project-header.png";
 import {Layout} from "../Layout";
-import Cookies from 'js-cookie';
 import {ThankYou} from "../ThankYou";
 import {Footer} from "../Footer";
-import data from "../../assets/bNXTdata"
 import {Confirmation} from "../Confirmation";
-import styles from '../../styles/custom-styles.module.css';
 import {SwapFormTips} from "../SwapFormTips";
+import styles from '../../styles/custom-styles.module.css';
+
 
 const NAME_COOKIE = 'is_close'
 

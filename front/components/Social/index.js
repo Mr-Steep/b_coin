@@ -1,9 +1,8 @@
 import Image from "next/image";
+import Link from "next/link";
 import instagram from "../../assets/images/instagram.svg"
-import discord from "../../assets/images/discord.svg"
 import twitter from "../../assets/images/twitter.svg"
 import telegram from "../../assets/images/telegram.svg"
-import Link from "next/link";
 
 
 export function Social() {

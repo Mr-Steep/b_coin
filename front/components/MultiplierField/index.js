@@ -1,6 +1,3 @@
-import React from "react";
-
-
 export function MultiplierField({inputValue}) {
 
     return (

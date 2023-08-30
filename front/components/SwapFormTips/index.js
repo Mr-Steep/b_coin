@@ -1,19 +1,11 @@
+import {Component} from 'react'
+import Image from "next/image";
 import swapArrowBlack from "../../assets/images/swapArrowBlack.svg";
-import swapArrowWhite from "../../assets/images/swap-arrow.svg";
 import bnbLogo from "../../assets/images/bnb-logo.svg";
-import metamask from "../../assets/images/metamask.png";
 import walletPic from "../../assets/images/wallet-pic.png";
 import walletPicMob from "../../assets/images/wallet-pic-mob.png";
-import lightningBlue from "../../assets/images/lightning-blue.svg";
-import gas from "../../assets/images/gas-black.svg";
-import Image from "next/image";
-
-import {Component} from 'react'
-import React from 'react';
-
 import {ConnectWallet} from "../ConnectWallet";
 import {CoinsAmount} from "../CoinsAmount";
-
 import {Step} from "../Step";
 import {SwapFormButton} from "../SwapFormButton";
 import {ConnectWalletText} from "../ConnectWalletText";

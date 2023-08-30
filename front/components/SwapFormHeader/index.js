@@ -1,10 +1,9 @@
 import Image from "next/image";
-import swapArrowBlack from "../../assets/images/swapArrow.svg";
 import {ethers} from "ethers";
+import swapArrowBlack from "../../assets/images/swapArrow.svg";
 import bnbLogo from "../../assets/images/bnb-logo.svg";
 import walletPic from "../../assets/images/wallet-pic.png";
 import walletPicMob from "../../assets/images/wallet-pic-mob.png";
-import React from "react";
 
 
 export function SwapFormHeader({countTokensCurrent, _balanceOfBonuses, balance}) {

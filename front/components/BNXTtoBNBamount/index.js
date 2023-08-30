@@ -1,7 +1,6 @@
 import Image from "next/image";
 import swapArrowWhite from "../../assets/images/swap-arrow.svg";
 import bnbLogo from "../../assets/images/bnb-logo.svg";
-import React from "react";
 
 
 export function BNXTtoBNBamount({valueBnxt, valueUsd, priceInBnb}) {

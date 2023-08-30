@@ -1,7 +1,8 @@
+import Image from "next/image";
 import check from "../../assets/images/check-circle.svg"
 import cross from "../../assets/images/cross-black.svg"
-import Image from "next/image";
 import {Modal} from "../Modal";
+
 
 export function ClipboardPopup({tokenModal, setPopupVisible}) {
 

@@ -1,11 +1,11 @@
+import {useState} from "react";
 import Image from "next/image";
 import token1 from "../../assets/images/token-1.svg"
 import token2 from "../../assets/images/token-2.svg"
 import token3 from "../../assets/images/token-3.svg"
 import smart from "../../assets/images/smart.svg"
-import {useState, useEffect} from "react";
-
 import {ClipboardPopup} from "../ClipboardPopup";
+
 
 export function Token() {
 

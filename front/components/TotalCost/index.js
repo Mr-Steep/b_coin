@@ -1,6 +1,5 @@
 import Image from "next/image";
 import gas from "../../assets/images/gas-black.svg";
-import React from "react";
 
 
 export function TotalCost({gasPrice, totalCostUSD, rate, fixedValue, active}) {

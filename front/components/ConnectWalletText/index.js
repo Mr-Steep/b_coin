@@ -1,6 +1,5 @@
 import Image from "next/image";
 import metamask from "../../assets/images/metamask.png";
-import React from "react";
 
 
 export function ConnectWalletText() {

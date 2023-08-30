@@ -1,5 +1,5 @@
 import MetaMaskOnboarding from '@metamask/onboarding';
-import React from 'react';
+
 
 const ONBOARD_TEXT = 'Click here to install MetaMask!';
 const CONNECT_TEXT = 'Connect';

@@ -1,6 +1,5 @@
 import Image from "next/image";
 import bnbLogo from "../../assets/images/bnb-logo.svg";
-import React from "react";
 
 
 export function SwitchNetworkText() {

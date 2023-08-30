@@ -1,11 +1,9 @@
 import { Fragment, useRef } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 
+
 export function ModalChangeNetwork({connectWallet, isRightNetwork, setIsRightNetwork}) {
     const cancelButtonRef = useRef(null);
-
-
-
 
 
     return (

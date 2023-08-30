@@ -1,11 +1,11 @@
-import {Modal} from "../Modal";
+import React, {useState, useEffect} from "react";
 import Image from "next/image";
+import Link from "next/link";
 import cross from "../../assets/images/cross-black.svg";
 import arrowLight from "../../assets/images/arrow-light.svg";
-import Link from "next/link";
-import React, {useState, useEffect} from "react";
 import loader from "../../assets/images/loader.svg";
 import alert_circle from "../../assets/images/alert-circle.svg";
+import {Modal} from "../Modal";
 
 
 export function Confirmation({getTransactionComplete, setConfirmationComplete, setTransactionComplete, hash, countTokens}) {

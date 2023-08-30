@@ -5,16 +5,10 @@ import nextArrow from "../../assets/images/next-arrow.svg";
 import arrow1 from "../../assets/images/arrow-1.svg";
 import arrow2 from "../../assets/images/arrow-2.svg";
 import arrow3 from "../../assets/images/arrow-3.svg";
-import arrow4 from "../../assets/images/arrow-4.svg";
-import arrow6 from "../../assets/images/arrow-6.svg";
 import arrow5 from "../../assets/images/arrow-5.svg";
-import arrow7 from "../../assets/images/arrow-7.svg";
-import arrow8 from "../../assets/images/arrow-8.svg";
-import React, {useState, useEffect} from "react";
+
 
 export function Step({step, setNewStep, closeModal}) {
-
-
 
 
 

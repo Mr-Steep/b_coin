@@ -1,8 +1,9 @@
+import Image from "next/image";
+import Link from "next/link";
 import logo from "../../assets/images/logo-footer.svg";
 import arrowDark from "../../assets/images/arrow-dark.svg";
 import arrowLight from "../../assets/images/arrow-light.svg";
-import Image from "next/image";
-import Link from "next/link";
+
 
 export function Footer() {
 
