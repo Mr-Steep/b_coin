@@ -22,6 +22,7 @@ const NAME_COOKIE = 'is_close'
 
 
 export function SwapReward({_active}) {
+    const currentOrigin = 'https://bnxt.network/'
 
     const [modalVisible, setModalVisible] = useState(false);
     const [selectAccount, setSelectAccount] = useState(null);
@@ -40,7 +41,6 @@ export function SwapReward({_active}) {
     const FIRSTLY_CONNECTION = 'firstly_connection'
 
     const setNewStep = (newStep) => setStep(newStep);
-
 
     const openModal = (e) => {
         e.preventDefault();
@@ -113,7 +113,7 @@ export function SwapReward({_active}) {
                 >
                     <div className="flex flex-col h-full justify-between max-w-[1526px] mx-auto md:pt-[25px] pt-[25px] lg:pb-[52px] pb-[35px] ">
                         <div className="flex justify-between items-center">
-                            <Link  className="flex " href="https://dev.bnxt.network/home/">
+                            <Link  className="flex " href={currentOrigin + 'home'} >
                                 <Image className="sm:w-[126px] w-[188px]" src={logo} alt={logo}
                                        height="32px"/>
                             </Link>
@@ -246,13 +246,6 @@ export function SwapReward({_active}) {
 
 
                                         }
-                                        {/*{*/}
-                                        {/*    !getIsUserUseMultiplayer && active && getMultiplier > 0 ? 'Back to Swap page' : 'Buy'*/}
-                                        {/*}*/}
-                                        {/*{*/}
-                                        {/*    !getIsUserUseMultiplayer && !active && getMultiplier > 0 &&*/}
-                                        {/*    */}
-                                        {/*}*/}
                                     </span>
                                         <Image src={arrowLight}
                                                className="w-[23px] h-[23px] group-hover:rotate-45 transition duration-300 ease-in ml-[70px]"
@@ -294,11 +287,9 @@ export function SwapReward({_active}) {
                 </div>
 
                 <Footer/>
-
                 {!!modalVisible &&
                 <Modal />
                 }
-
 
                 {
                     !!getTransactionComplete &&

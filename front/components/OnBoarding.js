@@ -13,19 +13,20 @@ import { useRouter } from 'next/router';
 export function OnBoarding() {
 
     const router = useRouter()
+    const currentOrigin = 'https://bnxt.network/';
+
 
     return (
         <Layout>
             <div className="w-full relative overflow-hidden">
                 <div className="h-[34.4vh] md:h-[133px] h-[380px] "
-
                      style={{
                          backgroundImage: `url(${headerProject.src})`,
                          backgroundRepeat: 'no-repeat',
                          backgroundSize: 'cover'
                      }}
                 >
-                    <Link href="https://dev.bnxt.network/home/">
+                    <Link  href={currentOrigin + 'home'} >
                         <Image className="md: pt-[23px] md:ml-4 ml-[119px] md:w-[138px] w-[188px] mb-[132px]" src={logo} alt={logo}
                                height="32px"/>
                     </Link>

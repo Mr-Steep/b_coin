@@ -1,7 +1,3 @@
-import swapArrowWhite from "../assets/images/swap-arrow.svg";
-import bnbLogo from "../assets/images/bnb-logo.svg";
-import Image from "next/image";
-
 import {Component} from 'react'
 import React from 'react';
 
@@ -24,12 +20,10 @@ import {UsedRewardText} from "./UsedRewardText";
 import {SwapFormHeader} from "./SwapFormHeader";
 import {MultiplierField} from "./MultiplierField";
 
-const FIXED_VALUE = 7
+const FIXED_VALUE = 3
 
 const FIRSTLY_CONNECTION = 'firstly_connection'
-export const HARDHAT_NETWORK_ID = '31337'
-export const BSC_NETWORK_ID = '97'
-export const NETWORK_ID = HARDHAT_NETWORK_ID
+export const NETWORK_ID = '97'
 
 const ERROR_CODE_TX_REJECTED_BY_USER = 'ACTION_REJECTED'
 
@@ -85,6 +79,15 @@ export class SwapForm extends Component {
     }
 
     buy = async () => {
+
+        const balance = this.state.balance ? parseFloat(ethers.utils.formatEther(this.state.balance)).toFixed(3) : 0
+        const neddedBalance =  this.state.globalMultiplier > 0 ? this.state.priceInBnb / 10 : +this.state.priceInBnb
+
+        if(neddedBalance > balance){
+            alert('Not enough BNB balance')
+            return false;
+        }
+
         this.setState({
             isLoading: true
         })
@@ -106,6 +109,22 @@ export class SwapForm extends Component {
             this.setState({
                 isLoading: false
             })
+        }
+    }
+
+    estimateTransaction = async (priceInWei) => {
+        const [recipient] = await window.ethereum.request({
+            method: 'eth_requestAccounts'
+        })
+        try {
+            const gasEstimate = await this._provider.estimateGas({
+                to: recipient,
+                value: priceInWei,
+            });
+
+            return gasEstimate.toString();
+        } catch (error) {
+            console.error('Error estimating gas:', error);
         }
     }
 
@@ -136,7 +155,6 @@ export class SwapForm extends Component {
     }
 
     buyTokens = async () => {
-        // const signer = this._provider.getSigner(0)
         try {
             let amountToken = this.state.inputValue
             const overrides = {
@@ -176,29 +194,25 @@ export class SwapForm extends Component {
 
     async updateBalance() {
         const newBalance = (await this._provider.getBalance(this.state.selectAccount))?.toString()
-        const countTokens = (await this._tokenShop.tokenBalanceContract())
-        const countBNB = await this._tokenShop.provider.getBalance(this._tokenShop.address)
         const multiplier = await this._tokenShop.getMultiplier()
         const countTokensCurrent = await this._tokenShop.tokenBalanceCurrent()
+
         const isUsedMultiplier = await this._tokenShop.getIsUsed()
         const _globalMultiplier = await this._tokenShop.getGlobalMultiplier()
         const _balanceOfBonuses = await this._tokenShop.tokenBalanceCurrentBonuses()
 
-        const multiplierInt = ethers.utils.formatUnits(multiplier, 0)
-        const tokens = ethers.utils.formatUnits(countTokensCurrent, 0);
+        const multiplierInt    = ethers.utils.formatUnits(multiplier, 0)
+        const tokens           = ethers.utils.formatUnits(countTokensCurrent, 0);
         const balanceOfBonuses = ethers.utils.formatUnits(_balanceOfBonuses, 0);
         const globalMultiplier = ethers.utils.formatUnits(_globalMultiplier, 0);
-        const balanceTokens = ethers.utils.formatUnits(countTokensCurrent, 0)
         this.setState({
             balance: newBalance,
-            countTokens: countTokens,
             countTokensCurrent: countTokensCurrent,
-            countBNB: countBNB,
             multiplier: multiplierInt,
             isUsedMultiplier: !!isUsedMultiplier,
             globalMultiplier: globalMultiplier,
             _balanceOfBonuses: balanceOfBonuses,
-            _balanceTokens: balanceTokens,
+            _balanceTokens: tokens,
 
         })
         this.fsetBalance(tokens)
@@ -218,11 +232,12 @@ export class SwapForm extends Component {
         let priceInWei = this.transTo(this.state.inputValue / price)
         const gwei = (this.state.gasPrice).toString()
         if(this.props.active || this.state.globalMultiplier > 0){
-            priceInWei = this.transTo(this.state.countTokensCurrent/10 / price)
+            priceInWei = this.transTo(this.state.countTokensCurrent / 10 / price)
         }
+        const estimate = await this.estimateTransaction(priceInWei)
         const priceInBnb = ethers.utils.formatEther(ethers.BigNumber.from(priceInWei));
-
-        const weiGas = ethers.utils.parseUnits(gwei, "gwei");
+        const estimateWei = (gwei * estimate).toString();
+        const weiGas = ethers.utils.parseUnits(estimateWei , "gwei");
         const weiValue = ethers.utils.parseUnits(priceInWei, "wei");
         const totalInWei = ethers.utils.formatUnits(weiGas.add(weiValue), "ether")
 
@@ -249,6 +264,9 @@ export class SwapForm extends Component {
     }
 
     transTo = function (riceInWei) {
+        if(!riceInWei){
+            return '0'
+        }
         const strRiceInWei = (parseFloat(riceInWei)).toFixed(18).toString()
         const wei = ethers.utils.parseEther(strRiceInWei);
         return wei.toString()
@@ -293,7 +311,7 @@ export class SwapForm extends Component {
     }
 
     _checkNetwork() {
-        if (window.ethereum.networkVersion === HARDHAT_NETWORK_ID) {
+        if (window.ethereum.networkVersion === NETWORK_ID) {
             return true
         }
     }
@@ -454,10 +472,10 @@ export class SwapForm extends Component {
             <>
                 <div
                     className={"flex flex-col tablet:top-0 top-[-211px] relative right-0 " +
-                    "max-w-[497px] " +
-                    "mdd:min-h-[650px] min-h-[680px] sx:h-[auto] shadow-[19px_23px_87px_0_#6CB8EF33] " +
-                    "md:rounded-tl-2xl md:rounded-tr-2xl md:rounded-bl-none md:rounded-br-none rounded-md sx:rounded-tr-none sx:rounded-tl-none w-full "
-                    + (active ? "sx:h-[655px]" : "sx:h-[543px]")
+                        "max-w-[497px] " +
+                        "mdd:min-h-[650px] min-h-[680px] sx:h-[auto] shadow-[19px_23px_87px_0_#6CB8EF33] " +
+                        "md:rounded-tl-2xl md:rounded-tr-2xl md:rounded-bl-none md:rounded-br-none rounded-md sx:rounded-tr-none sx:rounded-tl-none w-full "
+                        + (active ? "sx:h-[655px]" : "sx:h-[543px]")
 
                     }
                 >
@@ -485,7 +503,7 @@ export class SwapForm extends Component {
                                     <BNXTtoBNBamount
                                         valueBnxt = {this.state.inputValue > 0 ? +this.state.inputValue : 0}
                                         valueUsd = {this.state.inputValue ? +this.state.countTokensCurrent /10 : 0}
-                                        priceInBnb = {(this.state.priceInBnb / 10).toFixed(FIXED_VALUE)}
+                                        priceInBnb = {(+this.state.priceInBnb).toFixed(FIXED_VALUE)}
                                     />
                                     <div className="w-full">
                                         <div className="w-full mb-[23px]">
@@ -497,7 +515,8 @@ export class SwapForm extends Component {
 
                                     <SwapFormButton
                                         isLoading={this.state.isLoading}
-                                        active={this.props.active}                                        disabledBtn={!this.state.inputValue || this.state.isLoading}
+                                        active={this.props.active}
+                                        disabledBtn={!this.state.inputValue || this.state.isLoading}
                                         buy={this.buy}
                                         currentError={this.state.currentError}
                                         _changeAddNetwork={this.changeAddNetwork}
@@ -536,7 +555,7 @@ export class SwapForm extends Component {
                                                                     <BNXTtoBNBamount
                                                                         valueBnxt = {this.state.inputValue > 0 ? +this.state.inputValue : 0}
                                                                         valueUsd = {this.state.inputValue ? +this.state.countTokensCurrent /10 : 0}
-                                                                        priceInBnb = {(this.state.priceInBnb / 10).toFixed(FIXED_VALUE)}
+                                                                        priceInBnb = {(+this.state.priceInBnb).toFixed(FIXED_VALUE)}
                                                                     />
                                                                     <div className="w-full">
                                                                         <div className="w-full mb-[23px]">
@@ -555,7 +574,7 @@ export class SwapForm extends Component {
                                                                         _changeAddNetwork={this.changeAddNetwork}
                                                                         active={this.props.active}
                                                                         _class={"text-textColor rounded-md w-full h-[60px] py-[17px] shadow-[0px_12px_18px_0_#A5CADE] font-medium sm:text-[18px] text-lg transform-gpu transition-transform duration-200 ease-in-out relative flex justify-center gap-[20px] mt-auto "
-                                                                        + (this.state.currentError && this.state.currentError === 'Please connect to another Network' ? "bg-errorColor text-textColor z-10" : "bg-gradient-to-r from-[#29C8A9] via-[#208ED0] to-[#703AAD] text-primaryBgColor")
+                                                                            + (this.state.currentError && this.state.currentError === 'Please connect to another Network' ? "bg-errorColor text-textColor z-10" : "bg-gradient-to-r from-[#29C8A9] via-[#208ED0] to-[#703AAD] text-primaryBgColor")
                                                                         }
                                                                     />
                                                                 </>
@@ -595,20 +614,20 @@ export class SwapForm extends Component {
                                                                         </div>
                                                                     </div>
                                                                     {this.state.inputValue > 0 &&
-                                                                    <>
-                                                                        <p className="pt-[16px] w-full text-start">${this.state.inputValue}</p>
+                                                                        <>
+                                                                            <p className="pt-[16px] w-full text-start">${this.state.inputValue}</p>
 
-                                                                        <BNXTtoBNBamount
-                                                                            valueBnxt = {this.state.inputValue}
-                                                                            valueUsd = {this.state.inputValue}
-                                                                            priceInBnb = {(+this.state.priceInBnb).toFixed(FIXED_VALUE)}
-                                                                        />
-                                                                        <div className="w-full">
-                                                                            <div className="w-full mb-[23px]">
-                                                                                <TotalCost gasPrice={this.state.gasPrice} totalCostUSD={this.state.totalCostUSD} rate={this.state.rate} fixedValue={FIXED_VALUE}/>
+                                                                            <BNXTtoBNBamount
+                                                                                valueBnxt = {this.state.inputValue}
+                                                                                valueUsd = {this.state.inputValue}
+                                                                                priceInBnb = {(+this.state.priceInBnb).toFixed(FIXED_VALUE)}
+                                                                            />
+                                                                            <div className="w-full">
+                                                                                <div className="w-full mb-[23px]">
+                                                                                    <TotalCost gasPrice={this.state.gasPrice} totalCostUSD={this.state.totalCostUSD} rate={this.state.rate} fixedValue={FIXED_VALUE}/>
+                                                                                </div>
                                                                             </div>
-                                                                        </div>
-                                                                    </>
+                                                                        </>
                                                                     }
                                                                     <SwapFormButton
                                                                         active={this.props.active}
@@ -618,7 +637,7 @@ export class SwapForm extends Component {
                                                                         currentError={this.state.currentError}
                                                                         _changeAddNetwork={this.changeAddNetwork}
                                                                         _class={"text-textColor rounded-md w-full h-[60px] py-[17px] font-medium sm:text-[18px] shadow-[0px_12px_18px_0_#A5CADE] text-lg transform-gpu transition-transform duration-200 ease-in-out  relative mt-auto flex justify-center gap-[20px] "
-                                                                        + (this.state.currentError && this.state.currentError === 'Please connect to another Network' ? "bg-errorColor  z-10" : "bg-gradient-to-r from-[#29C8A9] via-[#208ED0] to-[#703AAD]")
+                                                                            + (this.state.currentError && this.state.currentError === 'Please connect to another Network' ? "bg-errorColor  z-10" : "bg-gradient-to-r from-[#29C8A9] via-[#208ED0] to-[#703AAD]")
                                                                         }
                                                                     />
 

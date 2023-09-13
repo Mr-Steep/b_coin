@@ -17,13 +17,6 @@ import {CoinsAmount} from "@/components/CoinsAmount";
 import {Step} from "@/components/Step";
 import {SwapFormButton} from "./SwapFormButton";
 
-const FIXED_VALUE = 7
-export const HARDHAT_NETWORK_ID = '31337'
-export const BSC_NETWORK_ID = '97'
-export const NETWORK_ID = HARDHAT_NETWORK_ID
-
-const ERROR_CODE_TX_REJECTED_BY_USER = 4001
-
 let step
 
 
@@ -38,15 +31,7 @@ export class SwapFormTips extends Component {
 
     render() {
         const {active, data, step, setNewStep, tips, closeModal} = this.props
-        console.log('step',step)
 
-        const style_contract = {
-            "background": 'red',
-            "padding": '1rem',
-            "position": 'absolute',
-            "top": 0,
-            "right": 0,
-        }
 
         return (
             <>

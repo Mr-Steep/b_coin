@@ -4,7 +4,10 @@ import arrowLight from "../assets/images/arrow-light.svg";
 import Image from "next/image";
 import Link from "next/link";
 
+
 export function Footer() {
+    const currentOrigin = 'https://bnxt.network/'
+
 
     return (
         <div className="bg-primaryBgColor sm:pt-[65px] pt-[4.813rem] px-[17px] smn:px-[104px] mb-[-50px] relative overflow-hidden">
@@ -14,7 +17,10 @@ export function Footer() {
 
                 <div className="grid sm:grid-cols-1 grid-cols-2 justify-between items-center sm:gap-0 gap-[67px] border-b-[1px] border-solid border-secondaryBgColor sm:pb-[27px] pb-[42px] sm:px-4 relative"
                      >
+                    <Link  href={currentOrigin + 'home'} >
                         <Image src={logo} className="sm:max-w-[230px] sm:mx-auto sm:mb-9 mdd:row-start-1 mdd:row-end-2 mdd:col-start-1 mdd:col-end-3 mdd:mx-auto" alt={''}/>
+                    </Link>
+
                         <div className="flex sm:flex-col items-center justify-end md:row-start-4 mdd:row-end-5 mdd:col-start-1 mdd:col-end-3 mdd:justify-center"
 
                         >

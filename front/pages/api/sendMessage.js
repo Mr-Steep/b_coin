@@ -16,10 +16,15 @@ export default async function sendMessage(req, res) {
 
     try {
         const { hash, email, countTokens } = req.body;
-        const filePath = path.join(process.cwd(), 'pages/mail/', 'message_buy.html');
+        const link = process.env.NEXT_PUBLIC_ADDRESS_TRANSACTION +hash;
+        const filePath = path.join(process.cwd(), 'public/mail/', 'message_buy.html');
 
         const html = fs.readFileSync(filePath, 'utf8');
-        const personalizedHtml = html.replace('{{email}}', email).replace('{{hash}}', hash).replace('{{countTokens}}', countTokens);
+        const personalizedHtml = html
+            .replace('{{email}}', email)
+            .replace('{{hash}}', hash)
+            .replace('{{countTokens}}', countTokens)
+            .replace('{{link}}', link);
 
         const mailOptions = {
             from: `"${process.env.MAIL_FROM_NAME}" <${process.env.MAIL_FROM_ADDRESS}>`,

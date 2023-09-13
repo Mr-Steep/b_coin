@@ -1,16 +1,66 @@
 // SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.8.18;
+pragma solidity ^0.8.19;
 
-import "./iERC20.sol";
+interface iBEP20 {
 
-contract ERC20 is iERC20 {
+    function name() external view returns(string memory);
+
+    function symbol() external view returns(string memory);
+
+    function decimals() external pure returns(uint);
+
+    function totalSupply() external view returns(uint);
+
+    function balanceOf(address account) external view returns(uint);
+
+    function transfer(address to, uint amount) external;
+
+    function allowance(address _owner, address spender) external view returns(uint);
+
+    function approve(address spender, uint amount) external;
+
+    function transferFrom(address sender, address recipient, uint amount) external;
+
+    event Transfer(address indexed from, address indexed to, uint amount);
+
+    event Multiplayer(address indexed _address, uint multiplier);
+
+    event Approve(address indexed owner, address indexed to, uint amount);
+}
+
+interface iBEP20Ext is iBEP20{
+
+    function balanceOfBonuses(address account) external view returns(uint);
+
+    function transferBonuses(address _address, uint amount) external;
+
+    function setIsUsedBonuses(address _address) external;
+
+    function getIsUsedBonuses(address _address) external view returns(bool);
+
+    function setBonusMultiplier(address _address, uint amount) external;
+
+    function getBonusMultiplier(address _address) external view returns(uint);
+
+    function setGlobalMultiplier(uint multiplier) external;
+
+    function getGlobalMultiplier() external view returns(uint);
+
+    function unlockBonuses() external;
+
+    event TransferBonus(address indexed from, address indexed to, uint amount);
+
+    event UnlockBonus(address indexed from, uint amount);
+
+}
+
+
+contract BEP20 is iBEP20Ext {
     address owner;
     uint totalTokens;
     uint totalBonusTokens;
-    uint timeUnLock;
     uint globalMultiplier;
     address[] private bonusAddresses;
-
 
     mapping(address => uint) balances;
     mapping(address => uint) balanceBonusTokens;
@@ -51,23 +101,16 @@ contract ERC20 is iERC20 {
         _;
     }
 
-    modifier transferBonus() {
-        require(block.timestamp >=  timeUnLock, "Time has not come yet");
-        _;
-    }
-
     constructor(
         string memory name_,
         string memory symbol_,
         uint initialSupply,
         uint initialSupplyBonus,
-        address shop,
-        uint timesUnLock
+        address shop
     ) {
         _symbol = symbol_;
         _name = name_;
         owner = msg.sender;
-        timeUnLock = timesUnLock;
         globalMultiplier = 0;
         mint(initialSupply, shop);
         mintBonus(initialSupplyBonus, shop);
@@ -77,10 +120,7 @@ contract ERC20 is iERC20 {
         return balances[account];
     }
 
-    function transfer(
-        address to,
-        uint amount
-    ) external enoughTokens(msg.sender, amount) {
+    function transfer(address to, uint amount) external enoughTokens(msg.sender, amount) {
         _beforeTokenTransfer(msg.sender, to, amount);
         balances[msg.sender] -= amount;
         balances[to] += amount;
@@ -91,10 +131,7 @@ contract ERC20 is iERC20 {
         return balanceBonusTokens[account];
     }
 
-    function transferBonuses(
-        address to,
-        uint amount
-    ) external enoughTokens(msg.sender, amount) {
+    function transferBonuses(address to, uint amount) external enoughTokens(msg.sender, amount) {
         _beforeTokenTransfer(msg.sender, to, amount);
         balanceBonusTokens[msg.sender] -= amount;
         balanceBonusTokens[to] += amount;
@@ -109,7 +146,7 @@ contract ERC20 is iERC20 {
         emit TransferBonus(address(0), shop, amount);
     }
 
-    function unlockBonuses() external transferBonus {
+    function unlockBonuses() external onlyOwner {
         for(uint i = 0; i < bonusAddresses.length; i++){
             address _address = bonusAddresses[i];
             uint bonusTokens = balanceBonusTokens[_address];
@@ -157,14 +194,7 @@ contract ERC20 is iERC20 {
         totalTokens -= amount;
     }
 
-    function setUnlockTime(uint timestamp) external onlyOwner {
-        timeUnLock = timestamp;
-    }
-
-    function allowance(
-        address owner_,
-        address spender
-    ) public view returns (uint) {
+    function allowance(address owner_, address spender) public view returns (uint) {
         return allowances[owner_][spender];
     }
 
@@ -172,20 +202,12 @@ contract ERC20 is iERC20 {
         _approve(msg.sender, spender, amount);
     }
 
-    function _approve(
-        address sender,
-        address spender,
-        uint amount
-    ) internal virtual {
+    function _approve(address sender, address spender, uint amount) internal virtual {
         allowances[sender][spender] = amount;
         emit Approve(sender, spender, amount);
     }
 
-    function transferFrom(
-        address sender,
-        address recipient,
-        uint amount
-    ) external enoughTokens(sender, amount) {
+    function transferFrom(address sender, address recipient, uint amount) external enoughTokens(sender, amount) {
         _beforeTokenTransfer(sender, recipient, amount);
 
         require(allowances[sender][recipient] >= amount, "check amount");
@@ -197,37 +219,28 @@ contract ERC20 is iERC20 {
         emit Transfer(sender, recipient, amount);
     }
 
-    function _beforeTokenTransfer(
-        address from,
-        address to,
-        uint amount
-    ) internal virtual {}
+    function _beforeTokenTransfer( address from, address to, uint amount) internal virtual {}
 }
 
-contract BNXTToken is ERC20 {
-    constructor(address _address, uint _timestamp) ERC20(
-    "TEST BE NEXT",
-    "testbnxt",
-    26 * 10 ** 6,
-    40 * 10 ** 6,
-    _address,
-    _timestamp) {}
+contract bNXT is BEP20 {
+    constructor(address _address) BEP20("TEST BE NEXT", "testbnxt", 26 * 10 ** 6, 40 * 10 ** 6, _address) {}
 }
 
-contract TokenShop {
-    iERC20 public token;
+contract bNXTShop {
+    iBEP20Ext public token;
     address payable public owner;
     uint constant MIN_TOKEN_AMOUNT = 100;
     uint constant MAX_TOKEN_AMOUNT = 1000;
     uint constant TOKEN_AMOUNT_MULTIPLIER = 100;
-
+    mapping(address => uint) balanceByTheUser;
+    mapping(address => uint) private userMultipliers;
 
     event Bougth(uint _amount, address indexed _buyer);
     event BougthBonus(uint _amount, address indexed _buyer);
     event Sold(uint _amount, address indexed _seller);
 
     constructor() {
-        token = new BNXTToken(address(this), block.timestamp + 10);
+        token = new bNXT(address(this));
         owner = payable(msg.sender);
     }
 
@@ -242,32 +255,41 @@ contract TokenShop {
         owner.transfer(balance);
     }
 
+    function unlockTokens() public onlyOwner {
+        token.unlockBonuses();
+        token.setGlobalMultiplier(2);
+    }
+
     function transferOwnership(address payable newOwner) public onlyOwner {
         require(newOwner != address(0), "New owner cannot be zero address");
         owner = newOwner;
     }
 
+    function setGlobalMultiplier(uint value) public onlyOwner {
+        token.setGlobalMultiplier(value);
+    }
 
     function buyTokens(uint tokenAmount) public payable {
         require(msg.sender.balance >= 0, "Insufficient balance");
         require(tokenBalanceContract() > 0, "Contract has no tokens");
-
-        uint balance = tokenBalanceCurrent();
+        uint balance = balanceByTheUser[msg.sender];
         if (getGlobalMultiplier() == 0) {
             require(tokenAmount >= MIN_TOKEN_AMOUNT, "Token amount below minimum 100");
             require(tokenAmount <= MAX_TOKEN_AMOUNT, "Token amount above maximum 1000");
             require(tokenAmount % TOKEN_AMOUNT_MULTIPLIER == 0, "Token amount must be a multiple of the 100");
             require(tokenAmount + balance <= MAX_TOKEN_AMOUNT, "Token amount can be maximum 1000");
-
             token.transfer(msg.sender, tokenAmount);
+            balanceByTheUser[msg.sender] += tokenAmount;
             emit Bougth(tokenAmount, msg.sender);
+            uint multiplier = tokenAmount / TOKEN_AMOUNT_MULTIPLIER;
+            userMultipliers[msg.sender] += multiplier;
             setMultiplier();
+
         } else {
             tokenAmount = tokenAmount * getGlobalMultiplier() - tokenAmount;
             token.transfer(msg.sender, tokenAmount);
             emit BougthBonus(tokenAmount, msg.sender);
         }
-
     }
 
     function buyTokensBonus() public payable {
@@ -276,16 +298,10 @@ contract TokenShop {
         require(!getIsUsed(), "Bonus has been used");
         require(msg.sender.balance >= 0, "Insufficient balance");
         require(tokenBalanceContract() > 0, "Contract has no tokens");
-
         uint tokenAmount = balance * getMultiplier() - balance;
         token.transferBonuses(msg.sender, tokenAmount);
-
         emit BougthBonus(tokenAmount, msg.sender);
         token.setIsUsedBonuses(msg.sender);
-    }
-
-    function setGlobalMultiplier(uint value) public {
-        token.setGlobalMultiplier(value);
     }
 
     function getGlobalMultiplier() public view returns (uint) {
@@ -297,7 +313,7 @@ contract TokenShop {
     }
 
     function setMultiplier() private {
-        uint multiplier = tokenBalanceCurrent() / 100;
+        uint multiplier = userMultipliers[msg.sender];
         if (multiplier < 2) {
             multiplier = 2;
         }
@@ -324,14 +340,5 @@ contract TokenShop {
 
     function tokenBalanceCurrentBonuses() public view returns (uint) {
         return token.balanceOfBonuses(msg.sender);
-    }
-
-    function _setUnlockTime(uint timestamp) public {
-        token.setUnlockTime(timestamp);
-    }
-
-    function unlockTokens() public  {
-        token.unlockBonuses();
-    	token.setGlobalMultiplier(2);
     }
 }
