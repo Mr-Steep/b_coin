@@ -3,7 +3,7 @@ import token1 from "../assets/images/token-1.svg"
 import token2 from "../assets/images/token-2.svg"
 import token3 from "../assets/images/token-3.svg"
 import smart from "../assets/images/smart.svg"
-import {useState, useEffect} from "react";
+import {useState} from "react";
 
 import {ClipboardPopup} from "./ClipboardPopup";
 
@@ -26,7 +26,7 @@ export function Token() {
 
 
 
-    const value = '0x475bfaa1848591ae0e6ab69600f48d828f61a80e'
+    const value = process.env.NEXT_PUBLIC_PRODUCTION_TOKEN_ADDRESS
 
 
 

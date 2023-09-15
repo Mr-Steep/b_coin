@@ -1,5 +1,7 @@
-// SPDX-License-Identifier: UNLICENSED
+// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.19;
+
+import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
 
 interface iBEP20 {
 
@@ -223,10 +225,11 @@ contract BEP20 is iBEP20Ext {
 }
 
 contract bNXT is BEP20 {
-    constructor(address _address) BEP20("TEST BE NEXT", "testbnxt", 26 * 10 ** 6, 40 * 10 ** 6, _address) {}
+    constructor(address _address) BEP20("TEST BE NEXT", "tbnxt", 26 * 10 ** 6, 40 * 10 ** 6, _address) {}
 }
 
 contract bNXTShop {
+    address public chainlinkOracleAddress;
     iBEP20Ext public token;
     address payable public owner;
     uint constant MIN_TOKEN_AMOUNT = 100;
@@ -242,6 +245,7 @@ contract bNXTShop {
     constructor() {
         token = new bNXT(address(this));
         owner = payable(msg.sender);
+        chainlinkOracleAddress = 0x2514895c72f50D8bd4B4F9b1110F0D6bD2c97526;
     }
 
     modifier onlyOwner() {
@@ -278,6 +282,8 @@ contract bNXTShop {
             require(tokenAmount <= MAX_TOKEN_AMOUNT, "Token amount above maximum 1000");
             require(tokenAmount % TOKEN_AMOUNT_MULTIPLIER == 0, "Token amount must be a multiple of the 100");
             require(tokenAmount + balance <= MAX_TOKEN_AMOUNT, "Token amount can be maximum 1000");
+            uint weiAmount = bnxtToWei(tokenAmount);
+            require(msg.value >= weiAmount, "you transferred insufficient quantity");
             token.transfer(msg.sender, tokenAmount);
             balanceByTheUser[msg.sender] += tokenAmount;
             emit Bougth(tokenAmount, msg.sender);
@@ -299,9 +305,19 @@ contract bNXTShop {
         require(msg.sender.balance >= 0, "Insufficient balance");
         require(tokenBalanceContract() > 0, "Contract has no tokens");
         uint tokenAmount = balance * getMultiplier() - balance;
+        uint priceToken = balance/10;
+        uint weiAmount = bnxtToWei(priceToken);
+        require(msg.value >= weiAmount, "you transferred insufficient quantity");
+
         token.transferBonuses(msg.sender, tokenAmount);
         emit BougthBonus(tokenAmount, msg.sender);
         token.setIsUsedBonuses(msg.sender);
+    }
+
+    function bnxtToWei(uint bnxtAmount) public view returns (uint) {
+        AggregatorV3Interface priceFeed = AggregatorV3Interface(chainlinkOracleAddress);
+        (, int price, , , ) = priceFeed.latestRoundData();
+        return uint(bnxtAmount * 1 ether / uint(price) * 10**8);
     }
 
     function getGlobalMultiplier() public view returns (uint) {
