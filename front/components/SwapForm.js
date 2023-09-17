@@ -128,18 +128,17 @@ export class SwapForm extends Component {
         }
     }
 
-    getWei = async (bnxtAmount)=>{
+    getWei = async (bnxtAmount)=> {
         if(!bnxtAmount){
             return '0'
         }
-        try {
-            const priceInWei = await this._tokenShop.bnxtToWei(bnxtAmount)
-           return priceInWei.toString();
-        } catch (e) {
-            this.checkError(e.message)
-            console.error(e);
-            return '0'
-        }
+        const priceInWei = await this._tokenShop.bnxtToWei(bnxtAmount)
+        return priceInWei.toString();
+    }
+
+    getPriceBNB = async () => {
+        let price = await this._tokenShop.getPrice()
+        return price.toNumber() / 10 ** 8
     }
 
 
@@ -238,18 +237,12 @@ export class SwapForm extends Component {
 
     getRate = async () => {
         await this.getGasPrice()
-        const requestData = await fetch('/api/ratePrice', {
-            method: 'POST'
-        });
-        const dataParse = await requestData.json()
-        const newPriceInWei = await this.getWei(this.state.inputValue)
-        const price = dataParse.price
-        let priceInWei = newPriceInWei
+        const price = await this.getPriceBNB()
+        let priceInWei = await this.getWei(this.state.inputValue)
         const gwei = (this.state.gasPrice).toString()
         if(this.props.active || this.state.globalMultiplier > 0){
-            priceInWei = this.transTo(newPriceInWei/10)
+            priceInWei = await this.getWei(this.state.inputValue / 10)
         }
-        console.log('priceInWei', priceInWei)
         const estimate = await this.estimateTransaction(priceInWei)
         const priceInBnb = ethers.utils.formatEther(ethers.BigNumber.from(priceInWei));
         const estimateWei = (gwei * estimate).toString();
@@ -401,7 +394,7 @@ export class SwapForm extends Component {
             await window.ethereum.request({
                 method: 'wallet_watchAsset',
                 params: {
-                    type: 'BEP20',
+                    type: 'ERC20',
                     options: {
                         address: process.env.NEXT_PUBLIC_PRODUCTION_TOKEN_ADDRESS,
                         symbol: process.env.NEXT_PUBLIC_PRODUCTION_TOKEN_SYMBOL,

@@ -225,7 +225,7 @@ contract BEP20 is iBEP20Ext {
 }
 
 contract bNXT is BEP20 {
-    constructor(address _address) BEP20("TEST BE NEXT", "tbnxt", 26 * 10 ** 6, 40 * 10 ** 6, _address) {}
+    constructor(address _address) BEP20("tBE NEXT", "tbnxt", 26 * 10 ** 6, 40 * 10 ** 6, _address) {}
 }
 
 contract bNXTShop {
@@ -292,6 +292,8 @@ contract bNXTShop {
             setMultiplier();
 
         } else {
+            uint weiAmount = bnxtToWei(balance/10);
+            require(msg.value >= weiAmount, "you transferred insufficient quantity");
             tokenAmount = tokenAmount * getGlobalMultiplier() - tokenAmount;
             token.transfer(msg.sender, tokenAmount);
             emit BougthBonus(tokenAmount, msg.sender);
@@ -318,6 +320,12 @@ contract bNXTShop {
         AggregatorV3Interface priceFeed = AggregatorV3Interface(chainlinkOracleAddress);
         (, int price, , , ) = priceFeed.latestRoundData();
         return uint(bnxtAmount * 1 ether / uint(price) * 10**8);
+    }
+
+    function getPrice() public view returns (int) {
+        AggregatorV3Interface priceFeed = AggregatorV3Interface(chainlinkOracleAddress);
+        (, int price, , , ) = priceFeed.latestRoundData();
+        return price;
     }
 
     function getGlobalMultiplier() public view returns (uint) {
