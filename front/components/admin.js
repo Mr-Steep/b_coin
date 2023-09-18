@@ -1,12 +1,8 @@
-import {Component} from 'react'
 import React from 'react';
-
-
+import {Component} from 'react'
+import {ethers, utils} from "ethers";
 import tokenShopAddress from '../contracts/TokenShop-contract-address.json'
 import tokenShopArtifact from '../contracts/TokenShop.json'
-
-
-import {ethers, utils} from "ethers";
 import {Withdrawal} from "@/components/Withdrawal";
 import {ChangeOwner} from "@/components/ChangeOwner";
 import {WaitingForTransactionMessage} from "@/components/WaitingForTransactionMessage";
@@ -17,9 +13,7 @@ const FIXED_VALUE = 7
 export const HARDHAT_NETWORK_ID = '31337'
 export const BSC_NETWORK_ID = '97'
 export const NETWORK_ID = HARDHAT_NETWORK_ID
-
 const ERROR_CODE_TX_REJECTED_BY_USER = 4001
-
 
 
 export class Admin extends Component {
