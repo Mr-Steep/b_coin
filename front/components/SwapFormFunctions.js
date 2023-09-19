@@ -1,4 +1,5 @@
 import {ethers} from "ethers";
+import {NETWORK_ID} from "./SwapForm";
 
 
 export const showError = (state, error) => {
@@ -22,8 +23,8 @@ export const _resetState = (state, initialState) => {
     state(initialState)
 }
 
-export const _checkNetwork = (HARDHAT_NETWORK_ID) => {
-    if (window.ethereum.networkVersion === HARDHAT_NETWORK_ID) {
+export const _checkNetwork = (NETWORK_ID) => {
+    if (window.ethereum.networkVersion === NETWORK_ID) {
         return true
     }
 }

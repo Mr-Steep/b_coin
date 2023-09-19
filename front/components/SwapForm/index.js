@@ -30,7 +30,7 @@ import {
 const FIXED_VALUE = 3
 
 const FIRSTLY_CONNECTION = 'firstly_connection'
-export const NETWORK_ID = '97'
+export const NETWORK_ID = process.env.NEXT_PUBLIC_PRODUCTION_NETWORK_CHAIN_ID
 
 const ERROR_CODE_TX_REJECTED_BY_USER = 'ACTION_REJECTED'
 
@@ -272,15 +272,6 @@ export class SwapForm extends Component {
 
     }
 
-    transTo = function (riceInWei) {
-        if(!riceInWei){
-            return '0'
-        }
-        const strRiceInWei = (parseFloat(riceInWei)).toFixed(18).toString()
-        const wei = ethers.utils.parseEther(strRiceInWei);
-        return wei.toString()
-    }
-
     async _initialize(selectedAddress) {
         this.fsetCurrentAddress(selectedAddress)
         this._provider = new ethers.providers.Web3Provider(window.ethereum)
@@ -318,7 +309,7 @@ export class SwapForm extends Component {
             method: 'eth_requestAccounts'
         })
 
-        if (!_checkNetwork(HARDHAT_NETWORK_ID)) {
+        if (!_checkNetwork(NETWORK_ID)) {
             return
         }
 
@@ -350,14 +341,6 @@ export class SwapForm extends Component {
             currentError: error
         })
     }
-
-    handleAmount = (selectedAmount) => {
-        const {data} = this.props
-        const {amount} = data.filter(el => el.amount === selectedAmount)[0]
-        this.setState({inputValue: +amount});
-        this.getRate().then()
-    }
-
 
     handleInput = async (value) => {
         this.setState({inputValue: +value});
