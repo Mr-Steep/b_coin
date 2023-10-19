@@ -1,67 +1,69 @@
-const { expect } = require ("chai");
-const { ethers } = require ("hardhat");
-const tokenJSON  = require ("../artifacts/contracts/Erc.sol/TokenShop.json");
+const { expect } = require("chai");
+const { ethers } = require("hardhat");
+const bNXTShopJSON = require("../artifacts/contracts/bNXT.sol/bNXTShop.json");
 
 describe("TokenShop", function () {
+    let shopInstance;
+    let owner;
+    let buyer;
 
-  let owner
-  let buyer
-  let shop
-  let erc20
+    beforeEach(async () => {
+        [owner, buyer] = await ethers.getSigners();
+        const bNXTShopFactory = new ethers.ContractFactory(
+            bNXTShopJSON.abi,
+            bNXTShopJSON.bytecode,
+            owner
+        );
+        shopInstance = await bNXTShopFactory.deploy();
+        await shopInstance.deployed();
+    });
 
-  beforeEach(async function () {
-    [owner, buyer] = await ethers.getSigners()
-    const TokenShop = await ethers.getContractFactory("TokenShop", owner)
-    shop = await TokenShop.deploy()
-    await shop.deployed()
+    it("should set the correct owner", async () => {
+        const contractOwner = await shopInstance.owner();
+        expect(contractOwner).to.equal(owner.address);
+    });
 
-    erc20 = new ethers.Contract(await shop.token(), tokenJSON.abi, owner)
-  })
+    it("should allow the owner to set a new chainlinkOracleAddress", async () => {
+        const newOracleAddress = buyer.address;
+        await shopInstance.connect(owner).setNewChainlinkOracleAddress(newOracleAddress);
+        const updatedOracleAddress = await shopInstance.chainlinkOracleAddress();
+        expect(updatedOracleAddress).to.equal(newOracleAddress);
+    });
 
-  it("should have an owner and a token", async function () {
-    expect(await shop.owner()).to.eq(owner.address)
-    expect(await shop.token()).to.be.properAddress
-  })
+    it("should not allow non-owner to set a new chainlinkOracleAddress", async () => {
+        const newOracleAddress = buyer.address;
+        try {
+            await shopInstance.connect(buyer).setNewChainlinkOracleAddress(newOracleAddress);
+            expect.fail("Non-owner was able to set Oracle address");
+        } catch (error) {
+            expect(error.message).to.include("Not an Owner");
+        }
+    });
 
-  it("allows to buy", async function () {
-    const tokenAmount = 3
-    const txData = {
-      value: tokenAmount,
-      to: shop.address
-    }
-    const tx = await buyer.sendTransaction(txData)
-    await tx.wait()
+    it("should allow the owner to unlock tokens", async () => {
+        await shopInstance.connect(owner).unlockTokens();
+        const globalMultiplier = await shopInstance.getGlobalMultiplier();
+        expect(globalMultiplier.toNumber()).to.equal(2);
+    });
 
-    expect(await erc20.balanceOf(buyer.address)).to.eq(tokenAmount)
+    it("should not allow non-owner to unlock tokens", async () => {
+        try {
+            await shopInstance.connect(buyer).unlockTokens();
+            expect.fail("Non-owner was able to unlock tokens");
+        } catch (error) {
+            expect(error.message).to.include("Not an Owner");
+        }
+    });
 
-    await expect(tx).to.changeEtherBalance(shop, tokenAmount)
-    await expect(tx).to.emit(shop, "Bougth").withArgs(tokenAmount, buyer.address)
-
-  })
 
 
-  it("allows to sell", async function () {
-    const tokenAmount = 5
-    const txData = {
-      value: tokenAmount,
-      to: shop.address
-    }
-    const tx = await buyer.sendTransaction(txData)
-    await tx.wait()
+    it("should not allow a user to buy bonus tokens if they have never bought tokens", async () => {
+        try {
+            await shopInstance.connect(buyer).buyTokensBonus();
+            expect.fail("User without purchased tokens was able to buy bonus tokens");
+        } catch (error) {
+            expect(error.message).to.include("You have never bought tokens");
+        }
+    });
 
-    const sellAmount = 2
-    const approval = await erc20.connect(buyer).approve(shop.address, sellAmount)
-    await approval.wait();
-    const sellTx = await shop.connect(buyer).sell(sellAmount)
-
-    expect(await erc20.balanceOf(buyer.address)).to.eq(tokenAmount-sellAmount)
-
-    await expect(sellTx).
-    to.changeEtherBalance(shop, -sellAmount)
-    
-    await expect(sellTx).
-    to.emit(shop, "Sold").withArgs(sellAmount, buyer.address)
-
-  })
-
-})
+});

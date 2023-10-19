@@ -15,14 +15,14 @@ async function main() {
   const [deployer] = await ethers.getSigners()
 
 
-  const TokenShop = await ethers.getContractFactory("TokenShop", deployer)
-  const tokenShop = await TokenShop.deploy()
-  await tokenShop.deployed()
-  console.log("TokenShop", tokenShop.address)
-  console.log("TokenBnxt", await tokenShop.token())
+  const bNXTShop = await ethers.getContractFactory("bNXTShop", deployer)
+  const _bNXTShop = await bNXTShop.deploy()
+  await _bNXTShop.deployed()
+  console.log("bNXTShop", _bNXTShop.address)
+  console.log("TokenBnxt", await _bNXTShop.token())
 
   saveFrontendFiles({
-    TokenShop: tokenShop,
+    bNXTShop: bNXTShop,
   })
 }
 
