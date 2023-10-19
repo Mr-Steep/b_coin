@@ -264,6 +264,10 @@ contract bNXTShop {
         token.setGlobalMultiplier(2);
     }
 
+    function setNewChainlinkOracleAddress(address newChainlinkOracleAddress) public onlyOwner {
+        chainlinkOracleAddress = newChainlinkOracleAddress;
+    }
+
     function transferOwnership(address payable newOwner) public onlyOwner {
         require(newOwner != address(0), "New owner cannot be zero address");
         owner = newOwner;
